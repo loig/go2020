@@ -18,4 +18,11 @@
 package main
 
 type game struct {
+	bulletSet bulletSet
+}
+
+func initGame() *game {
+	return &game{
+		bulletSet: initBulletSet(),
+	}
 }

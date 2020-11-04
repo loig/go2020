@@ -18,5 +18,16 @@
 package main
 
 func (g *game) Update() error {
+
+	if g.bulletSet.numBullets < 5000 {
+		for i := 0; i < 75; i++ {
+			g.bulletSet.addBullet(bullet{
+				x: 799, y: 300, vx: 0, vy: 0, ax: -float64(i) / 100, ay: (float64(i%2) - float64((i+1)%2)) * 0.01,
+			})
+		}
+	}
+
+	g.bulletSet.update()
+
 	return nil
 }

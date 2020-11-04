@@ -23,4 +23,6 @@ import (
 
 func (g *game) Draw(screen *ebiten.Image) {
 
+	g.bulletSet.draw(screen)
+
 }

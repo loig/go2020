@@ -26,7 +26,7 @@ import (
 func main() {
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle("Game Off 2020")
-	if err := ebiten.RunGame(&game{}); err != nil {
+	if err := ebiten.RunGame(initGame()); err != nil {
 		log.Fatal(err)
 	}
 }
