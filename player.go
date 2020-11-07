@@ -27,14 +27,24 @@ import (
 type player struct {
 	x     float64
 	y     float64
+	vx    float64
+	vy    float64
 	xSize float64
 	ySize float64
 }
 
+const (
+	pWidth  = 45
+	pHeight = 15
+	pVCap   = 5
+	pAx     = 1
+	pAy     = 1
+)
+
 func initPlayer(x, y float64) player {
 	return player{
 		x: x, y: y,
-		xSize: 45, ySize: 15,
+		xSize: pWidth, ySize: pHeight,
 	}
 }
 
@@ -66,4 +76,65 @@ func (p player) checkCollisions(cos []*bullet) {
 	for _, o := range cos {
 		collide(p, o)
 	}
+}
+
+func (p *player) update() {
+	var hasMovedX bool
+	if ebiten.IsKeyPressed(ebiten.KeyRight) {
+		p.vx += pAx
+		hasMovedX = true
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
+		if hasMovedX {
+			p.vx = 0
+			hasMovedX = false
+		} else {
+			p.vx -= pAx
+			hasMovedX = true
+		}
+	}
+	if !hasMovedX {
+		if p.vx > pAx {
+			p.vx -= pAx
+		} else if p.vx < -pAx {
+			p.vx += pAx
+		} else {
+			p.vx = 0
+		}
+	}
+	var hasMovedY bool
+	if ebiten.IsKeyPressed(ebiten.KeyDown) {
+		p.vy += pAy
+		hasMovedY = true
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyUp) {
+		if hasMovedY {
+			p.vy = 0
+			hasMovedY = false
+		} else {
+			p.vy -= pAy
+			hasMovedY = true
+		}
+	}
+	if !hasMovedY {
+		if p.vy > pAy {
+			p.vy -= pAy
+		} else if p.vy < -pAy {
+			p.vy += pAy
+		} else {
+			p.vy = 0
+		}
+	}
+	if p.vx > pVCap {
+		p.vx = pVCap
+	} else if p.vx < -pVCap {
+		p.vx = -pVCap
+	}
+	if p.vy > pVCap {
+		p.vy = pVCap
+	} else if p.vy < -pVCap {
+		p.vy = -pVCap
+	}
+	p.x += p.vx
+	p.y += p.vy
 }
