@@ -25,31 +25,38 @@ import (
 )
 
 type player struct {
-	x     float64
-	y     float64
-	vx    float64
-	vy    float64
-	xSize float64
-	ySize float64
+	x          float64
+	y          float64
+	vx         float64
+	vy         float64
+	xSize      float64
+	ySize      float64
+	bullets    bulletSet
+	lastBullet int
 }
 
 const (
-	pWidth  = 45
-	pHeight = 15
-	pVCap   = 5
-	pAx     = 1
-	pAy     = 1
+	pWidth          = 45
+	pHeight         = 15
+	pVCap           = 5
+	pAx             = 1
+	pAy             = 1
+	pBulletInterval = 15
+	pBulletSpeed    = 6
 )
 
 func initPlayer(x, y float64) player {
 	return player{
 		x: x, y: y,
 		xSize: pWidth, ySize: pHeight,
+		bullets:    initBulletSet(),
+		lastBullet: pBulletInterval,
 	}
 }
 
 func (p player) draw(screen *ebiten.Image) {
 	ebitenutil.DrawRect(screen, p.xmin(), p.ymin(), p.xSize, p.ySize, color.RGBA{255, 0, 0, 255})
+	p.bullets.draw(screen)
 }
 
 func (p player) xmin() float64 {
@@ -79,6 +86,12 @@ func (p player) checkCollisions(cos []*bullet) {
 }
 
 func (p *player) update() {
+	p.move()
+	p.fire()
+	p.bullets.update()
+}
+
+func (p *player) move() {
 	var hasMovedX bool
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
 		p.vx += pAx
@@ -137,4 +150,17 @@ func (p *player) update() {
 	}
 	p.x += p.vx
 	p.y += p.vy
+}
+
+func (p *player) fire() {
+	p.lastBullet++
+	if p.lastBullet >= pBulletInterval &&
+		ebiten.IsKeyPressed(ebiten.KeySpace) {
+		p.lastBullet = 0
+		p.bullets.addBullet(bullet{
+			x: p.x, y: p.y,
+			vx: pBulletSpeed, vy: 0,
+			ax: 0, ay: 0,
+		})
+	}
 }
