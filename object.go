@@ -17,19 +17,22 @@
 
 package main
 
-import (
-	"fmt"
+type collidableObject interface {
+	xmin() float64
+	xmax() float64
+	ymin() float64
+	ymax() float64
+	hasCollided()
+}
 
-	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-)
-
-func (g *game) Draw(screen *ebiten.Image) {
-
-	g.bulletSet.draw(screen)
-	g.player.draw(screen)
-
-	s := fmt.Sprint(ebiten.CurrentTPS(), ebiten.CurrentFPS())
-	ebitenutil.DebugPrint(screen, s)
-
+func collide(o collidableObject, oo collidableObject) bool {
+	collision := !(o.xmin() > oo.xmax() ||
+		o.xmax() < oo.xmin() ||
+		o.ymin() > oo.ymax() ||
+		o.ymax() < oo.ymin())
+	if collision {
+		o.hasCollided()
+		oo.hasCollided()
+	}
+	return collision
 }

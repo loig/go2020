@@ -25,27 +25,50 @@ import (
 )
 
 type bullet struct {
-	x  float64
-	y  float64
-	vx float64
-	vy float64
-	ax float64
-	ay float64
+	x         float64
+	y         float64
+	vx        float64
+	vy        float64
+	ax        float64
+	ay        float64
+	xSize     float64
+	ySize     float64
+	collision bool
 }
 
 func (b *bullet) update() {
-	b.x += b.vx
-	b.y += b.vy
 	b.vx += b.ax
 	b.vy += b.ay
-}
-
-func (b bullet) draw(screen *ebiten.Image) {
-	ebitenutil.DrawRect(screen, b.x-2, b.y-2, 4, 4, color.RGBA{255, 0, 0, 255})
+	b.x += b.vx
+	b.y += b.vy
 }
 
 func (b bullet) isOut() bool {
-	return b.x < 0 || b.y < 0 || b.x >= screenWidth || b.y >= screenHeight
+	return b.collision || b.xmax() < 0 || b.ymax() < 0 || b.xmin() >= screenWidth || b.ymin() >= screenHeight
+}
+
+func (b bullet) draw(screen *ebiten.Image) {
+	ebitenutil.DrawRect(screen, b.xmin(), b.ymin(), b.xSize, b.ySize, color.RGBA{255, 0, 0, 255})
+}
+
+func (b *bullet) xmin() float64 {
+	return b.x - b.xSize/2
+}
+
+func (b *bullet) xmax() float64 {
+	return b.x + b.xSize/2
+}
+
+func (b *bullet) ymin() float64 {
+	return b.y - b.ySize/2
+}
+
+func (b *bullet) ymax() float64 {
+	return b.y + b.ySize/2
+}
+
+func (b *bullet) hasCollided() {
+	b.collision = true
 }
 
 type bulletSet struct {
@@ -61,6 +84,8 @@ func initBulletSet() bulletSet {
 }
 
 func (bs *bulletSet) addBullet(b bullet) {
+	b.xSize = 4
+	b.ySize = 4
 	bs.numBullets++
 	bs.bullets = append(bs.bullets, &b)
 }

@@ -18,18 +18,52 @@
 package main
 
 import (
-	"fmt"
+	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-func (g *game) Draw(screen *ebiten.Image) {
+type player struct {
+	x     float64
+	y     float64
+	xSize float64
+	ySize float64
+}
 
-	g.bulletSet.draw(screen)
-	g.player.draw(screen)
+func initPlayer(x, y float64) player {
+	return player{
+		x: x, y: y,
+		xSize: 45, ySize: 15,
+	}
+}
 
-	s := fmt.Sprint(ebiten.CurrentTPS(), ebiten.CurrentFPS())
-	ebitenutil.DebugPrint(screen, s)
+func (p player) draw(screen *ebiten.Image) {
+	ebitenutil.DrawRect(screen, p.xmin(), p.ymin(), p.xSize, p.ySize, color.RGBA{255, 0, 0, 255})
+}
 
+func (p player) xmin() float64 {
+	return p.x - p.xSize/2
+}
+
+func (p player) xmax() float64 {
+	return p.x + p.xSize/2
+}
+
+func (p player) ymin() float64 {
+	return p.y - p.ySize/2
+}
+
+func (p player) ymax() float64 {
+	return p.y + p.ySize/2
+}
+
+func (p player) hasCollided() {
+
+}
+
+func (p player) checkCollisions(cos []*bullet) {
+	for _, o := range cos {
+		collide(p, o)
+	}
 }
