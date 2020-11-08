@@ -19,15 +19,14 @@ package main
 
 func (g *game) Update() error {
 
-	if g.bulletSet.numBullets < 100 {
-		g.bulletSet.addBullet(bullet{
-			x: 799, y: 300, vx: -5, vy: 0, ax: 0, ay: 0,
-		})
+	if g.enemySet.numEnemies < 1 {
+		g.enemySet.addTestEnemy()
 	}
 
 	g.bulletSet.update()
+	g.enemySet.update(&(g.bulletSet))
 	g.player.update()
-	g.player.checkCollisions(g.bulletSet.bullets)
+	g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies)
 
 	return nil
 }

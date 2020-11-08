@@ -47,8 +47,8 @@ func (b bullet) isOut() bool {
 	return b.collision || b.xmax() < 0 || b.ymax() < 0 || b.xmin() >= screenWidth || b.ymin() >= screenHeight
 }
 
-func (b bullet) draw(screen *ebiten.Image) {
-	ebitenutil.DrawRect(screen, b.xmin(), b.ymin(), b.xSize, b.ySize, color.RGBA{255, 0, 0, 255})
+func (b bullet) draw(screen *ebiten.Image, color color.Color) {
+	ebitenutil.DrawRect(screen, b.xmin(), b.ymin(), b.xSize, b.ySize, color)
 }
 
 func (b *bullet) xmin() float64 {
@@ -84,10 +84,11 @@ func initBulletSet() bulletSet {
 }
 
 func (bs *bulletSet) addBullet(b bullet) {
-	b.xSize = 4
-	b.ySize = 4
+	bb := b
+	bb.xSize = 4
+	bb.ySize = 4
 	bs.numBullets++
-	bs.bullets = append(bs.bullets, &b)
+	bs.bullets = append(bs.bullets, &bb)
 }
 
 func (bs *bulletSet) update() {
@@ -101,8 +102,8 @@ func (bs *bulletSet) update() {
 	}
 }
 
-func (bs *bulletSet) draw(screen *ebiten.Image) {
+func (bs *bulletSet) draw(screen *ebiten.Image, color color.Color) {
 	for _, b := range bs.bullets {
-		b.draw(screen)
+		b.draw(screen, color)
 	}
 }

@@ -55,8 +55,8 @@ func initPlayer(x, y float64) player {
 }
 
 func (p player) draw(screen *ebiten.Image) {
-	ebitenutil.DrawRect(screen, p.xmin(), p.ymin(), p.xSize, p.ySize, color.RGBA{255, 0, 0, 255})
-	p.bullets.draw(screen)
+	ebitenutil.DrawRect(screen, p.xmin(), p.ymin(), p.xSize, p.ySize, color.RGBA{0, 255, 0, 255})
+	p.bullets.draw(screen, color.RGBA{0, 255, 0, 255})
 }
 
 func (p player) xmin() float64 {
@@ -79,9 +79,15 @@ func (p player) hasCollided() {
 
 }
 
-func (p player) checkCollisions(cos []*bullet) {
-	for _, o := range cos {
-		collide(p, o)
+func (p player) checkCollisions(bs []*bullet, es []*enemy) {
+	for _, b := range bs {
+		collide(p, b)
+	}
+	for _, e := range es {
+		collide(p, e)
+		for _, b := range p.bullets.bullets {
+			collide(b, e)
+		}
 	}
 }
 

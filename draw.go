@@ -19,6 +19,7 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -26,7 +27,8 @@ import (
 
 func (g *game) Draw(screen *ebiten.Image) {
 
-	g.bulletSet.draw(screen)
+	g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
+	g.enemySet.draw(screen)
 	g.player.draw(screen)
 
 	s := fmt.Sprint(ebiten.CurrentTPS(), ebiten.CurrentFPS())

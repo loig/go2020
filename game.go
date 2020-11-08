@@ -20,11 +20,13 @@ package main
 type game struct {
 	bulletSet bulletSet
 	player    player
+	enemySet  enemySet
 }
 
 func initGame() *game {
 	return &game{
 		bulletSet: initBulletSet(),
 		player:    initPlayer(200, 300),
+		enemySet:  initEnemySet(),
 	}
 }
