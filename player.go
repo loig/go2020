@@ -121,6 +121,15 @@ func (p player) hasCollided() {
 }
 
 func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
+	for oNum := 0; oNum < p.numOptions; oNum++ {
+		o := p.options[oNum]
+		for _, b := range bs {
+			collide(o, b)
+		}
+		for _, e := range es {
+			collide(o, e)
+		}
+	}
 	for _, b := range bs {
 		collide(p, b)
 	}

@@ -76,7 +76,7 @@ func (e *enemy) hasCollided() {
 }
 
 func (e enemy) isOut() bool {
-	return e.pv == 0 || e.xmax() < 0 || e.ymax() < 0 || e.xmin() >= screenWidth || e.ymin() >= screenHeight
+	return e.pv <= 0 || e.xmax() < 0 || e.ymax() < 0 || e.xmin() >= screenWidth || e.ymin() >= screenHeight
 }
 
 func (e *enemy) update(bs *bulletSet) {
