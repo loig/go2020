@@ -52,7 +52,7 @@ type acceleration struct {
 }
 
 func (e enemy) draw(screen *ebiten.Image) {
-	ebitenutil.DrawRect(screen, e.xmin(), e.ymin(), e.xSize, e.ySize, color.RGBA{0, 0, 255, 255})
+	ebitenutil.DrawRect(screen, e.xmin(), e.ymin(), e.xSize, e.ySize, color.RGBA{155, 0, 0, 255})
 }
 
 func (e *enemy) xmin() float64 {

@@ -29,6 +29,7 @@ func (g *game) Draw(screen *ebiten.Image) {
 
 	g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
 	g.enemySet.draw(screen)
+	g.powerUpSet.draw(screen)
 	g.player.draw(screen)
 
 	s := fmt.Sprint(ebiten.CurrentTPS(), ebiten.CurrentFPS())

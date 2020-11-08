@@ -17,18 +17,41 @@
 
 package main
 
-type game struct {
-	bulletSet  bulletSet
-	player     player
-	enemySet   enemySet
-	powerUpSet powerUpSet
+import (
+	"image/color"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+)
+
+const (
+	oSizex = 10
+	oSizey = 10
+)
+
+type option struct {
+	x float64
+	y float64
 }
 
-func initGame() *game {
-	return &game{
-		bulletSet:  initBulletSet(),
-		player:     initPlayer(200, 300),
-		enemySet:   initEnemySet(),
-		powerUpSet: initPowerUpSet(),
-	}
+func (o option) xmin() float64 {
+	return o.x - oSizex/2
+}
+
+func (o option) xmax() float64 {
+	return o.x + oSizex/2
+}
+
+func (o option) ymin() float64 {
+	return o.y - oSizey/2
+}
+
+func (o option) ymax() float64 {
+	return o.y + oSizey/2
+}
+
+func (o option) hasCollided() {}
+
+func (o option) draw(screen *ebiten.Image) {
+	ebitenutil.DrawRect(screen, o.xmin(), o.ymin(), oSizex, oSizey, color.RGBA{0, 200, 0, 255})
 }

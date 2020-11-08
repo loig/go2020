@@ -23,10 +23,17 @@ func (g *game) Update() error {
 		g.enemySet.addTestEnemy()
 	}
 
+	if g.powerUpSet.numPowerUps < 1 {
+		g.powerUpSet.addPowerUp(powerUp{
+			x: 400, y: 300, vx: -3, vy: 0,
+		})
+	}
+
 	g.bulletSet.update()
 	g.enemySet.update(&(g.bulletSet))
+	g.powerUpSet.update()
 	g.player.update()
-	g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies)
+	g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies, g.powerUpSet.powerUps)
 
 	return nil
 }
