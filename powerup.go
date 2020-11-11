@@ -44,7 +44,11 @@ func (p powerUp) isOut() bool {
 }
 
 func (p powerUp) draw(screen *ebiten.Image) {
-	ebitenutil.DrawRect(screen, p.xmin(), p.ymin(), p.xSize, p.ySize, color.RGBA{0, 0, 255, 255})
+	cHull := p.convexHull()
+	for i := 0; i < len(cHull); i++ {
+		ii := (i + 1) % len(cHull)
+		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{0, 0, 255, 255})
+	}
 }
 
 func (p *powerUp) xmin() float64 {
@@ -61,6 +65,15 @@ func (p *powerUp) ymin() float64 {
 
 func (p *powerUp) ymax() float64 {
 	return p.y + p.ySize/2
+}
+
+func (p *powerUp) convexHull() []point {
+	return []point{
+		point{p.xmin(), p.ymin()},
+		point{p.xmax(), p.ymin()},
+		point{p.xmax(), p.ymax()},
+		point{p.xmin(), p.ymax()},
+	}
 }
 
 func (p *powerUp) hasCollided() {

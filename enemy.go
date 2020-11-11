@@ -52,7 +52,11 @@ type acceleration struct {
 }
 
 func (e enemy) draw(screen *ebiten.Image) {
-	ebitenutil.DrawRect(screen, e.xmin(), e.ymin(), e.xSize, e.ySize, color.RGBA{155, 0, 0, 255})
+	cHull := e.convexHull()
+	for i := 0; i < len(cHull); i++ {
+		ii := (i + 1) % len(cHull)
+		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{255, 0, 0, 255})
+	}
 }
 
 func (e *enemy) xmin() float64 {
@@ -69,6 +73,14 @@ func (e *enemy) ymin() float64 {
 
 func (e *enemy) ymax() float64 {
 	return e.y + e.ySize/2
+}
+
+func (e *enemy) convexHull() []point {
+	return []point{
+		point{e.x - e.xSize/2, e.y + e.ySize/2},
+		point{e.x + e.xSize/2, e.y + e.ySize/2},
+		point{e.x + e.xSize/2, e.y - e.ySize/2},
+	}
 }
 
 func (e *enemy) hasCollided() {

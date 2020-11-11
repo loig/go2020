@@ -81,7 +81,11 @@ func initPlayer(x, y float64) player {
 }
 
 func (p player) draw(screen *ebiten.Image) {
-	ebitenutil.DrawRect(screen, p.xmin(), p.ymin(), p.xSize, p.ySize, color.RGBA{0, 255, 0, 255})
+	cHull := p.convexHull()
+	for i := 0; i < len(cHull); i++ {
+		ii := (i + 1) % len(cHull)
+		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{0, 255, 0, 255})
+	}
 	for oPos := 0; oPos < p.numOptions; oPos++ {
 		p.options[oPos].draw(screen)
 	}
@@ -114,6 +118,14 @@ func (p player) ymin() float64 {
 
 func (p player) ymax() float64 {
 	return p.y + p.ySize/2
+}
+
+func (p player) convexHull() []point {
+	return []point{
+		point{p.x - p.xSize/2, p.y + p.ySize/2},
+		point{p.x + p.xSize/2, p.y + p.ySize/2},
+		point{p.x - p.xSize/2, p.y - p.ySize/2},
+	}
 }
 
 func (p player) hasCollided() {

@@ -50,8 +50,21 @@ func (o option) ymax() float64 {
 	return o.y + oSizey/2
 }
 
+func (o option) convexHull() []point {
+	return []point{
+		point{o.xmin(), o.ymin()},
+		point{o.xmax(), o.ymin()},
+		point{o.xmax(), o.ymax()},
+		point{o.xmin(), o.ymax()},
+	}
+}
+
 func (o option) hasCollided() {}
 
 func (o option) draw(screen *ebiten.Image) {
-	ebitenutil.DrawRect(screen, o.xmin(), o.ymin(), oSizex, oSizey, color.RGBA{0, 200, 0, 255})
+	cHull := o.convexHull()
+	for i := 0; i < len(cHull); i++ {
+		ii := (i + 1) % len(cHull)
+		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{0, 255, 0, 255})
+	}
 }

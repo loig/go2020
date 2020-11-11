@@ -22,7 +22,13 @@ type collidableObject interface {
 	xmax() float64
 	ymin() float64
 	ymax() float64
+	convexHull() []point
 	hasCollided()
+}
+
+type point struct {
+	x float64
+	y float64
 }
 
 func collide(o collidableObject, oo collidableObject) bool {
@@ -31,8 +37,45 @@ func collide(o collidableObject, oo collidableObject) bool {
 		o.ymin() > oo.ymax() ||
 		o.ymax() < oo.ymin())
 	if collision {
+		collision = intersectHulls(o, oo) && intersectHulls(oo, o)
+	}
+	if collision {
 		o.hasCollided()
 		oo.hasCollided()
 	}
 	return collision
+}
+
+func intersectHulls(o collidableObject, oo collidableObject) bool {
+	// will not work if o contains only two points
+	ocHull := o.convexHull()
+	oocHull := oo.convexHull()
+	for i := 0; i < len(ocHull); i++ {
+		a := ocHull[i]
+		b := ocHull[(i+1)%len(ocHull)]
+		c := ocHull[(i+2)%len(ocHull)]
+		// check on which side of (a,b) is c
+		side := (c.x-a.x)*(b.y-a.y) - (c.y-a.y)*(b.x-a.x)
+		left := side < 0
+		// for each point on oocHull, check if it is on the other side of (a,b)
+		allSameSide := true
+		for _, p := range oocHull {
+			side = (p.x-a.x)*(b.y-a.y) - (p.y-a.y)*(b.x-a.x)
+			if left {
+				if side < 0 {
+					allSameSide = false
+					break
+				}
+			} else {
+				if side > 0 {
+					allSameSide = false
+					break
+				}
+			}
+		}
+		if allSameSide {
+			return false
+		}
+	}
+	return true
 }

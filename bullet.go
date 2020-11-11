@@ -48,7 +48,11 @@ func (b bullet) isOut() bool {
 }
 
 func (b bullet) draw(screen *ebiten.Image, color color.Color) {
-	ebitenutil.DrawRect(screen, b.xmin(), b.ymin(), b.xSize, b.ySize, color)
+	cHull := b.convexHull()
+	for i := 0; i < len(cHull); i++ {
+		ii := (i + 1) % len(cHull)
+		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color)
+	}
 }
 
 func (b *bullet) xmin() float64 {
@@ -65,6 +69,15 @@ func (b *bullet) ymin() float64 {
 
 func (b *bullet) ymax() float64 {
 	return b.y + b.ySize/2
+}
+
+func (b *bullet) convexHull() []point {
+	return []point{
+		point{b.xmin(), b.ymin()},
+		point{b.xmax(), b.ymin()},
+		point{b.xmax(), b.ymax()},
+		point{b.xmin(), b.ymax()},
+	}
 }
 
 func (b *bullet) hasCollided() {
