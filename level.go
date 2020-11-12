@@ -35,7 +35,7 @@ type level struct {
 }
 
 const (
-	firstPlanPxPerFrame  = 8
+	firstPlanPxPerFrame  = 4
 	secondPlanPxPerFrame = 2
 	thirdPlanPxPerFrame  = 1
 	fourthPlanPxPerFrame = 0.25
