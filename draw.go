@@ -27,6 +27,7 @@ import (
 
 func (g *game) Draw(screen *ebiten.Image) {
 
+	g.level.draw(screen)
 	g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
 	g.enemySet.draw(screen)
 	g.powerUpSet.draw(screen)

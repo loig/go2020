@@ -36,9 +36,10 @@ func collide(o collidableObject, oo collidableObject) bool {
 		o.xmax() < oo.xmin() ||
 		o.ymin() > oo.ymax() ||
 		o.ymax() < oo.ymin())
-	if collision {
-		collision = intersectHulls(o, oo) && intersectHulls(oo, o)
+	if !collision {
+		return false
 	}
+	collision = intersectHulls(o, oo) && intersectHulls(oo, o)
 	if collision {
 		o.hasCollided()
 		oo.hasCollided()

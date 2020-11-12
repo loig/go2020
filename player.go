@@ -42,6 +42,12 @@ type player struct {
 	options         [pMaxOption]option
 	currentPowerUp  int
 	allPowerUp      bool
+	hullSet         bool
+	cHull           []point
+	xMin            float64
+	yMin            float64
+	xMax            float64
+	yMax            float64
 }
 
 type playerPosition struct {
@@ -104,28 +110,39 @@ func (p player) draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrintAt(screen, s, 0, 550)
 }
 
-func (p player) xmin() float64 {
-	return p.x - p.xSize/2
+func (p *player) updateBox() {
+	p.xMin = p.x - p.xSize/2
+	p.xMax = p.x + p.xSize/2
+	p.yMin = p.y - p.ySize/2
+	p.yMax = p.y + p.ySize/2
 }
 
-func (p player) xmax() float64 {
-	return p.x + p.xSize/2
+func (p *player) xmin() float64 {
+	return p.xMin
 }
 
-func (p player) ymin() float64 {
-	return p.y - p.ySize/2
+func (p *player) xmax() float64 {
+	return p.xMax
 }
 
-func (p player) ymax() float64 {
-	return p.y + p.ySize/2
+func (p *player) ymin() float64 {
+	return p.yMin
 }
 
-func (p player) convexHull() []point {
-	return []point{
-		point{p.x - p.xSize/2, p.y + p.ySize/2},
-		point{p.x + p.xSize/2, p.y + p.ySize/2},
-		point{p.x - p.xSize/2, p.y - p.ySize/2},
+func (p *player) ymax() float64 {
+	return p.yMax
+}
+
+func (p *player) convexHull() []point {
+	if !p.hullSet {
+		p.cHull = []point{
+			point{p.x - p.xSize/2, p.y + p.ySize/2},
+			point{p.x + p.xSize/2, p.y + p.ySize/2},
+			point{p.x - p.xSize/2, p.y - p.ySize/2},
+		}
+		p.hullSet = true
 	}
+	return p.cHull
 }
 
 func (p player) hasCollided() {
@@ -159,11 +176,14 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 }
 
 func (p *player) update() {
+	p.hullSet = false
+	p.cHull = nil
 	p.move()
 	p.fire()
 	p.managePowerUp()
 	p.moveOptions()
 	p.bullets.update()
+	p.updateBox()
 }
 
 func (p *player) move() {

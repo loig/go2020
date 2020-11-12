@@ -19,6 +19,6 @@ package main
 
 // screen size
 const (
-	screenWidth  = 800
-	screenHeight = 600
+	screenWidth  = 1912
+	screenHeight = 1080
 )

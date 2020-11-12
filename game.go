@@ -22,6 +22,7 @@ type game struct {
 	player     player
 	enemySet   enemySet
 	powerUpSet powerUpSet
+	level      level
 }
 
 func initGame() *game {
@@ -30,5 +31,6 @@ func initGame() *game {
 		player:     initPlayer(200, 300),
 		enemySet:   initEnemySet(),
 		powerUpSet: initPowerUpSet(),
+		level:      initLevel(),
 	}
 }

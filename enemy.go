@@ -19,6 +19,7 @@ package main
 
 import (
 	"image/color"
+	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -150,7 +151,7 @@ func (es *enemySet) draw(screen *ebiten.Image) {
 
 func makeTestEnemy() enemy {
 	return enemy{
-		x: 799, y: 300,
+		x: screenWidth - 1, y: float64(rand.Intn(screenHeight-100) + 50),
 		vx: -5, vy: 0,
 		xSize: 25, ySize: 15,
 		pv: 2,

@@ -34,6 +34,12 @@ type bullet struct {
 	xSize     float64
 	ySize     float64
 	collision bool
+	hullSet   bool
+	cHull     []point
+	xMin      float64
+	yMin      float64
+	xMax      float64
+	yMax      float64
 }
 
 func (b *bullet) update() {
@@ -41,6 +47,12 @@ func (b *bullet) update() {
 	b.vy += b.ay
 	b.x += b.vx
 	b.y += b.vy
+	b.hullSet = false
+	b.cHull = nil
+	b.xMin = b.x - b.xSize/2
+	b.xMax = b.x + b.xSize/2
+	b.yMin = b.y - b.ySize/2
+	b.yMax = b.y + b.ySize/2
 }
 
 func (b bullet) isOut() bool {
@@ -56,28 +68,32 @@ func (b bullet) draw(screen *ebiten.Image, color color.Color) {
 }
 
 func (b *bullet) xmin() float64 {
-	return b.x - b.xSize/2
+	return b.xMin
 }
 
 func (b *bullet) xmax() float64 {
-	return b.x + b.xSize/2
+	return b.xMax
 }
 
 func (b *bullet) ymin() float64 {
-	return b.y - b.ySize/2
+	return b.yMin
 }
 
 func (b *bullet) ymax() float64 {
-	return b.y + b.ySize/2
+	return b.yMax
 }
 
 func (b *bullet) convexHull() []point {
-	return []point{
-		point{b.xmin(), b.ymin()},
-		point{b.xmax(), b.ymin()},
-		point{b.xmax(), b.ymax()},
-		point{b.xmin(), b.ymax()},
+	if !b.hullSet {
+		b.cHull = []point{
+			point{b.xmin(), b.ymin()},
+			point{b.xmax(), b.ymin()},
+			point{b.xmax(), b.ymax()},
+			point{b.xmin(), b.ymax()},
+		}
+		b.hullSet = true
 	}
+	return b.cHull
 }
 
 func (b *bullet) hasCollided() {
