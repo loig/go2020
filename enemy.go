@@ -154,7 +154,7 @@ func makeTestEnemy() enemy {
 		x: screenWidth - 1, y: float64(rand.Intn(screenHeight-100) + 50),
 		vx: -5, vy: 0,
 		xSize: 25, ySize: 15,
-		pv: 2,
+		pv: 1,
 		bulletSequence: []bulletShot{
 			bulletShot{
 				bullets: []bullet{

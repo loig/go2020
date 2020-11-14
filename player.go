@@ -34,7 +34,12 @@ type player struct {
 	ySize           float64
 	bullets         bulletSet
 	lastBullet      int
-	numShot         int
+	currentFire     int
+	numShot         int // for basic shot only
+	shotDelay       int // for big shot only
+	shotWidth       int // for laser shot only
+	laserOn         bool
+	laser           bullet
 	vCap            float64
 	numOptions      int
 	currentPosition int
@@ -65,9 +70,15 @@ const (
 	pAy                  = 1
 	pBulletInterval      = 15
 	pBulletSpeed         = 6
-	pMaxShot             = 5
+	pMaxShot             = 5  // for basic shot only
+	pMinDelay            = 25 // for big shot only
+	pMaxDelay            = 50
+	pShotDelayStep       = 5
+	pMaxShotWidth        = 20 // for laser shot only
+	pMinShotWidth        = 5
+	pShotWidthIncrease   = 5
 	pMaxOption           = 3
-	pDifferentPowerUps   = 3
+	pDifferentPowerUps   = 4
 	pMoveRecorded        = 16
 	pFrameBetweenOptions = 5
 )
@@ -81,6 +92,8 @@ func initPlayer(x, y float64) player {
 		bullets:         initBulletSet(),
 		lastBullet:      pBulletInterval,
 		numShot:         1,
+		shotDelay:       pMaxDelay,
+		shotWidth:       pMinShotWidth,
 		vCap:            pVInit,
 		positionHistory: makePositionHistory(x, y),
 	}
@@ -95,6 +108,9 @@ func (p player) draw(screen *ebiten.Image) {
 	for oPos := 0; oPos < p.numOptions; oPos++ {
 		p.options[oPos].draw(screen)
 	}
+	if p.laserOn {
+		p.laser.draw(screen, color.RGBA{0, 255, 0, 255})
+	}
 	p.bullets.draw(screen, color.RGBA{0, 255, 0, 255})
 	var s string
 	switch p.currentPowerUp {
@@ -105,9 +121,20 @@ func (p player) draw(screen *ebiten.Image) {
 	case 2:
 		s = "2: more shots"
 	case 3:
-		s = "3: more options"
+		s = "3: fire change"
+	case 4:
+		s = "4: more options"
 	}
-	ebitenutil.DebugPrintAt(screen, s, 0, 550)
+	ebitenutil.DebugPrintAt(screen, s, 0, 1030)
+	switch p.currentFire {
+	case 0:
+		s = "0: basic shot"
+	case 1:
+		s = "1: big shot"
+	case 2:
+		s = "2: laser"
+	}
+	ebitenutil.DebugPrintAt(screen, s, 0, 980)
 }
 
 func (p *player) updateBox() {
@@ -145,7 +172,7 @@ func (p *player) convexHull() []point {
 	return p.cHull
 }
 
-func (p player) hasCollided() {
+func (p *player) hasCollided() {
 
 }
 
@@ -164,10 +191,23 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 	}
 	for _, e := range es {
 		collide(p, e)
-		for _, b := range p.bullets.bullets {
-			collide(b, e)
+	}
+	if p.laserOn {
+		for _, e := range es {
+			collide(&(p.laser), e)
 		}
 	}
+	for _, b := range p.bullets.bullets {
+		for _, e := range es {
+			collide(b, e)
+		}
+		if b.isBig {
+			for _, bb := range bs {
+				collideNoHarm(b, bb)
+			}
+		}
+	}
+
 	for _, pu := range ps {
 		if collide(p, pu) {
 			p.getPowerUp()
@@ -178,9 +218,10 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 func (p *player) update() {
 	p.hullSet = false
 	p.cHull = nil
+	p.laserOn = false
 	p.move()
-	p.fire()
 	p.managePowerUp()
+	p.fire()
 	p.moveOptions()
 	p.bullets.update()
 	p.updateBox()
@@ -265,14 +306,38 @@ func (p *player) moveOptions() {
 }
 
 func (p *player) fire() {
+	if p.currentFire == 2 && ebiten.IsKeyPressed(ebiten.KeySpace) {
+		p.laserOn = true
+		xLen := screenWidth - p.x
+		x := xLen/2 + p.x
+		p.laser = bullet{
+			x: x, y: p.y,
+			xSize: xLen, ySize: float64(p.shotWidth),
+			xMin: p.x, xMax: p.x + xLen,
+			yMin: p.y - float64(p.shotWidth)/2, yMax: p.y + float64(p.shotWidth)/2,
+		}
+		return
+	}
 	p.lastBullet++
-	if p.lastBullet >= pBulletInterval &&
+	bulletInterval := pBulletInterval
+	if p.currentFire == 1 {
+		bulletInterval = p.shotDelay
+	}
+	if p.lastBullet >= bulletInterval &&
 		ebiten.IsKeyPressed(ebiten.KeySpace) {
 		p.lastBullet = 0
-		for bNum := 0; bNum < p.numShot; bNum++ {
-			p.bullets.addBullet(bullet{
+		if p.currentFire == 0 {
+			for bNum := 0; bNum < p.numShot; bNum++ {
+				p.bullets.addBullet(bullet{
+					x: p.x, y: p.y,
+					vx: pBulletSpeed, vy: pOtherBulletSpeed[bNum],
+					ax: 0, ay: 0,
+				})
+			}
+		} else {
+			p.bullets.addBigBullet(bullet{
 				x: p.x, y: p.y,
-				vx: pBulletSpeed, vy: pOtherBulletSpeed[bNum],
+				vx: pBulletSpeed, vy: 0,
 				ax: 0, ay: 0,
 			})
 		}
@@ -306,8 +371,17 @@ func (p player) isAppliablePowerUp() bool {
 	case 1:
 		return p.vCap < pMaxVCap
 	case 2:
-		return p.numShot < pMaxShot
+		switch p.currentFire {
+		case 0: // normal shot
+			return p.numShot < pMaxShot
+		case 1: // big shot
+			return p.shotDelay > pMinDelay
+		case 2: // laser
+			return p.shotWidth < pMaxShotWidth
+		}
 	case 3:
+		return true
+	case 4:
 		return p.numOptions < pMaxOption
 	}
 	return false
@@ -318,8 +392,18 @@ func (p *player) applyPowerUp() {
 	case 1:
 		p.vCap += pVStep
 	case 2:
-		p.numShot++
+		switch p.currentFire {
+		case 0: // normal shot
+			p.numShot++
+		case 1: // big shot
+			p.shotDelay -= pShotDelayStep
+		case 2: // laser
+			p.shotWidth += pShotWidthIncrease
+		}
 	case 3:
+		p.currentFire++
+		p.currentFire = p.currentFire % 3
+	case 4:
 		p.numOptions++
 	}
 	p.currentPowerUp = 0

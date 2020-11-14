@@ -31,7 +31,7 @@ type point struct {
 	y float64
 }
 
-func collide(o collidableObject, oo collidableObject) bool {
+func collideNoHarm(o collidableObject, oo collidableObject) bool {
 	collision := !(o.xmin() > oo.xmax() ||
 		o.xmax() < oo.xmin() ||
 		o.ymin() > oo.ymax() ||
@@ -41,8 +41,15 @@ func collide(o collidableObject, oo collidableObject) bool {
 	}
 	collision = intersectHulls(o, oo) && intersectHulls(oo, o)
 	if collision {
-		o.hasCollided()
 		oo.hasCollided()
+	}
+	return collision
+}
+
+func collide(o collidableObject, oo collidableObject) bool {
+	collision := collideNoHarm(o, oo)
+	if collision {
+		o.hasCollided()
 	}
 	return collision
 }

@@ -40,6 +40,7 @@ type bullet struct {
 	yMin      float64
 	xMax      float64
 	yMax      float64
+	isBig     bool
 }
 
 func (b *bullet) update() {
@@ -85,11 +86,19 @@ func (b *bullet) ymax() float64 {
 
 func (b *bullet) convexHull() []point {
 	if !b.hullSet {
-		b.cHull = []point{
-			point{b.xmin(), b.ymin()},
-			point{b.xmax(), b.ymin()},
-			point{b.xmax(), b.ymax()},
-			point{b.xmin(), b.ymax()},
+		if b.isBig {
+			b.cHull = []point{
+				point{b.xmin(), b.ymin()},
+				point{b.xmin(), b.ymax()},
+				point{b.xmax(), (b.ymax() + b.ymin()) / 2},
+			}
+		} else {
+			b.cHull = []point{
+				point{b.xmin(), b.ymin()},
+				point{b.xmax(), b.ymin()},
+				point{b.xmax(), b.ymax()},
+				point{b.xmin(), b.ymax()},
+			}
 		}
 		b.hullSet = true
 	}
@@ -116,6 +125,15 @@ func (bs *bulletSet) addBullet(b bullet) {
 	bb := b
 	bb.xSize = 4
 	bb.ySize = 4
+	bs.numBullets++
+	bs.bullets = append(bs.bullets, &bb)
+}
+
+func (bs *bulletSet) addBigBullet(b bullet) {
+	bb := b
+	bb.xSize = 20
+	bb.ySize = 60
+	bb.isBig = true
 	bs.numBullets++
 	bs.bullets = append(bs.bullets, &bb)
 }
