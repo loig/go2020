@@ -338,7 +338,17 @@ func (p *player) move() {
 		p.vy = -p.vCap
 	}
 	p.x += p.vx
+	if p.x < 0+p.xSize/2 {
+		p.x = 0 + p.xSize/2
+	} else if p.x > screenWidth-p.xSize/2 {
+		p.x = screenWidth - p.xSize/2
+	}
 	p.y += p.vy
+	if p.y < 0+p.ySize/2 {
+		p.y = 0 + p.ySize/2
+	} else if p.y > screenHeight-p.ySize/2 {
+		p.y = screenHeight - p.ySize/2
+	}
 	if hasMovedX || hasMovedY {
 		p.recordMove()
 	}
@@ -493,7 +503,7 @@ func (p *player) releasePowerUps(ps *powerUpSet) {
 		xShift := rand.Intn(3) - 1
 		yShift := rand.Intn(3) - 1
 		ps.addPowerUp(powerUp{
-			x: p.x, y: p.y,
+			x: p.x + float64(10*i), y: p.y + float64(10*i),
 			vx: -firstPlanPxPerFrame + float64(xShift), vy: float64(yShift),
 		})
 	}
