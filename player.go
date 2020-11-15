@@ -57,6 +57,8 @@ type player struct {
 	collision        bool
 	invincibleFrames int
 	points           int
+	lastLiveWon      int
+	lives            int
 }
 
 type playerPosition struct {
@@ -88,6 +90,8 @@ const (
 	pMoveRecorded        = 16
 	pFrameBetweenOptions = 5
 	pInvicibleDuration   = 120
+	pPointsForLive       = 30
+	pPointsPerPowerUp    = 5
 )
 
 var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}
@@ -103,6 +107,7 @@ func initPlayer() player {
 		shotWidth:       pMinShotWidth,
 		vCap:            pVInit,
 		positionHistory: makePositionHistory(pInitX, pInitY),
+		lives:           3,
 	}
 }
 
@@ -167,7 +172,7 @@ func (p player) drawUI(screen *ebiten.Image) {
 		s = "2: laser"
 	}
 	ebitenutil.DebugPrintAt(screen, s, 0, 980)
-	s = fmt.Sprint("points ", p.points)
+	s = fmt.Sprint("points: ", p.points, " --- lives: ", p.lives)
 	ebitenutil.DebugPrintAt(screen, s, 0, 1050)
 }
 
@@ -252,6 +257,7 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 
 func (p *player) update() {
 	if p.collision {
+		p.lives--
 		p.reset()
 	} else {
 		if p.invincibleFrames > 0 {
@@ -267,6 +273,7 @@ func (p *player) update() {
 	p.moveOptions()
 	p.bullets.update()
 	p.updateBox()
+	p.checkLiveWin()
 }
 
 func (p *player) move() {
@@ -394,6 +401,7 @@ func (p *player) fire() {
 }
 
 func (p *player) getPowerUp() {
+	p.points += pPointsPerPowerUp
 	if !p.allPowerUp {
 		start := p.currentPowerUp
 		p.currentPowerUp = (p.currentPowerUp + 1) % (pDifferentPowerUps + 1)
@@ -465,4 +473,11 @@ func makePositionHistory(x, y float64) [pMoveRecorded]playerPosition {
 		moves[i] = playerPosition{x: x, y: y}
 	}
 	return moves
+}
+
+func (p *player) checkLiveWin() {
+	if p.points >= p.lastLiveWon+pPointsForLive {
+		p.lives++
+		p.lastLiveWon += pPointsForLive
+	}
 }
