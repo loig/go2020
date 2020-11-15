@@ -26,33 +26,35 @@ import (
 )
 
 type player struct {
-	x               float64
-	y               float64
-	vx              float64
-	vy              float64
-	xSize           float64
-	ySize           float64
-	bullets         bulletSet
-	lastBullet      int
-	currentFire     int
-	numShot         int // for basic shot only
-	shotDelay       int // for big shot only
-	shotWidth       int // for laser shot only
-	laserOn         bool
-	laser           bullet
-	vCap            float64
-	numOptions      int
-	currentPosition int
-	positionHistory [pMoveRecorded]playerPosition
-	options         [pMaxOption]option
-	currentPowerUp  int
-	allPowerUp      bool
-	hullSet         bool
-	cHull           []point
-	xMin            float64
-	yMin            float64
-	xMax            float64
-	yMax            float64
+	x                float64
+	y                float64
+	vx               float64
+	vy               float64
+	xSize            float64
+	ySize            float64
+	bullets          bulletSet
+	lastBullet       int
+	currentFire      int
+	numShot          int // for basic shot only
+	shotDelay        int // for big shot only
+	shotWidth        int // for laser shot only
+	laserOn          bool
+	laser            bullet
+	vCap             float64
+	numOptions       int
+	currentPosition  int
+	positionHistory  [pMoveRecorded]playerPosition
+	options          [pMaxOption]option
+	currentPowerUp   int
+	allPowerUp       bool
+	hullSet          bool
+	cHull            []point
+	xMin             float64
+	yMin             float64
+	xMax             float64
+	yMax             float64
+	collision        bool
+	invincibleFrames int
 }
 
 type playerPosition struct {
@@ -61,6 +63,8 @@ type playerPosition struct {
 }
 
 const (
+	pInitX               = 100
+	pInitY               = screenHeight / 2
 	pWidth               = 45
 	pHeight              = 15
 	pMaxVCap             = 10
@@ -81,13 +85,14 @@ const (
 	pDifferentPowerUps   = 4
 	pMoveRecorded        = 16
 	pFrameBetweenOptions = 5
+	pInvicibleDuration   = 120
 )
 
 var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}
 
-func initPlayer(x, y float64) player {
+func initPlayer() player {
 	return player{
-		x: x, y: y,
+		x: pInitX, y: pInitY,
 		xSize: pWidth, ySize: pHeight,
 		bullets:         initBulletSet(),
 		lastBullet:      pBulletInterval,
@@ -95,15 +100,37 @@ func initPlayer(x, y float64) player {
 		shotDelay:       pMaxDelay,
 		shotWidth:       pMinShotWidth,
 		vCap:            pVInit,
-		positionHistory: makePositionHistory(x, y),
+		positionHistory: makePositionHistory(pInitX, pInitY),
 	}
+}
+
+func (p *player) reset() {
+	p.x = pInitX
+	p.y = pInitY
+	p.collision = false
+	p.invincibleFrames = pInvicibleDuration
+	p.lastBullet = 0
+	p.currentFire = 0
+	p.numShot = 1
+	p.shotDelay = pMaxDelay
+	p.shotWidth = pMinShotWidth
+	p.vCap = pVInit
+	p.numOptions = 0
+	p.currentPosition = 0
+	p.positionHistory = makePositionHistory(pInitX, pInitY)
+	p.currentPowerUp = 0
+	p.allPowerUp = false
 }
 
 func (p player) draw(screen *ebiten.Image) {
 	cHull := p.convexHull()
+	hullColor := color.RGBA{0, 255, 0, 255}
+	if p.invincibleFrames > 0 {
+		hullColor = color.RGBA{0, 255, 255, 255}
+	}
 	for i := 0; i < len(cHull); i++ {
 		ii := (i + 1) % len(cHull)
-		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{0, 255, 0, 255})
+		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
 	}
 	for oPos := 0; oPos < p.numOptions; oPos++ {
 		p.options[oPos].draw(screen)
@@ -173,7 +200,7 @@ func (p *player) convexHull() []point {
 }
 
 func (p *player) hasCollided() {
-
+	p.collision = true
 }
 
 func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
@@ -186,11 +213,13 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 			collide(o, e)
 		}
 	}
-	for _, b := range bs {
-		collide(p, b)
-	}
-	for _, e := range es {
-		collide(p, e)
+	if p.invincibleFrames <= 0 {
+		for _, b := range bs {
+			collide(p, b)
+		}
+		for _, e := range es {
+			collide(p, e)
+		}
 	}
 	if p.laserOn {
 		for _, e := range es {
@@ -207,15 +236,21 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 			}
 		}
 	}
-
 	for _, pu := range ps {
-		if collide(p, pu) {
+		if collideNoHarm(p, pu) {
 			p.getPowerUp()
 		}
 	}
 }
 
 func (p *player) update() {
+	if p.collision {
+		p.reset()
+	} else {
+		if p.invincibleFrames > 0 {
+			p.invincibleFrames--
+		}
+	}
 	p.hullSet = false
 	p.cHull = nil
 	p.laserOn = false

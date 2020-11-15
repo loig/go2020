@@ -93,14 +93,18 @@ func (e enemy) isOut() bool {
 }
 
 func (e *enemy) update(bs *bulletSet) {
-	e.vx += e.accelerationSequence[e.nextAcceleration].ax
-	e.vy += e.accelerationSequence[e.nextAcceleration].ay
+	if e.accelerationSequence != nil {
+		e.vx += e.accelerationSequence[e.nextAcceleration].ax
+		e.vy += e.accelerationSequence[e.nextAcceleration].ay
+	}
 	e.x += e.vx
 	e.y += e.vy
-	e.framesSinceLastAcceleration++
-	if e.framesSinceLastAcceleration >= e.accelerationSequence[e.nextAcceleration].interval {
-		e.framesSinceLastAcceleration = 0
-		e.nextAcceleration = (e.nextAcceleration + 1) % len(e.accelerationSequence)
+	if e.accelerationSequence != nil {
+		e.framesSinceLastAcceleration++
+		if e.framesSinceLastAcceleration >= e.accelerationSequence[e.nextAcceleration].interval {
+			e.framesSinceLastAcceleration = 0
+			e.nextAcceleration = (e.nextAcceleration + 1) % len(e.accelerationSequence)
+		}
 	}
 	e.framesSinceLastBullet++
 	if e.framesSinceLastBullet >= e.bulletSequence[e.nextBullet].interval {
@@ -162,20 +166,24 @@ func makeTestEnemy() enemy {
 				},
 				interval: 30,
 			},
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: -10, vy: 5, ax: 0, ay: 0},
-					bullet{vx: -10, vy: -5, ax: 0, ay: 0},
+			/*
+				bulletShot{
+					bullets: []bullet{
+						bullet{vx: -10, vy: 5, ax: 0, ay: 0},
+						bullet{vx: -10, vy: -5, ax: 0, ay: 0},
+					},
+					interval: 5,
 				},
-				interval: 5,
+			*/
+		},
+		/*
+			accelerationSequence: []acceleration{
+				acceleration{ax: 0, ay: 1, interval: 5},
+				acceleration{ax: 0, ay: 0, interval: 10},
+				acceleration{ax: 0, ay: -1, interval: 10},
+				acceleration{ax: 0, ay: 0, interval: 10},
+				acceleration{ax: 0, ay: 1, interval: 5},
 			},
-		},
-		accelerationSequence: []acceleration{
-			acceleration{ax: 0, ay: 1, interval: 5},
-			acceleration{ax: 0, ay: 0, interval: 10},
-			acceleration{ax: 0, ay: -1, interval: 10},
-			acceleration{ax: 0, ay: 0, interval: 10},
-			acceleration{ax: 0, ay: 1, interval: 5},
-		},
+		*/
 	}
 }

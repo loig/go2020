@@ -28,7 +28,7 @@ type game struct {
 func initGame() *game {
 	return &game{
 		bulletSet:  initBulletSet(),
-		player:     initPlayer(200, 300),
+		player:     initPlayer(),
 		enemySet:   initEnemySet(),
 		powerUpSet: initPowerUpSet(),
 		level:      initLevel(),

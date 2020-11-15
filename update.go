@@ -19,7 +19,7 @@ package main
 
 func (g *game) Update() error {
 
-	if g.enemySet.numEnemies < 20 {
+	if g.enemySet.numEnemies < 1 {
 		g.enemySet.addTestEnemy()
 	}
 
