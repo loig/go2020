@@ -20,6 +20,7 @@ package main
 import (
 	"fmt"
 	"image/color"
+	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -47,6 +48,7 @@ type player struct {
 	positionHistory  [pMoveRecorded]playerPosition
 	options          [pMaxOption]option
 	currentPowerUp   int
+	usedPowerUp      int
 	allPowerUp       bool
 	hullSet          bool
 	cHull            []point
@@ -127,6 +129,7 @@ func (p *player) reset() {
 	p.positionHistory = makePositionHistory(pInitX, pInitY)
 	p.currentPowerUp = 0
 	p.allPowerUp = false
+	p.usedPowerUp = 0
 }
 
 func (p player) draw(screen *ebiten.Image) {
@@ -255,9 +258,10 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 	}
 }
 
-func (p *player) update() {
+func (p *player) update(ps *powerUpSet) {
 	if p.collision {
 		p.lives--
+		p.releasePowerUps(ps)
 		p.reset()
 	} else {
 		if p.invincibleFrames > 0 {
@@ -456,6 +460,7 @@ func (p *player) applyPowerUp() {
 	case 4:
 		p.numOptions++
 	}
+	p.usedPowerUp++
 	p.currentPowerUp = 0
 }
 
@@ -479,5 +484,17 @@ func (p *player) checkLiveWin() {
 	if p.points >= p.lastLiveWon+pPointsForLive {
 		p.lives++
 		p.lastLiveWon += pPointsForLive
+	}
+}
+
+func (p *player) releasePowerUps(ps *powerUpSet) {
+	numToLaunch := p.usedPowerUp / 2
+	for i := 0; i < numToLaunch; i++ {
+		xShift := rand.Intn(3) - 1
+		yShift := rand.Intn(3) - 1
+		ps.addPowerUp(powerUp{
+			x: p.x, y: p.y,
+			vx: -firstPlanPxPerFrame + float64(xShift), vy: float64(yShift),
+		})
 	}
 }

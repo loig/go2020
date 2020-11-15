@@ -32,7 +32,7 @@ func (g *game) Update() error {
 	g.bulletSet.update()
 	g.enemySet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
 	g.powerUpSet.update()
-	g.player.update()
+	g.player.update(&(g.powerUpSet))
 	g.level.update()
 	g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies, g.powerUpSet.powerUps)
 
