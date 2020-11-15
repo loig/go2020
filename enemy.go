@@ -41,6 +41,7 @@ type enemy struct {
 	pv                          int
 	powerUpProba                int
 	deathBlow                   []bullet
+	points                      int
 }
 
 type bulletShot struct {
@@ -120,7 +121,8 @@ func (e *enemy) update(bs *bulletSet) {
 	}
 }
 
-func (e enemy) deathAction(bs *bulletSet, ps *powerUpSet) {
+func (e enemy) deathAction(bs *bulletSet, ps *powerUpSet, points *int) {
+	*points += e.points
 	// gen power up
 	if rand.Intn(e.powerUpProba) == 0 {
 		ps.addPowerUp(powerUp{
@@ -149,12 +151,12 @@ func initEnemySet() enemySet {
 	}
 }
 
-func (es *enemySet) update(bs *bulletSet, ps *powerUpSet) {
+func (es *enemySet) update(bs *bulletSet, ps *powerUpSet, points *int) {
 	for pos := 0; pos < es.numEnemies; pos++ {
 		es.enemies[pos].update(bs)
 		if es.enemies[pos].isOut() {
 			if es.enemies[pos].pv <= 0 {
-				es.enemies[pos].deathAction(bs, ps)
+				es.enemies[pos].deathAction(bs, ps, points)
 			}
 			es.numEnemies--
 			es.enemies[pos] = es.enemies[es.numEnemies]
@@ -177,7 +179,8 @@ func (es *enemySet) addTestEnemy() {
 
 func makeTestEnemy() enemy {
 	return enemy{
-		x: screenWidth - 1, y: float64(rand.Intn(screenHeight-100) + 50),
+		points: 10,
+		x:      screenWidth - 1, y: float64(rand.Intn(screenHeight-100) + 50),
 		vx: -5, vy: 0,
 		xSize: 25, ySize: 15,
 		pv:           1,

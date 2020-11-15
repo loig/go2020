@@ -18,6 +18,7 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -55,6 +56,7 @@ type player struct {
 	yMax             float64
 	collision        bool
 	invincibleFrames int
+	points           int
 }
 
 type playerPosition struct {
@@ -139,6 +141,9 @@ func (p player) draw(screen *ebiten.Image) {
 		p.laser.draw(screen, color.RGBA{0, 255, 0, 255})
 	}
 	p.bullets.draw(screen, color.RGBA{0, 255, 0, 255})
+}
+
+func (p player) drawUI(screen *ebiten.Image) {
 	var s string
 	switch p.currentPowerUp {
 	case 0:
@@ -162,6 +167,8 @@ func (p player) draw(screen *ebiten.Image) {
 		s = "2: laser"
 	}
 	ebitenutil.DebugPrintAt(screen, s, 0, 980)
+	s = fmt.Sprint("points ", p.points)
+	ebitenutil.DebugPrintAt(screen, s, 0, 1050)
 }
 
 func (p *player) updateBox() {
