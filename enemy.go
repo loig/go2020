@@ -39,6 +39,8 @@ type enemy struct {
 	xSize                       float64
 	ySize                       float64
 	pv                          int
+	powerUpProba                int
+	deathBlow                   []bullet
 }
 
 type bulletShot struct {
@@ -118,6 +120,23 @@ func (e *enemy) update(bs *bulletSet) {
 	}
 }
 
+func (e enemy) deathAction(bs *bulletSet, ps *powerUpSet) {
+	// gen power up
+	if rand.Intn(e.powerUpProba) == 0 {
+		ps.addPowerUp(powerUp{
+			x: e.x, y: e.y,
+			vx: -firstPlanPxPerFrame, vy: 0,
+		})
+	}
+	// gen bullets
+	for _, b := range e.deathBlow {
+		b.x = e.x
+		b.y = e.y
+		bs.addBullet(b)
+	}
+	// gen enemies
+}
+
 type enemySet struct {
 	numEnemies int
 	enemies    []*enemy
@@ -130,16 +149,13 @@ func initEnemySet() enemySet {
 	}
 }
 
-func (es *enemySet) addTestEnemy() {
-	es.numEnemies++
-	e := makeTestEnemy()
-	es.enemies = append(es.enemies, &e)
-}
-
-func (es *enemySet) update(bs *bulletSet) {
+func (es *enemySet) update(bs *bulletSet, ps *powerUpSet) {
 	for pos := 0; pos < es.numEnemies; pos++ {
 		es.enemies[pos].update(bs)
 		if es.enemies[pos].isOut() {
+			if es.enemies[pos].pv <= 0 {
+				es.enemies[pos].deathAction(bs, ps)
+			}
 			es.numEnemies--
 			es.enemies[pos] = es.enemies[es.numEnemies]
 			es.enemies = es.enemies[:es.numEnemies]
@@ -153,12 +169,19 @@ func (es *enemySet) draw(screen *ebiten.Image) {
 	}
 }
 
+func (es *enemySet) addTestEnemy() {
+	es.numEnemies++
+	e := makeTestEnemy()
+	es.enemies = append(es.enemies, &e)
+}
+
 func makeTestEnemy() enemy {
 	return enemy{
 		x: screenWidth - 1, y: float64(rand.Intn(screenHeight-100) + 50),
 		vx: -5, vy: 0,
 		xSize: 25, ySize: 15,
-		pv: 1,
+		pv:           1,
+		powerUpProba: 2,
 		bulletSequence: []bulletShot{
 			bulletShot{
 				bullets: []bullet{
@@ -185,5 +208,15 @@ func makeTestEnemy() enemy {
 				acceleration{ax: 0, ay: 1, interval: 5},
 			},
 		*/
+		deathBlow: []bullet{
+			bullet{vx: -10},
+			bullet{vx: 10},
+			bullet{vy: -10},
+			bullet{vy: 10},
+			bullet{vx: 7, vy: 7},
+			bullet{vx: 7, vy: -7},
+			bullet{vx: -7, vy: 7},
+			bullet{vx: -7, vy: -7},
+		},
 	}
 }

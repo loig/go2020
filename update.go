@@ -30,7 +30,7 @@ func (g *game) Update() error {
 	}
 
 	g.bulletSet.update()
-	g.enemySet.update(&(g.bulletSet))
+	g.enemySet.update(&(g.bulletSet), &(g.powerUpSet))
 	g.powerUpSet.update()
 	g.player.update()
 	g.level.update()
