@@ -189,6 +189,10 @@ func (es *enemySet) addEnemy(enemyType int, x, y float64) {
 		e = makeStaticFiringEnemy(x, y)
 	case staticRotatingFireEnemy:
 		e = makeStaticRotatingFireEnemy(x, y)
+	case staticFiringUpEnemy:
+		e = makeStaticFiringUpEnemy(x, y)
+	case staticFiringDownEnemy:
+		e = makeStaticFiringDownEnemy(x, y)
 	}
 	es.enemies = append(es.enemies, &e)
 }

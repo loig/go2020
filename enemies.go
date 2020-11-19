@@ -25,6 +25,8 @@ const (
 	staticExplodingEnemy
 	staticFiringEnemy
 	staticRotatingFireEnemy
+	staticFiringDownEnemy
+	staticFiringUpEnemy
 )
 
 func makeStaticEnemy(x, y float64) enemy {
@@ -94,6 +96,58 @@ func makeStaticFiringEnemy(x, y float64) enemy {
 					bullet{vx: -10, vy: 0, ax: 0, ay: 0},
 				},
 				interval: 50,
+			},
+		},
+	}
+}
+
+func makeStaticFiringUpEnemy(x, y float64) enemy {
+	var xSize float64 = 42
+	var ySize float64 = 42
+	return enemy{
+		x: x, y: y,
+		vx: -firstPlanPxPerFrame, vy: 0,
+		xSize: xSize, ySize: ySize,
+		pv:           1,
+		powerUpProba: 10,
+		hullAt00: []point{
+			point{-xSize / 2, -ySize / 2},
+			point{-xSize / 2, ySize / 2},
+			point{xSize / 2, ySize / 2},
+			point{xSize / 2, -ySize / 2},
+		},
+		bulletSequence: []bulletShot{
+			bulletShot{
+				bullets: []bullet{
+					bullet{vx: -firstPlanPxPerFrame, vy: -5, ax: 0, ay: 0},
+				},
+				interval: 70,
+			},
+		},
+	}
+}
+
+func makeStaticFiringDownEnemy(x, y float64) enemy {
+	var xSize float64 = 42
+	var ySize float64 = 42
+	return enemy{
+		x: x, y: y,
+		vx: -firstPlanPxPerFrame, vy: 0,
+		xSize: xSize, ySize: ySize,
+		pv:           1,
+		powerUpProba: 10,
+		hullAt00: []point{
+			point{-xSize / 2, -ySize / 2},
+			point{-xSize / 2, ySize / 2},
+			point{xSize / 2, ySize / 2},
+			point{xSize / 2, -ySize / 2},
+		},
+		bulletSequence: []bulletShot{
+			bulletShot{
+				bullets: []bullet{
+					bullet{vx: -firstPlanPxPerFrame, vy: 5, ax: 0, ay: 0},
+				},
+				interval: 70,
 			},
 		},
 	}

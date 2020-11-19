@@ -102,6 +102,13 @@ func initLevel() level {
 			},
 			frame: 100,
 		},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: staticFiringDownEnemy, y: float64(5)},
+				enemySpawn{enemyType: staticFiringUpEnemy, y: float64(screenHeight - 5)},
+			},
+			frame: 350,
+		},
 	}
 	return l
 }
