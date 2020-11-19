@@ -42,6 +42,7 @@ type enemy struct {
 	powerUpProba                int
 	deathBlow                   []bullet
 	points                      int
+	hullAt00                    []point
 }
 
 type bulletShot struct {
@@ -80,11 +81,12 @@ func (e *enemy) ymax() float64 {
 }
 
 func (e *enemy) convexHull() []point {
-	return []point{
-		point{e.x - e.xSize/2, e.y + e.ySize/2},
-		point{e.x + e.xSize/2, e.y + e.ySize/2},
-		point{e.x + e.xSize/2, e.y - e.ySize/2},
+	res := make([]point, len(e.hullAt00))
+	for i, p := range e.hullAt00 {
+		res[i].x = p.x + e.x
+		res[i].y = p.y + e.y
 	}
+	return res
 }
 
 func (e *enemy) hasCollided() {
@@ -109,15 +111,17 @@ func (e *enemy) update(bs *bulletSet) {
 			e.nextAcceleration = (e.nextAcceleration + 1) % len(e.accelerationSequence)
 		}
 	}
-	e.framesSinceLastBullet++
-	if e.framesSinceLastBullet >= e.bulletSequence[e.nextBullet].interval {
-		for _, b := range e.bulletSequence[e.nextBullet].bullets {
-			b.x = e.x
-			b.y = e.y
-			bs.addBullet(b)
+	if e.bulletSequence != nil {
+		e.framesSinceLastBullet++
+		if e.framesSinceLastBullet >= e.bulletSequence[e.nextBullet].interval {
+			for _, b := range e.bulletSequence[e.nextBullet].bullets {
+				b.x = e.x
+				b.y = e.y
+				bs.addBullet(b)
+			}
+			e.framesSinceLastBullet = 0
+			e.nextBullet = (e.nextBullet + 1) % len(e.bulletSequence)
 		}
-		e.framesSinceLastBullet = 0
-		e.nextBullet = (e.nextBullet + 1) % len(e.bulletSequence)
 	}
 }
 
@@ -171,55 +175,20 @@ func (es *enemySet) draw(screen *ebiten.Image) {
 	}
 }
 
-func (es *enemySet) addTestEnemy() {
+func (es *enemySet) addEnemy(enemyType int, x, y float64) {
 	es.numEnemies++
-	e := makeTestEnemy()
-	es.enemies = append(es.enemies, &e)
-}
-
-func makeTestEnemy() enemy {
-	return enemy{
-		points: 10,
-		x:      screenWidth - 1, y: float64(rand.Intn(screenHeight-100) + 50),
-		vx: -5, vy: 0,
-		xSize: 25, ySize: 15,
-		pv:           1,
-		powerUpProba: 2,
-		bulletSequence: []bulletShot{
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: -10, vy: 0, ax: 0, ay: 0},
-				},
-				interval: 30,
-			},
-			/*
-				bulletShot{
-					bullets: []bullet{
-						bullet{vx: -10, vy: 5, ax: 0, ay: 0},
-						bullet{vx: -10, vy: -5, ax: 0, ay: 0},
-					},
-					interval: 5,
-				},
-			*/
-		},
-		/*
-			accelerationSequence: []acceleration{
-				acceleration{ax: 0, ay: 1, interval: 5},
-				acceleration{ax: 0, ay: 0, interval: 10},
-				acceleration{ax: 0, ay: -1, interval: 10},
-				acceleration{ax: 0, ay: 0, interval: 10},
-				acceleration{ax: 0, ay: 1, interval: 5},
-			},
-		*/
-		deathBlow: []bullet{
-			bullet{vx: -10},
-			bullet{vx: 10},
-			bullet{vy: -10},
-			bullet{vy: 10},
-			bullet{vx: 7, vy: 7},
-			bullet{vx: 7, vy: -7},
-			bullet{vx: -7, vy: 7},
-			bullet{vx: -7, vy: -7},
-		},
+	var e enemy
+	switch enemyType {
+	case testEnemy:
+		e = makeTestEnemy()
+	case staticEnemy:
+		e = makeStaticEnemy(x, y)
+	case staticExplodingEnemy:
+		e = makeStaticExplodingEnemy(x, y)
+	case staticFiringEnemy:
+		e = makeStaticFiringEnemy(x, y)
+	case staticRotatingFireEnemy:
+		e = makeStaticRotatingFireEnemy(x, y)
 	}
+	es.enemies = append(es.enemies, &e)
 }

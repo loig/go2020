@@ -28,6 +28,7 @@ import (
 )
 
 type player struct {
+	image            *ebiten.Image
 	x                float64
 	y                float64
 	vx               float64
@@ -71,8 +72,8 @@ type playerPosition struct {
 const (
 	pInitX               = 100
 	pInitY               = screenHeight / 2
-	pWidth               = 45
-	pHeight              = 15
+	pWidth               = 136
+	pHeight              = 84
 	pMaxVCap             = 10
 	pVStep               = 3
 	pVInit               = 4
@@ -99,7 +100,7 @@ const (
 var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}
 
 func initPlayer() player {
-	return player{
+	var p player = player{
 		x: pInitX, y: pInitY,
 		xSize: pWidth, ySize: pHeight,
 		bullets:         initBulletSet(),
@@ -111,6 +112,12 @@ func initPlayer() player {
 		positionHistory: makePositionHistory(pInitX, pInitY),
 		lives:           3,
 	}
+	img, _, err := ebitenutil.NewImageFromFile("assets/Vaisseau.png")
+	if err != nil {
+		panic(err)
+	}
+	p.image = img
+	return p
 }
 
 func (p *player) reset() {
@@ -133,6 +140,12 @@ func (p *player) reset() {
 }
 
 func (p player) draw(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(p.xmin(), p.ymin())
+	screen.DrawImage(
+		p.image,
+		op,
+	)
 	cHull := p.convexHull()
 	hullColor := color.RGBA{0, 255, 0, 255}
 	if p.invincibleFrames > 0 {

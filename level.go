@@ -26,12 +26,24 @@ import (
 )
 
 type level struct {
-	firstPlan    *ebiten.Image
-	secondPlan   *ebiten.Image
-	thirdPlan    *ebiten.Image
-	fourthPlan   *ebiten.Image
-	background   *ebiten.Image
-	currentFrame int
+	firstPlan     *ebiten.Image
+	secondPlan    *ebiten.Image
+	thirdPlan     *ebiten.Image
+	fourthPlan    *ebiten.Image
+	background    *ebiten.Image
+	spawnSequence []spawn
+	currentSpawn  int
+	currentFrame  int
+}
+
+type spawn struct {
+	enemies []enemySpawn
+	frame   int
+}
+
+type enemySpawn struct {
+	enemyType int
+	y         float64
 }
 
 const (
@@ -73,11 +85,37 @@ func initLevel() level {
 		panic(err)
 	}
 	l.background = img
+
+	l.spawnSequence = []spawn{
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 4},
+				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
+			},
+			frame: 20,
+		},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: staticFiringEnemy, y: float64(screenHeight) / 6},
+				enemySpawn{enemyType: staticFiringEnemy, y: float64(3*screenHeight) / 6},
+				enemySpawn{enemyType: staticFiringEnemy, y: float64(5*screenHeight) / 6},
+			},
+			frame: 100,
+		},
+	}
 	return l
 }
 
-func (l *level) update() {
+func (l *level) update(es *enemySet) {
 	l.currentFrame++
+	if l.currentSpawn < len(l.spawnSequence) {
+		if l.spawnSequence[l.currentSpawn].frame == l.currentFrame {
+			for _, e := range l.spawnSequence[l.currentSpawn].enemies {
+				es.addEnemy(e.enemyType, screenWidth-1, e.y)
+			}
+			l.currentSpawn++
+		}
+	}
 }
 
 func (l level) draw(screen *ebiten.Image) {
