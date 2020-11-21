@@ -92,7 +92,34 @@ func initLevel() level {
 				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 4},
 				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
 			},
-			frame: 20,
+			frame: 100,
+		},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 8},
+			},
+			frame: 200,
+		},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 8},
+			},
+			frame: 300,
+		},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 8},
+				enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 8},
+			},
+			frame: 400,
 		},
 		spawn{
 			enemies: []enemySpawn{
@@ -100,14 +127,14 @@ func initLevel() level {
 				enemySpawn{enemyType: staticFiringEnemy, y: float64(3*screenHeight) / 6},
 				enemySpawn{enemyType: staticFiringEnemy, y: float64(5*screenHeight) / 6},
 			},
-			frame: 100,
+			frame: 500,
 		},
 		spawn{
 			enemies: []enemySpawn{
 				enemySpawn{enemyType: staticFiringDownEnemy, y: float64(5)},
 				enemySpawn{enemyType: staticFiringUpEnemy, y: float64(screenHeight - 5)},
 			},
-			frame: 350,
+			frame: 800,
 		},
 	}
 	return l
@@ -122,6 +149,9 @@ func (l *level) update(es *enemySet) {
 			}
 			l.currentSpawn++
 		}
+	} else {
+		l.currentFrame = 0
+		l.currentSpawn = 0
 	}
 }
 

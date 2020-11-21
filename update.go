@@ -19,12 +19,6 @@ package main
 
 func (g *game) Update() error {
 
-	if g.powerUpSet.numPowerUps < 1 {
-		g.powerUpSet.addPowerUp(powerUp{
-			x: screenWidth / 2, y: screenHeight / 2, vx: -3, vy: 0,
-		})
-	}
-
 	g.bulletSet.update()
 	g.enemySet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
 	g.powerUpSet.update()

@@ -17,6 +17,8 @@
 
 package main
 
+import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
+
 type game struct {
 	bulletSet  bulletSet
 	player     player
@@ -26,6 +28,13 @@ type game struct {
 }
 
 func initGame() *game {
+
+	img, _, err := ebitenutil.NewImageFromFile("assets/Tir2.png")
+	if err != nil {
+		panic(err)
+	}
+	enemyBasicBullet = img
+
 	return &game{
 		bulletSet:  initBulletSet(),
 		player:     initPlayer(),

@@ -19,6 +19,7 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"image/color"
 	"math/rand"
 
@@ -29,6 +30,9 @@ import (
 
 type player struct {
 	image            *ebiten.Image
+	fireImage        *ebiten.Image
+	bigFireImage     *ebiten.Image
+	laserImage       *ebiten.Image
 	x                float64
 	y                float64
 	vx               float64
@@ -43,6 +47,7 @@ type player struct {
 	shotWidth        int // for laser shot only
 	laserOn          bool
 	laser            bullet
+	laserLevel       int
 	vCap             float64
 	numOptions       int
 	currentPosition  int
@@ -72,32 +77,39 @@ type playerPosition struct {
 const (
 	pInitX               = 100
 	pInitY               = screenHeight / 2
-	pWidth               = 136
-	pHeight              = 84
+	pWidth               = 100
+	pHeight              = 62
 	pMaxVCap             = 10
-	pVStep               = 3
-	pVInit               = 4
+	pVStep               = 2
+	pVInit               = 6
 	pAx                  = 1
 	pAy                  = 1
 	pBulletInterval      = 15
-	pBulletSpeed         = 6
+	pBulletSpeed         = 12
 	pMaxShot             = 5  // for basic shot only
 	pMinDelay            = 25 // for big shot only
 	pMaxDelay            = 50
 	pShotDelayStep       = 5
-	pMaxShotWidth        = 20 // for laser shot only
-	pMinShotWidth        = 5
-	pShotWidthIncrease   = 5
+	pMaxShotWidth        = 18 // for laser shot only
+	pMinShotWidth        = 6
+	pShotWidthIncrease   = 6
 	pMaxOption           = 3
 	pDifferentPowerUps   = 4
-	pMoveRecorded        = 16
-	pFrameBetweenOptions = 5
+	pMoveRecorded        = 32
+	pFrameBetweenOptions = 10
 	pInvicibleDuration   = 120
 	pPointsForLive       = 30
 	pPointsPerPowerUp    = 5
+	laserImageWidth      = 138
+	laserImageHeight     = 30
+	laserImageOffset     = 30
 )
 
 var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}
+var optionImage *ebiten.Image
+var laserImage1 *ebiten.Image
+var laserImage2 *ebiten.Image
+var laserImage3 *ebiten.Image
 
 func initPlayer() player {
 	var p player = player{
@@ -117,6 +129,37 @@ func initPlayer() player {
 		panic(err)
 	}
 	p.image = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Tir1.png")
+	if err != nil {
+		panic(err)
+	}
+	p.fireImage = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Gros-tir.png")
+	if err != nil {
+		panic(err)
+	}
+	p.bigFireImage = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Option.png")
+	if err != nil {
+		panic(err)
+	}
+	optionImage = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Laser1.png")
+	if err != nil {
+		panic(err)
+	}
+	laserImage1 = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Laser2.png")
+	if err != nil {
+		panic(err)
+	}
+	laserImage2 = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Laser3.png")
+	if err != nil {
+		panic(err)
+	}
+	laserImage3 = img
+	p.laserImage = laserImage1
 	return p
 }
 
@@ -137,6 +180,8 @@ func (p *player) reset() {
 	p.currentPowerUp = 0
 	p.allPowerUp = false
 	p.usedPowerUp = 0
+	p.laserImage = laserImage1
+	p.laserLevel = 0
 }
 
 func (p player) draw(screen *ebiten.Image) {
@@ -159,6 +204,22 @@ func (p player) draw(screen *ebiten.Image) {
 		p.options[oPos].draw(screen)
 	}
 	if p.laserOn {
+		op = &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(p.laser.xmin(), p.laser.y-laserImageHeight/2)
+		screen.DrawImage(
+			p.laserImage,
+			op,
+		)
+		currentMaxX := p.laser.xmin() + laserImageWidth
+		for currentMaxX < screenWidth {
+			op2 := &ebiten.DrawImageOptions{}
+			op2.GeoM.Translate(currentMaxX, p.laser.y-laserImageHeight/2)
+			screen.DrawImage(
+				p.laserImage.SubImage(image.Rect(laserImageOffset, 0, laserImageWidth, laserImageHeight)).(*ebiten.Image),
+				op2,
+			)
+			currentMaxX += laserImageWidth - laserImageOffset
+		}
 		p.laser.draw(screen, color.RGBA{0, 255, 0, 255})
 	}
 	p.bullets.draw(screen, color.RGBA{0, 255, 0, 255})
@@ -392,7 +453,6 @@ func (p *player) fire() {
 			xMin: p.x, xMax: p.x + xLen,
 			yMin: p.y - float64(p.shotWidth)/2, yMax: p.y + float64(p.shotWidth)/2,
 		}
-		return
 	}
 	p.lastBullet++
 	bulletInterval := pBulletInterval
@@ -408,13 +468,15 @@ func (p *player) fire() {
 					x: p.x, y: p.y,
 					vx: pBulletSpeed, vy: pOtherBulletSpeed[bNum],
 					ax: 0, ay: 0,
+					image: p.fireImage,
 				})
 			}
-		} else {
+		} else if p.currentFire == 1 {
 			p.bullets.addBigBullet(bullet{
 				x: p.x, y: p.y,
 				vx: pBulletSpeed, vy: 0,
 				ax: 0, ay: 0,
+				image: p.bigFireImage,
 			})
 		}
 		for oNum := 0; oNum < p.numOptions; oNum++ {
@@ -422,6 +484,7 @@ func (p *player) fire() {
 				x: p.options[oNum].x, y: p.options[oNum].y,
 				vx: pBulletSpeed, vy: 0,
 				ax: 0, ay: 0,
+				image: p.fireImage,
 			})
 		}
 	}
@@ -476,6 +539,15 @@ func (p *player) applyPowerUp() {
 			p.shotDelay -= pShotDelayStep
 		case 2: // laser
 			p.shotWidth += pShotWidthIncrease
+			p.laserLevel++
+			switch p.laserLevel {
+			case 0:
+				p.laserImage = laserImage1
+			case 1:
+				p.laserImage = laserImage2
+			case 2:
+				p.laserImage = laserImage3
+			}
 		}
 	case 3:
 		p.currentFire++

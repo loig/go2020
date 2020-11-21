@@ -25,8 +25,8 @@ import (
 )
 
 const (
-	oSizex = 10
-	oSizey = 10
+	oSizex = 30
+	oSizey = 30
 )
 
 type option struct {
@@ -62,6 +62,12 @@ func (o option) convexHull() []point {
 func (o option) hasCollided() {}
 
 func (o option) draw(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(o.xmin(), o.ymin())
+	screen.DrawImage(
+		optionImage,
+		op,
+	)
 	cHull := o.convexHull()
 	for i := 0; i < len(cHull); i++ {
 		ii := (i + 1) % len(cHull)

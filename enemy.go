@@ -117,6 +117,7 @@ func (e *enemy) update(bs *bulletSet) {
 			for _, b := range e.bulletSequence[e.nextBullet].bullets {
 				b.x = e.x
 				b.y = e.y
+				b.image = enemyBasicBullet
 				bs.addBullet(b)
 			}
 			e.framesSinceLastBullet = 0

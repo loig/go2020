@@ -37,7 +37,7 @@ func makeStaticEnemy(x, y float64) enemy {
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
-		powerUpProba: 10,
+		powerUpProba: 2,
 		hullAt00: []point{
 			point{-xSize / 2, -ySize / 2},
 			point{-xSize / 2, ySize / 2},

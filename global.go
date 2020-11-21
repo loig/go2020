@@ -17,8 +17,13 @@
 
 package main
 
+import "github.com/hajimehoshi/ebiten/v2"
+
 // screen size
 const (
-	screenWidth  = 1912
+	screenWidth  = 2160
 	screenHeight = 1080
 )
+
+// basic bullet
+var enemyBasicBullet *ebiten.Image

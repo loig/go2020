@@ -41,7 +41,12 @@ type bullet struct {
 	xMax      float64
 	yMax      float64
 	isBig     bool
+	image     *ebiten.Image
 }
+
+const (
+	basicBulletSize = 20
+)
 
 func (b *bullet) update() {
 	b.vx += b.ax
@@ -65,6 +70,14 @@ func (b bullet) draw(screen *ebiten.Image, color color.Color) {
 	for i := 0; i < len(cHull); i++ {
 		ii := (i + 1) % len(cHull)
 		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color)
+	}
+	if b.image != nil {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(b.xmin(), b.ymin())
+		screen.DrawImage(
+			b.image,
+			op,
+		)
 	}
 }
 
@@ -123,16 +136,16 @@ func initBulletSet() bulletSet {
 
 func (bs *bulletSet) addBullet(b bullet) {
 	bb := b
-	bb.xSize = 4
-	bb.ySize = 4
+	bb.xSize = basicBulletSize
+	bb.ySize = basicBulletSize
 	bs.numBullets++
 	bs.bullets = append(bs.bullets, &bb)
 }
 
 func (bs *bulletSet) addBigBullet(b bullet) {
 	bb := b
-	bb.xSize = 20
-	bb.ySize = 60
+	bb.xSize = 56
+	bb.ySize = 140
 	bb.isBig = true
 	bs.numBullets++
 	bs.bullets = append(bs.bullets, &bb)
