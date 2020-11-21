@@ -22,23 +22,24 @@ import (
 	_ "image/png"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 type level struct {
-	firstPlan     *ebiten.Image
-	secondPlan    *ebiten.Image
-	thirdPlan     *ebiten.Image
-	fourthPlan    *ebiten.Image
-	background    *ebiten.Image
-	spawnSequence []spawn
-	currentSpawn  int
-	currentFrame  int
+	firstPlan      *ebiten.Image
+	secondPlan     *ebiten.Image
+	thirdPlan      *ebiten.Image
+	fourthPlan     *ebiten.Image
+	background     *ebiten.Image
+	spawnSequence  []spawn
+	currentSpawn   int
+	currentFrame   int
+	lastSpawnFrame int
+	bossBattle     bool
 }
 
 type spawn struct {
-	enemies []enemySpawn
-	frame   int
+	enemies    []enemySpawn
+	frameDelay int
 }
 
 type enemySpawn struct {
@@ -54,104 +55,33 @@ const (
 	planImageWidth       = 3824
 )
 
-func initLevel() level {
-	var l level
-	img, _, err := ebitenutil.NewImageFromFile("assets/Montagnes-1.png")
-	if err != nil {
-		panic(err)
-	}
-	l.firstPlan = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Montagnes-2.png")
-	if err != nil {
-		panic(err)
-	}
-	l.secondPlan = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Montagnes-3.png")
-	if err != nil {
-		panic(err)
-	}
-	l.thirdPlan = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Lune.png")
-	if err != nil {
-		panic(err)
-	}
-	l.fourthPlan = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Etoiles.png")
-	if err != nil {
-		panic(err)
-	}
-	l.background = img
-
-	l.spawnSequence = []spawn{
-		spawn{
-			enemies: []enemySpawn{
-				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 4},
-				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
-			},
-			frame: 100,
-		},
-		spawn{
-			enemies: []enemySpawn{
-				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 8},
-			},
-			frame: 200,
-		},
-		spawn{
-			enemies: []enemySpawn{
-				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 8},
-			},
-			frame: 300,
-		},
-		spawn{
-			enemies: []enemySpawn{
-				enemySpawn{enemyType: staticEnemy, y: float64(screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 8},
-				enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 8},
-			},
-			frame: 400,
-		},
-		spawn{
-			enemies: []enemySpawn{
-				enemySpawn{enemyType: staticFiringEnemy, y: float64(screenHeight) / 6},
-				enemySpawn{enemyType: staticFiringEnemy, y: float64(3*screenHeight) / 6},
-				enemySpawn{enemyType: staticFiringEnemy, y: float64(5*screenHeight) / 6},
-			},
-			frame: 500,
-		},
-		spawn{
-			enemies: []enemySpawn{
-				enemySpawn{enemyType: staticFiringDownEnemy, y: float64(5)},
-				enemySpawn{enemyType: staticFiringUpEnemy, y: float64(screenHeight - 5)},
-			},
-			frame: 800,
-		},
-	}
-	return l
-}
-
-func (l *level) update(es *enemySet) {
-	l.currentFrame++
-	if l.currentSpawn < len(l.spawnSequence) {
-		if l.spawnSequence[l.currentSpawn].frame == l.currentFrame {
-			for _, e := range l.spawnSequence[l.currentSpawn].enemies {
-				es.addEnemy(e.enemyType, screenWidth-1, e.y)
+func (l *level) update(es *enemySet, bs *bossSet) {
+	if !l.bossBattle {
+		l.currentFrame++
+		if l.currentSpawn < len(l.spawnSequence) {
+			if l.lastSpawnFrame+l.spawnSequence[l.currentSpawn].frameDelay == l.currentFrame {
+				for _, e := range l.spawnSequence[l.currentSpawn].enemies {
+					if e.enemyType >= midBoss1 {
+						bs.addBoss(e.enemyType, screenWidth-1, e.y)
+						l.bossBattle = true
+						for ePos := 0; ePos < es.numEnemies; ePos++ {
+							es.enemies[ePos].vx += firstPlanPxPerFrame
+						}
+					} else {
+						es.addEnemy(e.enemyType, screenWidth-1, e.y)
+					}
+				}
+				l.currentSpawn++
+				l.lastSpawnFrame = l.currentFrame
 			}
-			l.currentSpawn++
 		}
 	} else {
-		l.currentFrame = 0
-		l.currentSpawn = 0
+		if bs.numBosses == 0 {
+			l.bossBattle = false
+			for ePos := 0; ePos < es.numEnemies; ePos++ {
+				es.enemies[ePos].vx -= firstPlanPxPerFrame
+			}
+		}
 	}
 }
 

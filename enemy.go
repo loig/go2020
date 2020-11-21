@@ -43,6 +43,7 @@ type enemy struct {
 	deathBlow                   []bullet
 	points                      int
 	hullAt00                    []point
+	image                       *ebiten.Image
 }
 
 type bulletShot struct {
@@ -57,6 +58,14 @@ type acceleration struct {
 }
 
 func (e enemy) draw(screen *ebiten.Image) {
+	if e.image != nil {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(e.xmin(), e.ymin())
+		screen.DrawImage(
+			e.image,
+			op,
+		)
+	}
 	cHull := e.convexHull()
 	for i := 0; i < len(cHull); i++ {
 		ii := (i + 1) % len(cHull)
@@ -139,6 +148,7 @@ func (e enemy) deathAction(bs *bulletSet, ps *powerUpSet, points *int) {
 	for _, b := range e.deathBlow {
 		b.x = e.x
 		b.y = e.y
+		b.image = enemyBasicBullet
 		bs.addBullet(b)
 	}
 	// gen enemies
@@ -180,16 +190,12 @@ func (es *enemySet) addEnemy(enemyType int, x, y float64) {
 	es.numEnemies++
 	var e enemy
 	switch enemyType {
-	case testEnemy:
-		e = makeTestEnemy()
 	case staticEnemy:
 		e = makeStaticEnemy(x, y)
 	case staticExplodingEnemy:
 		e = makeStaticExplodingEnemy(x, y)
 	case staticFiringEnemy:
 		e = makeStaticFiringEnemy(x, y)
-	case staticRotatingFireEnemy:
-		e = makeStaticRotatingFireEnemy(x, y)
 	case staticFiringUpEnemy:
 		e = makeStaticFiringUpEnemy(x, y)
 	case staticFiringDownEnemy:

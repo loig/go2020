@@ -17,45 +17,43 @@
 
 package main
 
-import "math/rand"
-
 const (
-	testEnemy int = iota
-	staticEnemy
+	staticEnemy int = iota
 	staticExplodingEnemy
 	staticFiringEnemy
-	staticRotatingFireEnemy
 	staticFiringDownEnemy
 	staticFiringUpEnemy
+	midBoss1
 )
 
 func makeStaticEnemy(x, y float64) enemy {
-	var xSize float64 = 42
-	var ySize float64 = 42
+	var xSize float64 = 50
+	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
-		powerUpProba: 2,
+		powerUpProba: 8,
 		hullAt00: []point{
 			point{-xSize / 2, -ySize / 2},
 			point{-xSize / 2, ySize / 2},
 			point{xSize / 2, ySize / 2},
 			point{xSize / 2, -ySize / 2},
 		},
+		image: staticEnemyImage,
 	}
 }
 
 func makeStaticExplodingEnemy(x, y float64) enemy {
-	var xSize float64 = 42
-	var ySize float64 = 42
+	var xSize float64 = 50
+	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
-		powerUpProba: 10,
+		powerUpProba: 3,
 		hullAt00: []point{
 			point{-xSize / 2, -ySize / 2},
 			point{-xSize / 2, ySize / 2},
@@ -72,12 +70,13 @@ func makeStaticExplodingEnemy(x, y float64) enemy {
 			bullet{vx: -7, vy: 7},
 			bullet{vx: -7, vy: -7},
 		},
+		image: staticExplodingEnemyImage,
 	}
 }
 
 func makeStaticFiringEnemy(x, y float64) enemy {
-	var xSize float64 = 42
-	var ySize float64 = 42
+	var xSize float64 = 50
+	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
 		vx: -firstPlanPxPerFrame, vy: 0,
@@ -98,12 +97,13 @@ func makeStaticFiringEnemy(x, y float64) enemy {
 				interval: 50,
 			},
 		},
+		image: staticFiringEnemyImage,
 	}
 }
 
 func makeStaticFiringUpEnemy(x, y float64) enemy {
-	var xSize float64 = 42
-	var ySize float64 = 42
+	var xSize float64 = 50
+	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
 		vx: -firstPlanPxPerFrame, vy: 0,
@@ -124,12 +124,13 @@ func makeStaticFiringUpEnemy(x, y float64) enemy {
 				interval: 70,
 			},
 		},
+		image: staticFiringEnemyImage,
 	}
 }
 
 func makeStaticFiringDownEnemy(x, y float64) enemy {
-	var xSize float64 = 42
-	var ySize float64 = 42
+	var xSize float64 = 50
+	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
 		vx: -firstPlanPxPerFrame, vy: 0,
@@ -150,125 +151,6 @@ func makeStaticFiringDownEnemy(x, y float64) enemy {
 				interval: 70,
 			},
 		},
-	}
-}
-
-func makeStaticRotatingFireEnemy(x, y float64) enemy {
-	var xSize float64 = 42
-	var ySize float64 = 42
-	return enemy{
-		x: x, y: y,
-		vx: -firstPlanPxPerFrame, vy: 0,
-		xSize: xSize, ySize: ySize,
-		pv:           1,
-		powerUpProba: 10,
-		hullAt00: []point{
-			point{-xSize / 2, -ySize / 2},
-			point{-xSize / 2, ySize / 2},
-			point{xSize / 2, ySize / 2},
-			point{xSize / 2, -ySize / 2},
-		},
-		bulletSequence: []bulletShot{
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: -10},
-				},
-				interval: 20,
-			},
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: -7, vy: -7},
-				},
-				interval: 20,
-			},
-			bulletShot{
-				bullets: []bullet{
-					bullet{vy: -10},
-				},
-				interval: 20,
-			},
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: 7, vy: -7},
-				},
-				interval: 20,
-			},
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: 10},
-				},
-				interval: 20,
-			},
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: 7, vy: 7},
-				},
-				interval: 20,
-			},
-			bulletShot{
-				bullets: []bullet{
-					bullet{vy: 10},
-				},
-				interval: 20,
-			},
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: -7, vy: 7},
-				},
-				interval: 20,
-			},
-		},
-	}
-}
-
-func makeTestEnemy() enemy {
-	return enemy{
-		points: 10,
-		x:      screenWidth - 1, y: float64(rand.Intn(screenHeight-100) + 50),
-		vx: -5, vy: 0,
-		xSize: 25, ySize: 15,
-		pv:           1,
-		powerUpProba: 2,
-		bulletSequence: []bulletShot{
-			bulletShot{
-				bullets: []bullet{
-					bullet{vx: -10, vy: 0, ax: 0, ay: 0},
-				},
-				interval: 30,
-			},
-			/*
-				bulletShot{
-					bullets: []bullet{
-						bullet{vx: -10, vy: 5, ax: 0, ay: 0},
-						bullet{vx: -10, vy: -5, ax: 0, ay: 0},
-					},
-					interval: 5,
-				},
-			*/
-		},
-		/*
-			accelerationSequence: []acceleration{
-				acceleration{ax: 0, ay: 1, interval: 5},
-				acceleration{ax: 0, ay: 0, interval: 10},
-				acceleration{ax: 0, ay: -1, interval: 10},
-				acceleration{ax: 0, ay: 0, interval: 10},
-				acceleration{ax: 0, ay: 1, interval: 5},
-			},
-		*/
-		deathBlow: []bullet{
-			bullet{vx: -10},
-			bullet{vx: 10},
-			bullet{vy: -10},
-			bullet{vy: 10},
-			bullet{vx: 7, vy: 7},
-			bullet{vx: 7, vy: -7},
-			bullet{vx: -7, vy: 7},
-			bullet{vx: -7, vy: -7},
-		},
-		hullAt00: []point{
-			point{-25 / 2, 15 / 2},
-			point{25 / 2, 15 / 2},
-			point{25 / 2, -15 / 2},
-		},
+		image: staticFiringEnemyImage,
 	}
 }

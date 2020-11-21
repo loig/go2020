@@ -21,10 +21,11 @@ func (g *game) Update() error {
 
 	g.bulletSet.update()
 	g.enemySet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
+	g.bossSet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
 	g.powerUpSet.update()
 	g.player.update(&(g.powerUpSet))
-	g.level.update(&(g.enemySet))
-	g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies, g.powerUpSet.powerUps)
+	g.level.update(&(g.enemySet), &(g.bossSet))
+	g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies, g.bossSet.bosses, g.powerUpSet.powerUps)
 
 	return nil
 }

@@ -23,6 +23,7 @@ type game struct {
 	bulletSet  bulletSet
 	player     player
 	enemySet   enemySet
+	bossSet    bossSet
 	powerUpSet powerUpSet
 	level      level
 }
@@ -34,6 +35,24 @@ func initGame() *game {
 		panic(err)
 	}
 	enemyBasicBullet = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi1.png")
+	if err != nil {
+		panic(err)
+	}
+	staticEnemyImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi2.png")
+	if err != nil {
+		panic(err)
+	}
+	staticFiringEnemyImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi3.png")
+	if err != nil {
+		panic(err)
+	}
+	staticExplodingEnemyImage = img
 
 	return &game{
 		bulletSet:  initBulletSet(),

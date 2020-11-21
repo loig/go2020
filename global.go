@@ -25,5 +25,8 @@ const (
 	screenHeight = 1080
 )
 
-// basic bullet
+// enemy graphics
 var enemyBasicBullet *ebiten.Image
+var staticEnemyImage *ebiten.Image
+var staticFiringEnemyImage *ebiten.Image
+var staticExplodingEnemyImage *ebiten.Image

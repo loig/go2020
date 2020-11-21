@@ -292,7 +292,7 @@ func (p *player) hasCollided() {
 	p.collision = true
 }
 
-func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
+func (p *player) checkCollisions(bs []*bullet, es []*enemy, bbs []*boss, ps []*powerUp) {
 	for oNum := 0; oNum < p.numOptions; oNum++ {
 		o := p.options[oNum]
 		for _, b := range bs {
@@ -300,6 +300,9 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 		}
 		for _, e := range es {
 			collide(o, e)
+		}
+		for _, b := range bbs {
+			collide(o, b)
 		}
 	}
 	if p.invincibleFrames <= 0 {
@@ -309,15 +312,24 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, ps []*powerUp) {
 		for _, e := range es {
 			collide(p, e)
 		}
+		for _, b := range bbs {
+			collide(p, b)
+		}
 	}
 	if p.laserOn {
 		for _, e := range es {
 			collide(&(p.laser), e)
 		}
+		for _, b := range bbs {
+			collide(&(p.laser), b)
+		}
 	}
 	for _, b := range p.bullets.bullets {
 		for _, e := range es {
 			collide(b, e)
+		}
+		for _, bb := range bbs {
+			collide(b, bb)
 		}
 		if b.isBig {
 			for _, bb := range bs {
