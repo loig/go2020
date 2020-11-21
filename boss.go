@@ -18,27 +18,25 @@
 package main
 
 import (
-	"image/color"
-	"log"
-
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 type boss struct {
-	x        float64
-	xMin     float64
-	xMax     float64
-	xSize    float64
-	y        float64
-	yMin     float64
-	yMax     float64
-	ySize    float64
-	hullSet  bool
-	cHull    []point
-	pv       int
-	phase    int
-	bossType int
+	x         float64
+	xMin      float64
+	xMax      float64
+	xSize     float64
+	y         float64
+	yMin      float64
+	yMax      float64
+	ySize     float64
+	hullSet   bool
+	cHull     []point
+	pv        int
+	phase     int
+	phaseLoop int
+	bossType  int
+	frame     int
 }
 
 func (b *boss) updateBox() {
@@ -87,7 +85,7 @@ func (b *boss) update(bs *bulletSet) {
 		b.midBoss1Update(bs)
 	}
 	b.updateBox()
-  b.hullSet = false
+	b.hullSet = false
 }
 
 func (b *boss) draw(screen *ebiten.Image) {
@@ -99,37 +97,6 @@ func (b *boss) draw(screen *ebiten.Image) {
 
 func (b boss) isDead() bool {
 	return b.pv <= 0
-}
-
-func makeMidBoss1(x, y float64) boss {
-	log.Print("Boss 1 ready")
-	return boss{
-		x:        x,
-		xSize:    50,
-		y:        y,
-		ySize:    200,
-		pv:       100,
-		bossType: midBoss1,
-	}
-}
-
-func (b *boss) midBoss1Update(bs *bulletSet) {
-	log.Print("Boss 1 update")
-	if b.phase == 0 {
-		log.Print("Boss 1 move")
-		b.x -= 20
-		b.phase = 1
-	}
-}
-
-func (b *boss) midBoss1Draw(screen *ebiten.Image) {
-	log.Print("Boss 1 draw")
-	cHull := b.convexHull()
-	hullColor := color.RGBA{0, 255, 0, 255}
-	for i := 0; i < len(cHull); i++ {
-		ii := (i + 1) % len(cHull)
-		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
-	}
 }
 
 type bossSet struct {
