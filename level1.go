@@ -59,12 +59,6 @@ func initLevel() level {
 var level1SpawnSequence []spawn = []spawn{
 	spawn{
 		enemies: []enemySpawn{
-			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 2},
-		},
-		frameDelay: 10,
-	},
-	spawn{
-		enemies: []enemySpawn{
 			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
 		},
 		frameDelay: 300,
@@ -428,5 +422,11 @@ var level1SpawnSequence []spawn = []spawn{
 			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 5},
 		},
 		frameDelay: 37,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 2},
+		},
+		frameDelay: 250,
 	},
 }

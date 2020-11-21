@@ -19,7 +19,6 @@ package main
 
 import (
 	"image/color"
-	"log"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -67,7 +66,6 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 		if numBullet < midBoss1NumBulletPhase1 {
 			if b.frame%midBoss1FramePerBulletPhase1 == 0 {
 				angleShift := (float64(b.phaseLoop) - float64(midBoss1NumLoopPhase1)/2) / float64(2*midBoss1NumLoopPhase1)
-				log.Print(angleShift)
 				angle := (math.Pi/2)*float64(numBullet)/float64(midBoss1NumBulletPhase1-1) + 3*math.Pi/4 + angleShift*math.Pi
 				vx := midBoss1BulletSpeedPhase1 * math.Cos(angle)
 				vy := midBoss1BulletSpeedPhase1 * -math.Sin(angle)
