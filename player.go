@@ -86,9 +86,9 @@ const (
 	pBulletInterval      = 15
 	pBulletSpeed         = 12
 	pMaxShot             = 5  // for basic shot only
-	pMinDelay            = 25 // for big shot only
-	pMaxDelay            = 50
-	pShotDelayStep       = 5
+	pMinDelay            = 20 // for big shot only
+	pMaxDelay            = 80
+	pShotDelayStep       = 20
 	pMaxShotWidth        = 18 // for laser shot only
 	pMinShotWidth        = 6
 	pShotWidthIncrease   = 6
@@ -99,8 +99,8 @@ const (
 	pInvicibleDuration   = 120
 	pInitLives           = 3
 	pMaxLives            = 7
-	pPointsForLive       = 5
-	pPointsPerPowerUp    = 5
+	pPointsForLive       = 25000
+	pPointsPerPowerUp    = 500
 	laserImageWidth      = 138
 	laserImageHeight     = 30
 	laserImageOffset     = 30

@@ -25,6 +25,10 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
+const (
+	midBoss1Points = 5000
+)
+
 func makeMidBoss1(x, y float64) boss {
 	return boss{
 		x:        x,
@@ -33,6 +37,7 @@ func makeMidBoss1(x, y float64) boss {
 		ySize:    300,
 		pv:       150,
 		bossType: midBoss1,
+		points:   midBoss1Points,
 	}
 }
 

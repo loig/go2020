@@ -39,6 +39,7 @@ type boss struct {
 	bossType  int
 	frame     int
 	hitable   bool
+	points    int
 }
 
 func (b *boss) updateBox() {
@@ -139,6 +140,7 @@ func (bs *bossSet) update(bbs *bulletSet, ps *powerUpSet, points *int) {
 	for pos := 0; pos < bs.numBosses; pos++ {
 		bs.bosses[pos].update(bbs)
 		if bs.bosses[pos].isDead() {
+			*points += bs.bosses[pos].points
 			bs.numBosses--
 			bs.bosses[pos] = bs.bosses[bs.numBosses]
 			bs.bosses = bs.bosses[:bs.numBosses]

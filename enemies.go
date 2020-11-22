@@ -28,6 +28,11 @@ const (
 	midBoss1
 )
 
+const (
+	staticEnemyPoints          = 250
+	staticExplodingEnemyPoints = 500
+)
+
 func makeStaticEnemy(x, y float64) enemy {
 	var xSize float64 = 50
 	var ySize float64 = 50
@@ -46,7 +51,7 @@ func makeStaticEnemy(x, y float64) enemy {
 			point{xSize / 2, -ySize / 2},
 		},
 		image:  staticEnemyImage,
-		points: 1000,
+		points: staticEnemyPoints,
 	}
 }
 
@@ -75,7 +80,8 @@ func makeStaticExplodingEnemy(x, y float64) enemy {
 			bullet{vx: -7, vy: 7},
 			bullet{vx: -7, vy: -7},
 		},
-		image: staticExplodingEnemyImage,
+		image:  staticExplodingEnemyImage,
+		points: staticExplodingEnemyPoints,
 	}
 }
 

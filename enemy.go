@@ -135,13 +135,17 @@ func (e *enemy) update(bs *bulletSet) {
 	}
 }
 
-func (e enemy) deathAction(bs *bulletSet, ps *powerUpSet, points *int) {
+func (e enemy) deathAction(bs *bulletSet, ps *powerUpSet, points *int, bossBattle bool) {
 	*points += e.points
 	// gen power up
 	if rand.Intn(e.powerUpProba) == 0 {
+		vx := float64(-firstPlanPxPerFrame)
+		if bossBattle {
+			vx = 0
+		}
 		ps.addPowerUp(powerUp{
 			x: e.x, y: e.y,
-			vx: -firstPlanPxPerFrame, vy: 0,
+			vx: vx, vy: 0,
 		})
 	}
 	// gen bullets
@@ -166,12 +170,12 @@ func initEnemySet() enemySet {
 	}
 }
 
-func (es *enemySet) update(bs *bulletSet, ps *powerUpSet, points *int) {
+func (es *enemySet) update(bs *bulletSet, ps *powerUpSet, points *int, bossBattle bool) {
 	for pos := 0; pos < es.numEnemies; pos++ {
 		es.enemies[pos].update(bs)
 		if es.enemies[pos].isOut() {
 			if es.enemies[pos].pv <= 0 {
-				es.enemies[pos].deathAction(bs, ps, points)
+				es.enemies[pos].deathAction(bs, ps, points, bossBattle)
 			}
 			es.numEnemies--
 			es.enemies[pos] = es.enemies[es.numEnemies]

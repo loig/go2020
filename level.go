@@ -55,7 +55,7 @@ const (
 	planImageWidth       = 3824
 )
 
-func (l *level) update(es *enemySet, bs *bossSet) {
+func (l *level) update(es *enemySet, bs *bossSet, ps *powerUpSet) {
 	if !l.bossBattle {
 		l.currentFrame++
 		if l.currentSpawn < len(l.spawnSequence) {
@@ -66,6 +66,9 @@ func (l *level) update(es *enemySet, bs *bossSet) {
 						l.bossBattle = true
 						for ePos := 0; ePos < es.numEnemies; ePos++ {
 							es.enemies[ePos].vx += firstPlanPxPerFrame
+						}
+						for pPos := 0; pPos < ps.numPowerUps; pPos++ {
+							ps.powerUps[pPos].vx += firstPlanPxPerFrame
 						}
 					} else {
 						es.addEnemy(e.enemyType, screenWidth-1, e.y)
@@ -80,6 +83,9 @@ func (l *level) update(es *enemySet, bs *bossSet) {
 			l.bossBattle = false
 			for ePos := 0; ePos < es.numEnemies; ePos++ {
 				es.enemies[ePos].vx -= firstPlanPxPerFrame
+			}
+			for pPos := 0; pPos < ps.numPowerUps; pPos++ {
+				ps.powerUps[pPos].vx -= firstPlanPxPerFrame
 			}
 		}
 	}
