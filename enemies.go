@@ -45,7 +45,8 @@ func makeStaticEnemy(x, y float64) enemy {
 			point{xSize / 2, ySize / 2},
 			point{xSize / 2, -ySize / 2},
 		},
-		image: staticEnemyImage,
+		image:  staticEnemyImage,
+		points: 1000,
 	}
 }
 

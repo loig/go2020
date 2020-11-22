@@ -18,7 +18,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"math/rand"
@@ -98,7 +97,9 @@ const (
 	pMoveRecorded        = 32
 	pFrameBetweenOptions = 10
 	pInvicibleDuration   = 120
-	pPointsForLive       = 30
+	pInitLives           = 3
+	pMaxLives            = 7
+	pPointsForLive       = 5
 	pPointsPerPowerUp    = 5
 	laserImageWidth      = 138
 	laserImageHeight     = 30
@@ -122,7 +123,7 @@ func initPlayer() player {
 		shotWidth:       pMinShotWidth,
 		vCap:            pVInit,
 		positionHistory: makePositionHistory(pInitX, pInitY),
-		lives:           3,
+		lives:           pInitLives,
 	}
 	img, _, err := ebitenutil.NewImageFromFile("assets/Vaisseau.png")
 	if err != nil {
@@ -223,34 +224,6 @@ func (p player) draw(screen *ebiten.Image) {
 		p.laser.draw(screen, color.RGBA{0, 255, 0, 255})
 	}
 	p.bullets.draw(screen, color.RGBA{0, 255, 0, 255})
-}
-
-func (p player) drawUI(screen *ebiten.Image) {
-	var s string
-	switch p.currentPowerUp {
-	case 0:
-		s = "0: no power up"
-	case 1:
-		s = "1: speed up"
-	case 2:
-		s = "2: more shots"
-	case 3:
-		s = "3: fire change"
-	case 4:
-		s = "4: more options"
-	}
-	ebitenutil.DebugPrintAt(screen, s, 0, 1030)
-	switch p.currentFire {
-	case 0:
-		s = "0: basic shot"
-	case 1:
-		s = "1: big shot"
-	case 2:
-		s = "2: laser"
-	}
-	ebitenutil.DebugPrintAt(screen, s, 0, 980)
-	s = fmt.Sprint("points: ", p.points, " --- lives: ", p.lives)
-	ebitenutil.DebugPrintAt(screen, s, 0, 1050)
 }
 
 func (p *player) updateBox() {
@@ -507,17 +480,17 @@ func (p *player) getPowerUp() {
 	if !p.allPowerUp {
 		start := p.currentPowerUp
 		p.currentPowerUp = (p.currentPowerUp + 1) % (pDifferentPowerUps + 1)
-		for !p.isAppliablePowerUp() && p.currentPowerUp != start {
+		for !p.isAppliablePowerUp(p.currentPowerUp) && p.currentPowerUp != start {
 			p.currentPowerUp = (p.currentPowerUp + 1) % (pDifferentPowerUps + 1)
 		}
-		if p.currentPowerUp == start && !p.isAppliablePowerUp() {
+		if p.currentPowerUp == start && !p.isAppliablePowerUp(p.currentPowerUp) {
 			p.allPowerUp = true
 		}
 	}
 }
 
-func (p player) isAppliablePowerUp() bool {
-	switch p.currentPowerUp {
+func (p player) isAppliablePowerUp(powerUp int) bool {
+	switch powerUp {
 	case 0:
 		return false
 	case 1:
@@ -573,7 +546,7 @@ func (p *player) applyPowerUp() {
 
 func (p *player) managePowerUp() {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		if !p.allPowerUp && p.isAppliablePowerUp() {
+		if !p.allPowerUp && p.isAppliablePowerUp(p.currentPowerUp) {
 			p.applyPowerUp()
 		}
 	}
@@ -589,7 +562,9 @@ func makePositionHistory(x, y float64) [pMoveRecorded]playerPosition {
 
 func (p *player) checkLiveWin() {
 	if p.points >= p.lastLiveWon+pPointsForLive {
-		p.lives++
+		if p.lives < pMaxLives {
+			p.lives++
+		}
 		p.lastLiveWon += pPointsForLive
 	}
 }

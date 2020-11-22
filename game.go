@@ -17,7 +17,12 @@
 
 package main
 
-import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
+import (
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/loig/go2020/fonts"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
+)
 
 type game struct {
 	bulletSet  bulletSet
@@ -30,6 +35,7 @@ type game struct {
 
 func initGame() *game {
 
+	// images
 	img, _, err := ebitenutil.NewImageFromFile("assets/Tir2.png")
 	if err != nil {
 		panic(err)
@@ -53,6 +59,58 @@ func initGame() *game {
 		panic(err)
 	}
 	staticExplodingEnemyImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-aucun.png")
+	if err != nil {
+		panic(err)
+	}
+	noBonusImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-1.png")
+	if err != nil {
+		panic(err)
+	}
+	firstBonusImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-2.png")
+	if err != nil {
+		panic(err)
+	}
+	secondBonusImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-3.png")
+	if err != nil {
+		panic(err)
+	}
+	thirdBonusImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-4.png")
+	if err != nil {
+		panic(err)
+	}
+	fourthBonusImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Vie.png")
+	if err != nil {
+		panic(err)
+	}
+	lifeImage = img
+
+	// font
+	tt, err := opentype.Parse(fonts.Roboto)
+	if err != nil {
+		panic(err)
+	}
+
+	const dpi = 72
+	theFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
+		Size:    24,
+		DPI:     dpi,
+		Hinting: font.HintingFull,
+	})
+	if err != nil {
+		panic(err)
+	}
 
 	return &game{
 		bulletSet:  initBulletSet(),

@@ -18,17 +18,8 @@
 package main
 
 import (
-	"image"
-	"math"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-)
-
-const (
-	numFramesForDisplayingBossPV = 100
-	bossPVWidth                  = 1080
-	bossPVHeight                 = 50
 )
 
 type boss struct {
@@ -158,35 +149,6 @@ func (bs *bossSet) update(bbs *bulletSet, ps *powerUpSet, points *int) {
 func (bs *bossSet) draw(screen *ebiten.Image) {
 	for _, b := range bs.bosses {
 		b.draw(screen)
-	}
-}
-
-func (bs *bossSet) drawUI(screen *ebiten.Image) {
-	if bs.numBosses >= 1 {
-		var currentPV int
-		for _, b := range bs.bosses {
-			currentPV += b.pv
-		}
-		pvPortion := float64(currentPV) / float64(bs.totalPvMax)
-		displayUpTo := int(math.Ceil(bossPVWidth * pvPortion))
-		if bs.frameSinceBattleStart < numFramesForDisplayingBossPV {
-			maxPVPortion := float64(bs.frameSinceBattleStart+1) / float64(numFramesForDisplayingBossPV)
-			if maxPVPortion < pvPortion {
-				displayUpTo = int(math.Ceil(bossPVWidth * maxPVPortion))
-			}
-			bs.frameSinceBattleStart++
-		}
-		xTranslate := float64(screenWidth-bossPVWidth) / 2
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(xTranslate, 50)
-		screen.DrawImage(
-			bs.pvBackImage,
-			op,
-		)
-		screen.DrawImage(
-			bs.pvImage.SubImage(image.Rect(0, 0, displayUpTo, bossPVHeight)).(*ebiten.Image),
-			op,
-		)
 	}
 }
 

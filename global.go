@@ -17,7 +17,10 @@
 
 package main
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+	"golang.org/x/image/font"
+)
 
 // screen size
 const (
@@ -30,3 +33,14 @@ var enemyBasicBullet *ebiten.Image
 var staticEnemyImage *ebiten.Image
 var staticFiringEnemyImage *ebiten.Image
 var staticExplodingEnemyImage *ebiten.Image
+
+// ui graphics
+var noBonusImage *ebiten.Image
+var firstBonusImage *ebiten.Image
+var secondBonusImage *ebiten.Image
+var thirdBonusImage *ebiten.Image
+var fourthBonusImage *ebiten.Image
+var lifeImage *ebiten.Image
+
+// font
+var theFont font.Face

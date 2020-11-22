@@ -38,15 +38,15 @@ func makeMidBoss1(x, y float64) boss {
 
 const (
 	midBoss1NumBulletPhase1      = 7
-	midBoss1FramePerBulletPhase1 = 4
+	midBoss1FramePerBulletPhase1 = 6 // 4
 	midBoss1LengthPhase1         = midBoss1NumBulletPhase1
 	midBoss1NumLoopPhase1        = 13
-	midBoss1BulletSpeedPhase1    = 5
-	midBoss1NumBulletPhase2      = 7
+	midBoss1BulletSpeedPhase1    = 3 // 5
+	/*midBoss1NumBulletPhase2      = 7
 	midBoss1FramePerBulletPhase2 = 6
 	midBoss1LengthPhase2         = midBoss1NumBulletPhase2
 	midBoss1BulletSpeedPhase2    = 4
-	midBoss1NumLoopPhase2        = 7
+	midBoss1NumLoopPhase2        = 7*/
 )
 
 func (b *boss) midBoss1Update(bs *bulletSet) {
