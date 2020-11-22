@@ -28,6 +28,10 @@ import (
 type enemy struct {
 	x                           float64
 	y                           float64
+	xMin                        float64
+	xMax                        float64
+	yMin                        float64
+	yMax                        float64
 	vx                          float64
 	vy                          float64
 	framesSinceLastBullet       int
@@ -42,6 +46,8 @@ type enemy struct {
 	powerUpProba                int
 	deathBlow                   []bullet
 	points                      int
+	hullSet                     bool
+	cHull                       []point
 	hullAt00                    []point
 	image                       *ebiten.Image
 }
@@ -90,12 +96,14 @@ func (e *enemy) ymax() float64 {
 }
 
 func (e *enemy) convexHull() []point {
-	res := make([]point, len(e.hullAt00))
-	for i, p := range e.hullAt00 {
-		res[i].x = p.x + e.x
-		res[i].y = p.y + e.y
+	if !e.hullSet {
+		e.cHull = make([]point, len(e.hullAt00))
+		for i, p := range e.hullAt00 {
+			e.cHull[i].x = p.x + e.x
+			e.cHull[i].y = p.y + e.y
+		}
 	}
-	return res
+	return e.cHull
 }
 
 func (e *enemy) hasCollided() {
@@ -113,6 +121,12 @@ func (e *enemy) update(bs *bulletSet) {
 	}
 	e.x += e.vx
 	e.y += e.vy
+	e.hullSet = false
+	e.cHull = nil
+	e.xMin = e.x - e.xSize/2
+	e.xMax = e.x + e.xSize/2
+	e.yMin = e.y - e.ySize/2
+	e.yMax = e.y + e.ySize/2
 	if e.accelerationSequence != nil {
 		e.framesSinceLastAcceleration++
 		if e.framesSinceLastAcceleration >= e.accelerationSequence[e.nextAcceleration].interval {

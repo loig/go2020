@@ -26,18 +26,21 @@ func initLevel() level {
 		panic(err)
 	}
 	l.firstPlan = img
+	l.firstPlanHeight = 396
 
 	img, _, err = ebitenutil.NewImageFromFile("assets/Montagnes-2.png")
 	if err != nil {
 		panic(err)
 	}
 	l.secondPlan = img
+	l.secondPlanHeight = 342
 
 	img, _, err = ebitenutil.NewImageFromFile("assets/Montagnes-3.png")
 	if err != nil {
 		panic(err)
 	}
 	l.thirdPlan = img
+	l.thirdPlanHeight = 404
 
 	img, _, err = ebitenutil.NewImageFromFile("assets/Lune.png")
 	if err != nil {

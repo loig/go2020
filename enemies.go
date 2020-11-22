@@ -40,6 +40,8 @@ func makeStaticEnemy(x, y float64) enemy {
 	ySpeed := float64(rand.Intn(3)-1) / 4
 	return enemy{
 		x: x, y: y,
+		xMin: x - xSize/2, xMax: x + xSize/2,
+		yMin: y - ySize/2, yMax: y + ySize/2,
 		vx: -firstPlanPxPerFrame + xSpeed, vy: ySpeed,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
@@ -60,6 +62,8 @@ func makeStaticExplodingEnemy(x, y float64) enemy {
 	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
+		xMin: x - xSize/2, xMax: x + xSize/2,
+		yMin: y - ySize/2, yMax: y + ySize/2,
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
@@ -90,6 +94,8 @@ func makeStaticFiringEnemy(x, y float64) enemy {
 	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
+		xMin: x - xSize/2, xMax: x + xSize/2,
+		yMin: y - ySize/2, yMax: y + ySize/2,
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
@@ -117,6 +123,8 @@ func makeStaticFiringUpEnemy(x, y float64) enemy {
 	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
+		xMin: x - xSize/2, xMax: x + xSize/2,
+		yMin: y - ySize/2, yMax: y + ySize/2,
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
@@ -144,6 +152,8 @@ func makeStaticFiringDownEnemy(x, y float64) enemy {
 	var ySize float64 = 50
 	return enemy{
 		x: x, y: y,
+		xMin: x - xSize/2, xMax: x + xSize/2,
+		yMin: y - ySize/2, yMax: y + ySize/2,
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,

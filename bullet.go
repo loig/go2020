@@ -138,6 +138,10 @@ func (bs *bulletSet) addBullet(b bullet) {
 	bb := b
 	bb.xSize = basicBulletSize
 	bb.ySize = basicBulletSize
+	bb.xMin = bb.x - bb.xSize/2
+	bb.xMax = bb.x + bb.xSize/2
+	bb.yMin = bb.y - bb.ySize/2
+	bb.yMax = bb.y + bb.ySize/2
 	bs.numBullets++
 	bs.bullets = append(bs.bullets, &bb)
 }
@@ -146,6 +150,10 @@ func (bs *bulletSet) addBigBullet(b bullet) {
 	bb := b
 	bb.xSize = 56
 	bb.ySize = 140
+	bb.xMin = bb.x - bb.xSize/2
+	bb.xMax = bb.x + bb.xSize/2
+	bb.yMin = bb.y - bb.ySize/2
+	bb.yMax = bb.y + bb.ySize/2
 	bb.isBig = true
 	bs.numBullets++
 	bs.bullets = append(bs.bullets, &bb)

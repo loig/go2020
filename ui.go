@@ -66,6 +66,19 @@ func (p player) drawUI(screen *ebiten.Image) {
 		op,
 	)
 
+	// Draw lifes
+	xTranslate = float64(leftUIOffset)
+	yTranslate = topUIOffset - lifeDisplayHeight
+	for i := 0; i < p.lives; i++ {
+		op = &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(xTranslate, yTranslate)
+		screen.DrawImage(
+			lifeImage,
+			op,
+		)
+		xTranslate += float64(lifeDisplayWidth)
+	}
+
 	// Display power ups names
 	for puNum := 1; puNum <= pDifferentPowerUps; puNum++ {
 		var s string = "-"
@@ -104,19 +117,6 @@ func (p player) drawUI(screen *ebiten.Image) {
 	xFTranslate := screenWidth - rightUIOffset - width
 	yFTranslate := topUIOffset - height
 	text.Draw(screen, s, theFont, xFTranslate, yFTranslate, color.White)
-
-	// Draw lifes
-	xTranslate = float64(leftUIOffset)
-	yTranslate = topUIOffset - lifeDisplayHeight
-	for i := 0; i < p.lives; i++ {
-		op = &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(xTranslate, yTranslate)
-		screen.DrawImage(
-			lifeImage,
-			op,
-		)
-		xTranslate += float64(lifeDisplayWidth)
-	}
 }
 
 func (bs *bossSet) drawUI(screen *ebiten.Image) {

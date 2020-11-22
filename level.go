@@ -25,16 +25,19 @@ import (
 )
 
 type level struct {
-	firstPlan      *ebiten.Image
-	secondPlan     *ebiten.Image
-	thirdPlan      *ebiten.Image
-	fourthPlan     *ebiten.Image
-	background     *ebiten.Image
-	spawnSequence  []spawn
-	currentSpawn   int
-	currentFrame   int
-	lastSpawnFrame int
-	bossBattle     bool
+	firstPlan        *ebiten.Image
+	firstPlanHeight  int
+	secondPlan       *ebiten.Image
+	secondPlanHeight int
+	thirdPlan        *ebiten.Image
+	thirdPlanHeight  int
+	fourthPlan       *ebiten.Image
+	background       *ebiten.Image
+	spawnSequence    []spawn
+	currentSpawn     int
+	currentFrame     int
+	lastSpawnFrame   int
+	bossBattle       bool
 }
 
 type spawn struct {
@@ -99,31 +102,43 @@ func (l level) draw(screen *ebiten.Image) {
 		op,
 	)
 
-	fourthPlanStart := (int(fourthPlanPxPerFrame * float64(l.currentFrame))) % planImageWidth
-	drawPlan(screen, l.fourthPlan, fourthPlanStart, op)
+	fourthPlanShift := fourthPlanPxPerFrame * float64(l.currentFrame)
+	drawFourthPlan(screen, l.fourthPlan, fourthPlanShift)
 
 	thirdPlanStart := (thirdPlanPxPerFrame * l.currentFrame) % planImageWidth
-	drawPlan(screen, l.thirdPlan, thirdPlanStart, op)
+	drawPlan(screen, l.thirdPlan, thirdPlanStart, l.thirdPlanHeight)
 
 	secondPlanStart := (secondPlanPxPerFrame * l.currentFrame) % planImageWidth
-	drawPlan(screen, l.secondPlan, secondPlanStart, op)
+	drawPlan(screen, l.secondPlan, secondPlanStart, l.secondPlanHeight)
 
 	firstPlanStart := (firstPlanPxPerFrame * l.currentFrame) % planImageWidth
-	drawPlan(screen, l.firstPlan, firstPlanStart, op)
+	drawPlan(screen, l.firstPlan, firstPlanStart, l.firstPlanHeight)
 }
 
-func drawPlan(screen, plan *ebiten.Image, start int, op *ebiten.DrawImageOptions) {
+func drawPlan(screen, plan *ebiten.Image, start, planHeight int) {
+	heightTranslation := screenHeight - float64(planHeight)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(0, heightTranslation)
 	screen.DrawImage(
-		plan.SubImage(image.Rect(start, 0, start+screenWidth, screenHeight)).(*ebiten.Image),
+		plan.SubImage(image.Rect(start, 0, start+screenWidth, planHeight)).(*ebiten.Image),
 		op,
 	)
 	if start+screenWidth > planImageWidth {
 		missingPx := start + screenWidth - planImageWidth
 		op2 := &ebiten.DrawImageOptions{}
-		op2.GeoM.Translate(screenWidth-float64(missingPx), 0)
+		op2.GeoM.Translate(screenWidth-float64(missingPx), heightTranslation)
 		screen.DrawImage(
 			plan.SubImage(image.Rect(0, 0, missingPx, screenHeight)).(*ebiten.Image),
 			op2,
 		)
 	}
+}
+
+func drawFourthPlan(screen, plan *ebiten.Image, shift float64) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(screenWidth-shift, 0)
+	screen.DrawImage(
+		plan,
+		op,
+	)
 }
