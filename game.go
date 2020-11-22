@@ -58,6 +58,7 @@ func initGame() *game {
 		bulletSet:  initBulletSet(),
 		player:     initPlayer(),
 		enemySet:   initEnemySet(),
+		bossSet:    initBossSet(),
 		powerUpSet: initPowerUpSet(),
 		level:      initLevel(),
 	}

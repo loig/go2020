@@ -18,7 +18,17 @@
 package main
 
 import (
+	"image"
+	"math"
+
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+)
+
+const (
+	numFramesForDisplayingBossPV = 100
+	bossPVWidth                  = 1080
+	bossPVHeight                 = 50
 )
 
 type boss struct {
@@ -37,6 +47,7 @@ type boss struct {
 	phaseLoop int
 	bossType  int
 	frame     int
+	hitable   bool
 }
 
 func (b *boss) updateBox() {
@@ -76,7 +87,9 @@ func (b *boss) convexHull() []point {
 }
 
 func (b *boss) hasCollided() {
-	b.pv--
+	if b.hitable {
+		b.pv--
+	}
 }
 
 func (b *boss) update(bs *bulletSet) {
@@ -100,18 +113,38 @@ func (b boss) isDead() bool {
 }
 
 type bossSet struct {
-	numBosses int
-	bosses    []*boss
+	numBosses             int
+	bosses                []*boss
+	totalPvMax            int
+	frameSinceBattleStart int
+	pvImage               *ebiten.Image
+	pvBackImage           *ebiten.Image
 }
 
 func initBossSet() bossSet {
+	img1, _, err := ebitenutil.NewImageFromFile("assets/Barre-vie.png")
+	if err != nil {
+		panic(err)
+	}
+
+	img2, _, err := ebitenutil.NewImageFromFile("assets/Barre-vie-fond.png")
+	if err != nil {
+		panic(err)
+	}
+
 	return bossSet{
-		numBosses: 0,
-		bosses:    make([]*boss, 0),
+		numBosses:   0,
+		bosses:      make([]*boss, 0),
+		pvImage:     img1,
+		pvBackImage: img2,
 	}
 }
 
 func (bs *bossSet) update(bbs *bulletSet, ps *powerUpSet, points *int) {
+	if bs.numBosses == 0 {
+		bs.frameSinceBattleStart = 0
+		bs.totalPvMax = 0
+	}
 	for pos := 0; pos < bs.numBosses; pos++ {
 		bs.bosses[pos].update(bbs)
 		if bs.bosses[pos].isDead() {
@@ -128,6 +161,35 @@ func (bs *bossSet) draw(screen *ebiten.Image) {
 	}
 }
 
+func (bs *bossSet) drawUI(screen *ebiten.Image) {
+	if bs.numBosses >= 1 {
+		var currentPV int
+		for _, b := range bs.bosses {
+			currentPV += b.pv
+		}
+		pvPortion := float64(currentPV) / float64(bs.totalPvMax)
+		displayUpTo := int(math.Ceil(bossPVWidth * pvPortion))
+		if bs.frameSinceBattleStart < numFramesForDisplayingBossPV {
+			maxPVPortion := float64(bs.frameSinceBattleStart+1) / float64(numFramesForDisplayingBossPV)
+			if maxPVPortion < pvPortion {
+				displayUpTo = int(math.Ceil(bossPVWidth * maxPVPortion))
+			}
+			bs.frameSinceBattleStart++
+		}
+		xTranslate := float64(screenWidth-bossPVWidth) / 2
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(xTranslate, 50)
+		screen.DrawImage(
+			bs.pvBackImage,
+			op,
+		)
+		screen.DrawImage(
+			bs.pvImage.SubImage(image.Rect(0, 0, displayUpTo, bossPVHeight)).(*ebiten.Image),
+			op,
+		)
+	}
+}
+
 func (bs *bossSet) addBoss(bossType int, x, y float64) {
 	bs.numBosses++
 	var b boss
@@ -135,5 +197,6 @@ func (bs *bossSet) addBoss(bossType int, x, y float64) {
 	case midBoss1:
 		b = makeMidBoss1(x, y)
 	}
+	bs.totalPvMax += b.pv
 	bs.bosses = append(bs.bosses, &b)
 }

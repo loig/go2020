@@ -427,6 +427,13 @@ var level1SpawnSequence []spawn = []spawn{
 		enemies: []enemySpawn{
 			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 2},
 		},
-		frameDelay: 250,
+		frameDelay: 350,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 5},
+			enemySpawn{enemyType: midBoss1, y: float64(4*screenHeight) / 5},
+		},
+		frameDelay: 350,
 	},
 }

@@ -34,6 +34,7 @@ func (g *game) Draw(screen *ebiten.Image) {
 	g.powerUpSet.draw(screen)
 	g.player.draw(screen)
 	g.player.drawUI(screen)
+	g.bossSet.drawUI(screen)
 
 	s := fmt.Sprint(ebiten.CurrentTPS(), ebiten.CurrentFPS())
 	ebitenutil.DebugPrint(screen, s)

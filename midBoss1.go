@@ -52,16 +52,19 @@ const (
 func (b *boss) midBoss1Update(bs *bulletSet) {
 	switch b.phase {
 	case 0:
-		if b.x > 3*float64(screenWidth)/4 {
+		if b.x > 6*float64(screenWidth)/7 {
 			b.x -= 5
 		} else {
 			b.phase = 1
+			b.hitable = true
 		}
 	case 1:
 		b.frame++
-		if b.pv <= 75 {
-			b.phase = 2
-		}
+		/*
+			if b.pv <= 75 {
+				b.phase = 2
+			}
+		*/
 		numBullet := b.frame/midBoss1FramePerBulletPhase1 - 1
 		if numBullet < midBoss1NumBulletPhase1 {
 			if b.frame%midBoss1FramePerBulletPhase1 == 0 {
@@ -85,7 +88,7 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 				b.phaseLoop = 0
 			}
 		}
-	case 2:
+		/*case 2:
 		b.frame++
 		numBullet := b.frame/midBoss1FramePerBulletPhase2 - 1
 		if numBullet < midBoss1NumBulletPhase2 {
@@ -116,7 +119,7 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 			if b.phaseLoop >= midBoss1NumLoopPhase2 {
 				b.phaseLoop = 0
 			}
-		}
+		}*/
 	}
 }
 

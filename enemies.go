@@ -17,6 +17,8 @@
 
 package main
 
+import "math/rand"
+
 const (
 	staticEnemy int = iota
 	staticExplodingEnemy
@@ -29,9 +31,11 @@ const (
 func makeStaticEnemy(x, y float64) enemy {
 	var xSize float64 = 50
 	var ySize float64 = 50
+	xSpeed := float64(rand.Intn(3)-1) / 4
+	ySpeed := float64(rand.Intn(3)-1) / 4
 	return enemy{
 		x: x, y: y,
-		vx: -firstPlanPxPerFrame, vy: 0,
+		vx: -firstPlanPxPerFrame + xSpeed, vy: ySpeed,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
 		powerUpProba: 8,
