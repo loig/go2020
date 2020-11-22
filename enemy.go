@@ -80,19 +80,19 @@ func (e enemy) draw(screen *ebiten.Image) {
 }
 
 func (e *enemy) xmin() float64 {
-	return e.x - e.xSize/2
+	return e.xMin
 }
 
 func (e *enemy) xmax() float64 {
-	return e.x + e.xSize/2
+	return e.xMax
 }
 
 func (e *enemy) ymin() float64 {
-	return e.y - e.ySize/2
+	return e.yMin
 }
 
 func (e *enemy) ymax() float64 {
-	return e.y + e.ySize/2
+	return e.yMax
 }
 
 func (e *enemy) convexHull() []point {
