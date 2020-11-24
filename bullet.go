@@ -54,7 +54,6 @@ func (b *bullet) update() {
 	b.x += b.vx
 	b.y += b.vy
 	b.hullSet = false
-	b.cHull = nil
 	b.xMin = b.x - b.xSize/2
 	b.xMax = b.x + b.xSize/2
 	b.yMin = b.y - b.ySize/2

@@ -53,7 +53,6 @@ func initLevel() level {
 		panic(err)
 	}
 	l.background = img
-
 	l.spawnSequence = level1SpawnSequence
 
 	return l

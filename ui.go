@@ -117,6 +117,7 @@ func (p player) drawUI(screen *ebiten.Image) {
 	xFTranslate := screenWidth - rightUIOffset - width
 	yFTranslate := topUIOffset - height
 	text.Draw(screen, s, theFont, xFTranslate, yFTranslate, color.White)
+
 }
 
 func (bs *bossSet) drawUI(screen *ebiten.Image) {

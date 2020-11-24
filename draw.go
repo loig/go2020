@@ -28,13 +28,13 @@ import (
 func (g *game) Draw(screen *ebiten.Image) {
 
 	g.level.draw(screen)
-	g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
+	g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255}) // lag
 	g.enemySet.draw(screen)
-	g.bossSet.draw(screen)
+	g.bossSet.draw(screen) // lag
 	g.powerUpSet.draw(screen)
-	g.player.draw(screen)
+	g.player.draw(screen) // lag (first bullet ?)
 	g.bossSet.drawUI(screen)
-	g.player.drawUI(screen)
+	g.player.drawUI(screen) // lag (points ?)
 
 	s := fmt.Sprint(ebiten.CurrentTPS()) //, ebiten.CurrentFPS())
 	ebitenutil.DebugPrint(screen, s)
