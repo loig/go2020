@@ -19,6 +19,7 @@ package main
 
 import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/loig/go2020/fonts"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
@@ -111,6 +112,8 @@ func initGame() *game {
 	if err != nil {
 		panic(err)
 	}
+
+	text.CacheGlyphs(theFont, "0123456789-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 	return &game{
 		bulletSet:  initBulletSet(),

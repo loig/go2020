@@ -27,6 +27,9 @@ import (
 
 func (g *game) Draw(screen *ebiten.Image) {
 
+	// Preload font
+	//text.Draw(screen, "0123456789-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", theFont, 0, 0, color.White)
+
 	g.level.draw(screen)
 	g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255}) // lag
 	g.enemySet.draw(screen)
