@@ -25,12 +25,19 @@ const (
 	staticFiringEnemy
 	staticFiringDownEnemy
 	staticFiringUpEnemy
+	movingFiringEnemy
 	midBoss1
 )
 
 const (
 	staticEnemyPoints          = 250
 	staticExplodingEnemyPoints = 500
+	movingFiringEnemyPoints    = 500
+)
+
+const (
+	movingFiringEnemySpeed = -2
+	firingEnemyBulletSpeed = -8
 )
 
 func makeStaticEnemy(x, y float64) enemy {
@@ -60,11 +67,13 @@ func makeStaticEnemy(x, y float64) enemy {
 func makeStaticExplodingEnemy(x, y float64) enemy {
 	var xSize float64 = 50
 	var ySize float64 = 50
+	xSpeed := float64(rand.Intn(3)-1) / 4
+	ySpeed := float64(rand.Intn(3)-1) / 4
 	return enemy{
 		x: x, y: y,
 		xMin: x - xSize/2, xMax: x + xSize/2,
 		yMin: y - ySize/2, yMax: y + ySize/2,
-		vx: -firstPlanPxPerFrame, vy: 0,
+		vx: -firstPlanPxPerFrame + xSpeed, vy: ySpeed,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
 		powerUpProba: 3,
@@ -109,7 +118,7 @@ func makeStaticFiringEnemy(x, y float64) enemy {
 		bulletSequence: []bulletShot{
 			bulletShot{
 				bullets: []bullet{
-					bullet{vx: -10, vy: 0, ax: 0, ay: 0},
+					bullet{vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
 				},
 				interval: 50,
 			},
@@ -173,5 +182,61 @@ func makeStaticFiringDownEnemy(x, y float64) enemy {
 			},
 		},
 		image: staticFiringEnemyImage,
+	}
+}
+
+func makeMovingFiringEnemy(x, y float64) enemy {
+	var xSize float64 = 151
+	var ySize float64 = 120
+	halfXSize := xSize / 2
+	halfYSize := ySize / 2
+	return enemy{
+		x: x, y: y,
+		xMin: x - halfXSize, xMax: x + halfXSize,
+		yMin: y - halfYSize, yMax: y + halfYSize,
+		vx: -firstPlanPxPerFrame + movingFiringEnemySpeed, vy: 0,
+		xSize: xSize, ySize: ySize,
+		pv:           1,
+		powerUpProba: 10,
+		hullAt00: []point{
+			point{-halfXSize + 7, -halfYSize + 5},
+			point{-halfXSize + 7, halfYSize - 5},
+			point{halfXSize - 7, halfYSize - 5},
+			point{halfXSize - 7, -halfYSize + 5},
+		},
+		bulletSequence: []bulletShot{
+			bulletShot{
+				bullets: []bullet{
+					bullet{x: -halfXSize + 10, y: 40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: 15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: -15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: -40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+				},
+				interval: 10,
+			},
+			bulletShot{
+				bullets: []bullet{
+					bullet{x: -halfXSize + 10, y: 40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed, vy: 2},
+					bullet{x: -halfXSize + 10, y: 15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: -15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: -40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed, vy: -2},
+				},
+				interval: 10,
+			},
+			bulletShot{
+				bullets: []bullet{
+					bullet{x: -halfXSize + 10, y: 40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed, vy: 5},
+					bullet{x: -halfXSize + 10, y: 15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: -15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: -40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed, vy: -5},
+				},
+				interval: 10,
+			},
+			bulletShot{
+				bullets:  []bullet{},
+				interval: 70,
+			},
+		},
+		image: movingFiringEnemyImage,
 	}
 }

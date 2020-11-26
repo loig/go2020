@@ -252,9 +252,9 @@ func (p *player) ymax() float64 {
 func (p *player) convexHull() []point {
 	if !p.hullSet {
 		p.cHull = []point{
-			point{p.x - p.xSize/2, p.y + p.ySize/2},
-			point{p.x + p.xSize/2, p.y + p.ySize/2},
-			point{p.x - p.xSize/2, p.y - p.ySize/2},
+			point{p.x - p.xSize/3, p.y + p.ySize/4},
+			point{p.x + p.xSize/2, p.y + p.ySize/4},
+			point{p.x - p.xSize/2, p.y - p.ySize/3},
 		}
 		p.hullSet = true
 	}

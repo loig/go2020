@@ -66,12 +66,14 @@ func (l *level) update(es *enemySet, bs *bossSet, ps *powerUpSet) {
 				for _, e := range l.spawnSequence[l.currentSpawn].enemies {
 					if e.enemyType >= midBoss1 {
 						bs.addBoss(e.enemyType, screenWidth-1, e.y)
-						l.bossBattle = true
-						for ePos := 0; ePos < es.numEnemies; ePos++ {
-							es.enemies[ePos].vx += firstPlanPxPerFrame
-						}
-						for pPos := 0; pPos < ps.numPowerUps; pPos++ {
-							ps.powerUps[pPos].vx += firstPlanPxPerFrame
+						if !l.bossBattle {
+							for ePos := 0; ePos < es.numEnemies; ePos++ {
+								es.enemies[ePos].vx += firstPlanPxPerFrame
+							}
+							for pPos := 0; pPos < ps.numPowerUps; pPos++ {
+								ps.powerUps[pPos].vx += firstPlanPxPerFrame
+							}
+							l.bossBattle = true
 						}
 					} else {
 						es.addEnemy(e.enemyType, screenWidth-1, e.y)

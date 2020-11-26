@@ -138,8 +138,8 @@ func (e *enemy) update(bs *bulletSet) {
 		e.framesSinceLastBullet++
 		if e.framesSinceLastBullet >= e.bulletSequence[e.nextBullet].interval {
 			for _, b := range e.bulletSequence[e.nextBullet].bullets {
-				b.x = e.x
-				b.y = e.y
+				b.x += e.x
+				b.y += e.y
 				b.image = enemyBasicBullet
 				bs.addBullet(b)
 			}
@@ -218,6 +218,8 @@ func (es *enemySet) addEnemy(enemyType int, x, y float64) {
 		e = makeStaticFiringUpEnemy(x, y)
 	case staticFiringDownEnemy:
 		e = makeStaticFiringDownEnemy(x, y)
+	case movingFiringEnemy:
+		e = makeMovingFiringEnemy(x, y)
 	}
 	es.enemies = append(es.enemies, &e)
 }

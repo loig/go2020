@@ -33,6 +33,7 @@ var enemyBasicBullet *ebiten.Image
 var staticEnemyImage *ebiten.Image
 var staticFiringEnemyImage *ebiten.Image
 var staticExplodingEnemyImage *ebiten.Image
+var movingFiringEnemyImage *ebiten.Image
 
 // ui graphics
 var noBonusImage *ebiten.Image
