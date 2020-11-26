@@ -208,8 +208,8 @@ func makeMovingFiringEnemy(x, y float64) enemy {
 			bulletShot{
 				bullets: []bullet{
 					bullet{x: -halfXSize + 10, y: 40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
-					bullet{x: -halfXSize + 10, y: 15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
-					bullet{x: -halfXSize + 10, y: -15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: 15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed - 2},
+					bullet{x: -halfXSize + 10, y: -15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed - 2},
 					bullet{x: -halfXSize + 10, y: -40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
 				},
 				interval: 10,
@@ -217,8 +217,8 @@ func makeMovingFiringEnemy(x, y float64) enemy {
 			bulletShot{
 				bullets: []bullet{
 					bullet{x: -halfXSize + 10, y: 40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed, vy: 2},
-					bullet{x: -halfXSize + 10, y: 15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
-					bullet{x: -halfXSize + 10, y: -15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed},
+					bullet{x: -halfXSize + 10, y: 15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed - 1},
+					bullet{x: -halfXSize + 10, y: -15, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed - 1},
 					bullet{x: -halfXSize + 10, y: -40, vx: -firstPlanPxPerFrame + firingEnemyBulletSpeed, vy: -2},
 				},
 				interval: 10,
