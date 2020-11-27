@@ -275,7 +275,9 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, bbs []*boss, ps []*p
 			collide(o, e)
 		}
 		for _, b := range bbs {
-			collide(o, b)
+			for pos := 0; pos < len(b.hitBoxes); pos++ {
+				collide(o, &(b.hitBoxes[pos]))
+			}
 		}
 	}
 	if p.invincibleFrames <= 0 {
@@ -286,7 +288,12 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, bbs []*boss, ps []*p
 			collide(p, e)
 		}
 		for _, b := range bbs {
-			collide(p, b)
+			for pos := 0; pos < len(b.hitBoxes); pos++ {
+				collide(p, &(b.hitBoxes[pos]))
+			}
+			for pos := 0; pos < len(b.hurtBoxes); pos++ {
+				collide(p, &(b.hurtBoxes[pos]))
+			}
 		}
 	}
 	if p.laserOn {
@@ -294,7 +301,9 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, bbs []*boss, ps []*p
 			collide(&(p.laser), e)
 		}
 		for _, b := range bbs {
-			collide(&(p.laser), b)
+			for pos := 0; pos < len(b.hitBoxes); pos++ {
+				collide(&(p.laser), &(b.hitBoxes[pos]))
+			}
 		}
 	}
 	for _, b := range p.bullets.bullets {
@@ -302,7 +311,9 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, bbs []*boss, ps []*p
 			collide(b, e)
 		}
 		for _, bb := range bbs {
-			collide(b, bb)
+			for pos := 0; pos < len(bb.hitBoxes); pos++ {
+				collide(b, &(bb.hitBoxes[pos]))
+			}
 		}
 		if b.isBig {
 			for _, bb := range bs {

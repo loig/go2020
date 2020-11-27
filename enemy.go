@@ -50,6 +50,11 @@ type enemy struct {
 	cHull                       []point
 	hullAt00                    []point
 	image                       *ebiten.Image
+	isAnimated                  bool
+	framePerImage               int
+	framesSinceLastImage        int
+	images                      []*ebiten.Image
+	currentImage                int
 }
 
 type bulletShot struct {
@@ -147,6 +152,14 @@ func (e *enemy) update(bs *bulletSet) {
 			e.nextBullet = (e.nextBullet + 1) % len(e.bulletSequence)
 		}
 	}
+	if e.isAnimated {
+		e.framesSinceLastImage++
+		if e.framesSinceLastImage >= e.framePerImage {
+			e.currentImage = (e.currentImage + 1) % len(e.images)
+			e.image = e.images[e.currentImage]
+			e.framesSinceLastImage = 0
+		}
+	}
 }
 
 func (e enemy) deathAction(bs *bulletSet, ps *powerUpSet, points *int, bossBattle bool) {
@@ -194,6 +207,7 @@ func (es *enemySet) update(bs *bulletSet, ps *powerUpSet, points *int, bossBattl
 			es.numEnemies--
 			es.enemies[pos] = es.enemies[es.numEnemies]
 			es.enemies = es.enemies[:es.numEnemies]
+			pos--
 		}
 	}
 }

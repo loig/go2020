@@ -17,7 +17,11 @@
 
 package main
 
-import "math/rand"
+import (
+	"math/rand"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 const (
 	staticEnemy int = iota
@@ -27,6 +31,7 @@ const (
 	staticFiringUpEnemy
 	movingFiringEnemy
 	midBoss1
+	boss1
 )
 
 const (
@@ -186,7 +191,7 @@ func makeStaticFiringDownEnemy(x, y float64) enemy {
 }
 
 func makeMovingFiringEnemy(x, y float64) enemy {
-	var xSize float64 = 151
+	var xSize float64 = 152
 	var ySize float64 = 120
 	halfXSize := xSize / 2
 	halfYSize := ySize / 2
@@ -237,6 +242,9 @@ func makeMovingFiringEnemy(x, y float64) enemy {
 				interval: 70,
 			},
 		},
-		image: movingFiringEnemyImage,
+		image:         movingFiringEnemyImage,
+		isAnimated:    true,
+		framePerImage: 7,
+		images:        []*ebiten.Image{movingFiringEnemyImage, movingFiringEnemyImage2, movingFiringEnemyImage3},
 	}
 }

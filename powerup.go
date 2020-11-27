@@ -106,6 +106,7 @@ func (ps *powerUpSet) update() {
 			ps.numPowerUps--
 			ps.powerUps[pos] = ps.powerUps[ps.numPowerUps]
 			ps.powerUps = ps.powerUps[:ps.numPowerUps]
+			pos--
 		}
 	}
 }

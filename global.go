@@ -34,6 +34,11 @@ var staticEnemyImage *ebiten.Image
 var staticFiringEnemyImage *ebiten.Image
 var staticExplodingEnemyImage *ebiten.Image
 var movingFiringEnemyImage *ebiten.Image
+var movingFiringEnemyImage2 *ebiten.Image
+var movingFiringEnemyImage3 *ebiten.Image
+
+// boss graphics
+var boss1Image *ebiten.Image
 
 // ui graphics
 var noBonusImage *ebiten.Image

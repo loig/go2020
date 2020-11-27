@@ -25,6 +25,7 @@ import (
 )
 
 type bullet struct {
+	name      string
 	x         float64
 	y         float64
 	vx        float64
@@ -165,6 +166,7 @@ func (bs *bulletSet) update() {
 			bs.numBullets--
 			bs.bullets[pos] = bs.bullets[bs.numBullets]
 			bs.bullets = bs.bullets[:bs.numBullets]
+			pos--
 		}
 	}
 }

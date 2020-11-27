@@ -18,11 +18,9 @@
 package main
 
 import (
-	"image/color"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 const (
@@ -30,6 +28,19 @@ const (
 )
 
 func makeMidBoss1(x, y float64) boss {
+	hb := bossHitBox{
+		x:     x,
+		y:     y,
+		xSize: 50,
+		ySize: 300,
+		hullShape: []point{
+			point{x: -25, y: -150},
+			point{x: -25, y: 150},
+			point{x: 25, y: 150},
+			point{x: 25, y: -150},
+		},
+	}
+	hb.updateBox()
 	return boss{
 		x:        x,
 		xSize:    50,
@@ -38,6 +49,7 @@ func makeMidBoss1(x, y float64) boss {
 		pv:       150,
 		bossType: midBoss1,
 		points:   midBoss1Points,
+		hitBoxes: []bossHitBox{hb},
 	}
 }
 
@@ -47,11 +59,6 @@ const (
 	midBoss1LengthPhase1         = midBoss1NumBulletPhase1
 	midBoss1NumLoopPhase1        = 13
 	midBoss1BulletSpeedPhase1    = 3 // 5
-	/*midBoss1NumBulletPhase2      = 7
-	midBoss1FramePerBulletPhase2 = 6
-	midBoss1LengthPhase2         = midBoss1NumBulletPhase2
-	midBoss1BulletSpeedPhase2    = 4
-	midBoss1NumLoopPhase2        = 7*/
 )
 
 func (b *boss) midBoss1Update(bs *bulletSet) {
@@ -61,15 +68,10 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 			b.x -= 5
 		} else {
 			b.phase = 1
-			b.hitable = true
+			b.hitBoxes[0].hitable = true
 		}
 	case 1:
 		b.frame++
-		/*
-			if b.pv <= 75 {
-				b.phase = 2
-			}
-		*/
 		numBullet := b.frame/midBoss1FramePerBulletPhase1 - 1
 		if numBullet < midBoss1NumBulletPhase1 {
 			if b.frame%midBoss1FramePerBulletPhase1 == 0 {
@@ -79,7 +81,7 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 				vy := midBoss1BulletSpeedPhase1 * -math.Sin(angle)
 				bs.addBullet(bullet{
 					x:     b.x,
-					y:     b.ymin() + (float64(numBullet)+0.5)*b.ySize/float64(midBoss1NumBulletPhase1),
+					y:     b.hitBoxes[0].ymin() + (float64(numBullet)+0.5)*b.ySize/float64(midBoss1NumBulletPhase1),
 					vx:    vx,
 					vy:    vy,
 					image: enemyBasicBullet,
@@ -93,46 +95,9 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 				b.phaseLoop = 0
 			}
 		}
-		/*case 2:
-		b.frame++
-		numBullet := b.frame/midBoss1FramePerBulletPhase2 - 1
-		if numBullet < midBoss1NumBulletPhase2 {
-			if b.frame%midBoss1FramePerBulletPhase2 == 0 {
-				angleShift := (float64(b.phaseLoop) - float64(midBoss1NumLoopPhase2)/2) / float64(2*midBoss1NumLoopPhase2)
-				angle := (math.Pi/2)*float64(numBullet)/float64(midBoss1NumBulletPhase2-1) + 3*math.Pi/4 + angleShift*math.Pi
-				vx := midBoss1BulletSpeedPhase2 * math.Cos(angle)
-				vy := midBoss1BulletSpeedPhase2 * -math.Sin(angle)
-				bs.addBullet(bullet{
-					x:     b.x,
-					y:     b.ymin() + (float64(numBullet)+0.5)*b.ySize/float64(midBoss1NumBulletPhase2),
-					vx:    vx,
-					vy:    vy,
-					image: enemyBasicBullet,
-				})
-				bs.addBullet(bullet{
-					x:     b.x,
-					y:     b.ymax() - (float64(numBullet)+0.5)*b.ySize/float64(midBoss1NumBulletPhase2),
-					vx:    vx,
-					vy:    -vy,
-					image: enemyBasicBullet,
-				})
-			}
-		}
-		if b.frame/midBoss1FramePerBulletPhase2 >= midBoss1LengthPhase2 {
-			b.frame = 0
-			b.phaseLoop++
-			if b.phaseLoop >= midBoss1NumLoopPhase2 {
-				b.phaseLoop = 0
-			}
-		}*/
 	}
 }
 
 func (b *boss) midBoss1Draw(screen *ebiten.Image) {
-	cHull := b.convexHull()
-	hullColor := color.RGBA{0, 255, 0, 255}
-	for i := 0; i < len(cHull); i++ {
-		ii := (i + 1) % len(cHull)
-		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
-	}
+
 }

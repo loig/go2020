@@ -67,6 +67,24 @@ func initGame() *game {
 	}
 	movingFiringEnemyImage = img
 
+	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.2.png")
+	if err != nil {
+		panic(err)
+	}
+	movingFiringEnemyImage2 = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.3.png")
+	if err != nil {
+		panic(err)
+	}
+	movingFiringEnemyImage3 = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Boss1.png")
+	if err != nil {
+		panic(err)
+	}
+	boss1Image = img
+
 	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-aucun.png")
 	if err != nil {
 		panic(err)

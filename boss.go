@@ -18,69 +18,83 @@
 package main
 
 import (
+	"image/color"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 type boss struct {
 	x         float64
-	xMin      float64
-	xMax      float64
 	xSize     float64
 	y         float64
-	yMin      float64
-	yMax      float64
 	ySize     float64
-	hullSet   bool
-	cHull     []point
 	pv        int
 	phase     int
 	phaseLoop int
 	bossType  int
 	frame     int
-	hitable   bool
 	points    int
+	hitBoxes  []bossHitBox
+	hurtBoxes []bossHitBox
 }
 
-func (b *boss) updateBox() {
+type bossHitBox struct {
+	x          float64
+	xrel       float64
+	xMin       float64
+	xMax       float64
+	y          float64
+	yrel       float64
+	yMin       float64
+	yMax       float64
+	xSize      float64
+	ySize      float64
+	hullSet    bool
+	hullShape  []point
+	cHull      []point
+	hitable    bool
+	collisions int
+}
+
+func (b *bossHitBox) updateBox() {
 	b.xMin = b.x - b.xSize/2
 	b.xMax = b.x + b.xSize/2
 	b.yMin = b.y - b.ySize/2
 	b.yMax = b.y + b.ySize/2
 }
 
-func (b *boss) xmin() float64 {
+func (b *bossHitBox) xmin() float64 {
 	return b.xMin
 }
 
-func (b *boss) xmax() float64 {
+func (b *bossHitBox) xmax() float64 {
 	return b.xMax
 }
 
-func (b *boss) ymin() float64 {
+func (b *bossHitBox) ymin() float64 {
 	return b.yMin
 }
 
-func (b *boss) ymax() float64 {
+func (b *bossHitBox) ymax() float64 {
 	return b.yMax
 }
 
-func (b *boss) convexHull() []point {
+func (b *bossHitBox) convexHull() []point {
 	if !b.hullSet {
-		b.cHull = []point{
-			point{b.xmin(), b.ymin()},
-			point{b.xmin(), b.ymax()},
-			point{b.xmax(), b.ymax()},
-			point{b.xmax(), b.ymin()},
+		b.cHull = make([]point, len(b.hullShape))
+		for i, p := range b.hullShape {
+			b.cHull[i].x = b.x + p.x
+			b.cHull[i].y = b.y + p.y
 		}
 		b.hullSet = true
 	}
 	return b.cHull
 }
 
-func (b *boss) hasCollided() {
+func (b *bossHitBox) hasCollided() {
 	if b.hitable {
-		b.pv--
+		b.collisions++
 	}
 }
 
@@ -88,15 +102,65 @@ func (b *boss) update(bs *bulletSet) {
 	switch b.bossType {
 	case midBoss1:
 		b.midBoss1Update(bs)
+	case boss1:
+		b.boss1Update(bs)
 	}
-	b.updateBox()
-	b.hullSet = false
+	for pos := 0; pos < len(b.hitBoxes); pos++ {
+		b.pv -= b.hitBoxes[pos].collisions
+		b.hitBoxes[pos].collisions = 0
+	}
+	if b.x+b.hitBoxes[0].xrel != b.hitBoxes[0].x || b.y+b.hitBoxes[0].yrel != b.hitBoxes[0].y {
+		for pos := 0; pos < len(b.hitBoxes); pos++ {
+			b.hitBoxes[pos].x = b.x + b.hitBoxes[pos].xrel
+			b.hitBoxes[pos].y = b.y + b.hitBoxes[pos].yrel
+			b.hitBoxes[pos].updateBox()
+			b.hitBoxes[pos].hullSet = false
+		}
+		for pos := 0; pos < len(b.hurtBoxes); pos++ {
+			b.hurtBoxes[pos].x = b.x + b.hurtBoxes[pos].xrel
+			b.hurtBoxes[pos].y = b.y + b.hurtBoxes[pos].yrel
+			b.hurtBoxes[pos].updateBox()
+			b.hurtBoxes[pos].hullSet = false
+		}
+	}
 }
 
 func (b *boss) draw(screen *ebiten.Image) {
 	switch b.bossType {
 	case midBoss1:
 		b.midBoss1Draw(screen)
+	case boss1:
+		b.boss1Draw(screen)
+	}
+	for pos := 0; pos < len(b.hitBoxes); pos++ {
+		// draw hitBox
+		cHull := b.hitBoxes[pos].convexHull()
+		hullColor := color.RGBA{0, 255, 0, 255}
+		for i := 0; i < len(cHull); i++ {
+			ii := (i + 1) % len(cHull)
+			ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+		}
+		// draw rectangle
+		boxColor := color.RGBA{0, 255, 255, 255}
+		ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymin(), boxColor)
+		ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymax(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymax(), boxColor)
+		ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymax(), boxColor)
+		ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymax(), boxColor)
+	}
+	for pos := 0; pos < len(b.hurtBoxes); pos++ {
+		// draw hitBox
+		cHull := b.hurtBoxes[pos].convexHull()
+		hullColor := color.RGBA{0, 255, 0, 255}
+		for i := 0; i < len(cHull); i++ {
+			ii := (i + 1) % len(cHull)
+			ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+		}
+		// draw rectangle
+		boxColor := color.RGBA{0, 255, 255, 255}
+		ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymin(), boxColor)
+		ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymax(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymax(), boxColor)
+		ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymax(), boxColor)
+		ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymax(), boxColor)
 	}
 }
 
@@ -144,6 +208,7 @@ func (bs *bossSet) update(bbs *bulletSet, ps *powerUpSet, points *int) {
 			bs.numBosses--
 			bs.bosses[pos] = bs.bosses[bs.numBosses]
 			bs.bosses = bs.bosses[:bs.numBosses]
+			pos--
 		}
 	}
 }
@@ -160,6 +225,8 @@ func (bs *bossSet) addBoss(bossType int, x, y float64) {
 	switch bossType {
 	case midBoss1:
 		b = makeMidBoss1(x, y)
+	case boss1:
+		b = makeBoss1(x, y)
 	}
 	bs.totalPvMax += b.pv
 	bs.bosses = append(bs.bosses, &b)
