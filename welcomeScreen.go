@@ -37,6 +37,7 @@ func (g *game) welcomeUpdate() {
 		switch g.stateState {
 		case welcomeStart:
 			g.state = gameIntro
+			g.stateState = 0
 		case welcomeHelp:
 			g.state = gameHelp
 		case welcomeInfo:

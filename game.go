@@ -28,6 +28,7 @@ import (
 type game struct {
 	state      int
 	stateState int
+	stateFrame int
 	bulletSet  bulletSet
 	player     player
 	enemySet   enemySet

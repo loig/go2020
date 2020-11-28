@@ -35,6 +35,7 @@ func (g *game) Draw(screen *ebiten.Image) {
 	case gameInfo:
 		g.infoDraw(screen)
 	case gameIntro:
+		g.introDraw(screen)
 	case gameInLevel1, gameInLevel2:
 		g.level.draw(screen)
 		g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255}) // lag

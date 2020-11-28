@@ -27,6 +27,7 @@ func (g *game) Update() error {
 	case gameInfo:
 		g.infoUpdate()
 	case gameIntro:
+		g.introUpdate()
 	case gameInLevel1, gameInLevel2:
 		g.bulletSet.update()
 		g.enemySet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points), g.level.bossBattle)
