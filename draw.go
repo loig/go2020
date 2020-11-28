@@ -31,6 +31,7 @@ func (g *game) Draw(screen *ebiten.Image) {
 	case gameWelcome:
 		g.welcomeDraw(screen)
 	case gameHelp:
+		g.helpDraw(screen)
 	case gameInfo:
 	case gameIntro:
 	case gameInLevel1, gameInLevel2:

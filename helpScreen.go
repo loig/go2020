@@ -17,26 +17,20 @@
 
 package main
 
-func (g *game) Update() error {
+import (
+	"image/color"
 
-	switch g.state {
-	case gameWelcome:
-		g.welcomeUpdate()
-	case gameHelp:
-		g.helpUpdate()
-	case gameInfo:
-	case gameIntro:
-	case gameInLevel1, gameInLevel2:
-		g.bulletSet.update()
-		g.enemySet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points), g.level.bossBattle)
-		g.bossSet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
-		g.powerUpSet.update()
-		g.player.update(&(g.powerUpSet))
-		g.level.update(&(g.enemySet), &(g.bossSet), &(g.powerUpSet))
-		g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies, g.bossSet.bosses, g.powerUpSet.powerUps)
-	case gameTransition:
-	case gameFinished:
-	case gameOver:
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
+)
+
+func (g *game) helpUpdate() {
+	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		g.state = gameWelcome
 	}
-	return nil
+}
+
+func (g *game) helpDraw(screen *ebiten.Image) {
+	text.Draw(screen, "Press ENTER to quit", theBigFont, 1800, 1040, color.White)
 }

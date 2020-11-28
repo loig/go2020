@@ -51,6 +51,12 @@ func (g *game) welcomeUpdate() {
 
 func (g game) welcomeDraw(screen *ebiten.Image) {
 
+	op := &ebiten.DrawImageOptions{}
+	screen.DrawImage(
+		titleScreenImage,
+		op,
+	)
+
 	introColor := color.Gray16{0x777f}
 	helpColor := introColor
 	infoColor := introColor

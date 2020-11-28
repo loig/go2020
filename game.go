@@ -51,7 +51,13 @@ const (
 func initGame() *game {
 
 	// images
-	img, _, err := ebitenutil.NewImageFromFile("assets/Tir2.png")
+	img, _, err := ebitenutil.NewImageFromFile("assets/Titre.png")
+	if err != nil {
+		panic(err)
+	}
+	titleScreenImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Tir2.png")
 	if err != nil {
 		panic(err)
 	}

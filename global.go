@@ -28,6 +28,8 @@ const (
 	screenHeight = 1080
 )
 
+var titleScreenImage *ebiten.Image
+
 // enemy graphics
 var enemyBasicBullet *ebiten.Image
 var staticEnemyImage *ebiten.Image
