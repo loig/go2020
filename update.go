@@ -19,6 +19,8 @@ package main
 
 func (g *game) Update() error {
 
+	g.updateMusic()
+
 	switch g.state {
 	case gameWelcome:
 		g.welcomeUpdate()
@@ -30,8 +32,8 @@ func (g *game) Update() error {
 		g.introUpdate()
 	case gameInLevel1, gameInLevel2:
 		g.bulletSet.update()
-		g.enemySet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points), g.level.bossBattle)
-		g.bossSet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
+		g.enemySetUpdate()
+		g.bossSetUpdate()
 		g.powerUpSet.update()
 		g.playerUpdate()
 		g.levelUpdate()

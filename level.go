@@ -80,6 +80,8 @@ func (g *game) levelUpdate() {
 		} else {
 			// level finished
 			disposeLevelImages()
+			g.stopMusic()
+			infiniteMusic = music1
 			if g.state == gameInLevel1 {
 				disposeLevel1Enemies()
 				g.state = gameTransition

@@ -19,6 +19,7 @@ package main
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 	"golang.org/x/image/font"
 )
 
@@ -70,3 +71,14 @@ var laserImage *ebiten.Image
 var playerImage *ebiten.Image
 var playerBulletImage *ebiten.Image
 var playerBigBulletImage *ebiten.Image
+
+// sounds
+var infiniteMusic *audio.InfiniteLoop
+var music1 *audio.InfiniteLoop
+var music2 *audio.InfiniteLoop
+var playerShotBytes []byte
+var enemyShotBytes []byte
+var playerHurtBytes []byte
+var enemyHurtBytes []byte
+var bossHurtBytes []byte
+var menuBytes []byte

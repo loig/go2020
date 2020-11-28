@@ -98,16 +98,27 @@ func (b *bossHitBox) hasCollided() {
 	}
 }
 
-func (b *boss) update(bs *bulletSet) {
+func (b *boss) update(g *game) {
+	var hasFired bool
 	switch b.bossType {
 	case midBoss1:
-		b.midBoss1Update(bs)
+		hasFired = b.midBoss1Update(&(g.bulletSet))
 	case boss1:
-		b.boss1Update(bs)
+		hasFired = b.boss1Update(&(g.bulletSet))
 	}
+	if hasFired {
+		g.playSound(enemyShotSound)
+	}
+	var wasHurt bool
 	for pos := 0; pos < len(b.hitBoxes); pos++ {
 		b.pv -= b.hitBoxes[pos].collisions
-		b.hitBoxes[pos].collisions = 0
+		if b.hitBoxes[pos].collisions > 0 {
+			b.hitBoxes[pos].collisions = 0
+			wasHurt = true
+		}
+	}
+	if wasHurt {
+		g.playSound(bossHurtSound)
 	}
 	if b.x+b.hitBoxes[0].xrel != b.hitBoxes[0].x || b.y+b.hitBoxes[0].yrel != b.hitBoxes[0].y {
 		for pos := 0; pos < len(b.hitBoxes); pos++ {
@@ -196,18 +207,18 @@ func initBossSet() bossSet {
 	}
 }
 
-func (bs *bossSet) update(bbs *bulletSet, ps *powerUpSet, points *int) {
-	if bs.numBosses == 0 {
-		bs.frameSinceBattleStart = 0
-		bs.totalPvMax = 0
+func (g *game) bossSetUpdate() {
+	if g.bossSet.numBosses == 0 {
+		g.bossSet.frameSinceBattleStart = 0
+		g.bossSet.totalPvMax = 0
 	}
-	for pos := 0; pos < bs.numBosses; pos++ {
-		bs.bosses[pos].update(bbs)
-		if bs.bosses[pos].isDead() {
-			*points += bs.bosses[pos].points
-			bs.numBosses--
-			bs.bosses[pos] = bs.bosses[bs.numBosses]
-			bs.bosses = bs.bosses[:bs.numBosses]
+	for pos := 0; pos < g.bossSet.numBosses; pos++ {
+		g.bossSet.bosses[pos].update(g)
+		if g.bossSet.bosses[pos].isDead() {
+			g.player.points += g.bossSet.bosses[pos].points
+			g.bossSet.numBosses--
+			g.bossSet.bosses[pos] = g.bossSet.bosses[g.bossSet.numBosses]
+			g.bossSet.bosses = g.bossSet.bosses[:g.bossSet.numBosses]
 			pos--
 		}
 	}

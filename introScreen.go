@@ -39,6 +39,8 @@ func (g *game) introUpdate() {
 		g.stateFrame = 0
 		g.state = gameInLevel1
 		disposeFirstImages()
+		g.stopMusic()
+		infiniteMusic = music2
 		g.setUpLevel1()
 		return
 	}

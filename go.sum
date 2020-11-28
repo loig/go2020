@@ -24,9 +24,11 @@ github.com/hajimehoshi/ebiten/v2 v2.1.0-alpha.4.0.20201122133751-53d7bcda84ae/go
 github.com/hajimehoshi/ebiten/v2 v2.1.0-alpha.4.0.20201126164817-9a69c3ea9cb3 h1:3PV5r5b3exRDonO4dhvADsjAjkWhJ/W2ob9g9sVcWGw=
 github.com/hajimehoshi/ebiten/v2 v2.1.0-alpha.4.0.20201126164817-9a69c3ea9cb3/go.mod h1:aiOIa69w54LYhevDcBDlntKrW00MU/SBSyAmvD6rIS0=
 github.com/hajimehoshi/file2byteslice v0.0.0-20200812174855-0e5e8a80490e/go.mod h1:CqqAHp7Dk/AqQiwuhV1yT2334qbA/tFWQW0MD2dGqUE=
+github.com/hajimehoshi/go-mp3 v0.3.1 h1:pn/SKU1+/rfK8KaZXdGEC2G/KCB2aLRjbTCrwKcokao=
 github.com/hajimehoshi/go-mp3 v0.3.1/go.mod h1:qMJj/CSDxx6CGHiZeCgbiq2DSUkbK0UbtXShQcnfyMM=
 github.com/hajimehoshi/oto v0.6.1/go.mod h1:0QXGEkbuJRohbJaxr7ZQSxnju7hEhseiPx2hrh6raOI=
 github.com/hajimehoshi/oto v0.6.6/go.mod h1:0QXGEkbuJRohbJaxr7ZQSxnju7hEhseiPx2hrh6raOI=
+github.com/hajimehoshi/oto v0.6.8-0.20201122133406-2b7bad9ba66d h1:sGc0LG6e22q8H+acTfFJ9HHv8w06mYWqw3s1ZqT1BTA=
 github.com/hajimehoshi/oto v0.6.8-0.20201122133406-2b7bad9ba66d/go.mod h1:0QXGEkbuJRohbJaxr7ZQSxnju7hEhseiPx2hrh6raOI=
 github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639 h1:mV02weKRL81bEnm8A0HT1/CAelMQDBuQIfLw8n+d6xI=
 github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=

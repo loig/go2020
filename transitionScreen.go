@@ -36,6 +36,8 @@ func (g *game) transitionUpdate() {
 	if g.stateState >= transitionFinished && inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		g.stateFrame = 0
 		g.setUpLevel2()
+		g.stopMusic()
+		infiniteMusic = music2
 		g.state = gameInLevel2
 		return
 	}

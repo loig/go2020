@@ -38,6 +38,8 @@ func (g *game) welcomeUpdate() {
 		case welcomeStart:
 			g.state = gameIntro
 			g.stateState = 0
+			g.stopMusic()
+			infiniteMusic = music1
 		case welcomeHelp:
 			g.state = gameHelp
 		case welcomeInfo:
@@ -45,8 +47,10 @@ func (g *game) welcomeUpdate() {
 		}
 	} else if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
 		g.stateState = (g.stateState + 1) % welcomeNumStates
+		g.playSound(menuSound)
 	} else if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
 		g.stateState = (g.stateState + welcomeNumStates - 1) % welcomeNumStates
+		g.playSound(menuSound)
 	}
 }
 

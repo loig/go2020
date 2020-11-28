@@ -296,6 +296,7 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, bbs []*boss, ps []*p
 func (g *game) playerUpdate() {
 	if g.player.collision {
 		g.player.lives--
+		g.playSound(playerHurtSound)
 		if g.player.lives <= 0 {
 			disposeLevelImages()
 			if g.state == gameInLevel1 {
@@ -317,7 +318,7 @@ func (g *game) playerUpdate() {
 	g.player.laserOn = false
 	g.player.move()
 	g.player.managePowerUp()
-	g.player.fire()
+	g.player.fire(g)
 	g.player.moveOptions()
 	g.player.bullets.update()
 	g.player.updateBox()
@@ -412,7 +413,7 @@ func (p *player) moveOptions() {
 	}
 }
 
-func (p *player) fire() {
+func (p *player) fire(g *game) {
 	if p.currentFire == 2 && ebiten.IsKeyPressed(ebiten.KeySpace) {
 		p.laserOn = true
 		xLen := screenWidth - p.x
@@ -431,6 +432,7 @@ func (p *player) fire() {
 	}
 	if p.lastBullet >= bulletInterval &&
 		ebiten.IsKeyPressed(ebiten.KeySpace) {
+		g.playSound(playerShotSound)
 		p.lastBullet = 0
 		if p.currentFire == 0 {
 			for bNum := 0; bNum < p.numShot; bNum++ {

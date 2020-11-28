@@ -35,6 +35,7 @@ type game struct {
 	bossSet    bossSet
 	powerUpSet powerUpSet
 	level      level
+	audio      soundManager
 }
 
 const (
@@ -80,7 +81,10 @@ func initGame() *game {
 
 	text.CacheGlyphs(theFont, "0123456789-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-	return &game{}
+	g := game{}
+	g.initAudio()
+
+	return &g
 }
 
 func disposeFirstImages() {

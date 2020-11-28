@@ -61,7 +61,7 @@ const (
 	midBoss1BulletSpeedPhase1    = 3 // 5
 )
 
-func (b *boss) midBoss1Update(bs *bulletSet) {
+func (b *boss) midBoss1Update(bs *bulletSet) bool {
 	switch b.phase {
 	case 0:
 		if b.x > 6*float64(screenWidth)/7 {
@@ -72,6 +72,7 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 		}
 	case 1:
 		b.frame++
+		var hasFired bool
 		numBullet := b.frame/midBoss1FramePerBulletPhase1 - 1
 		if numBullet < midBoss1NumBulletPhase1 {
 			if b.frame%midBoss1FramePerBulletPhase1 == 0 {
@@ -86,6 +87,7 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 					vy:    vy,
 					image: enemyBasicBullet,
 				})
+				hasFired = true
 			}
 		}
 		if b.frame/midBoss1FramePerBulletPhase1 >= midBoss1LengthPhase1 {
@@ -95,7 +97,9 @@ func (b *boss) midBoss1Update(bs *bulletSet) {
 				b.phaseLoop = 0
 			}
 		}
+		return hasFired
 	}
+	return false
 }
 
 func (b *boss) midBoss1Draw(screen *ebiten.Image) {

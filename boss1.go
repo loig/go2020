@@ -101,7 +101,7 @@ func makeBoss1(x, y float64) boss {
 	}
 }
 
-func (b *boss) boss1Update(bs *bulletSet) {
+func (b *boss) boss1Update(bs *bulletSet) bool {
 	switch b.phase {
 	case 0:
 		if b.x > 8*float64(screenWidth)/9 {
@@ -113,6 +113,7 @@ func (b *boss) boss1Update(bs *bulletSet) {
 			}
 		}
 	}
+	return false
 }
 
 func (b *boss) boss1Draw(screen *ebiten.Image) {

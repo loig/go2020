@@ -119,7 +119,7 @@ func (e enemy) isOut() bool {
 	return e.pv <= 0 || e.xmax() < 0 || e.ymax() < 0 || e.xmin() >= screenWidth || e.ymin() >= screenHeight
 }
 
-func (e *enemy) update(bs *bulletSet) {
+func (e *enemy) update(g *game) {
 	if e.accelerationSequence != nil {
 		e.vx += e.accelerationSequence[e.nextAcceleration].ax
 		e.vy += e.accelerationSequence[e.nextAcceleration].ay
@@ -146,7 +146,10 @@ func (e *enemy) update(bs *bulletSet) {
 				b.x += e.x
 				b.y += e.y
 				b.image = enemyBasicBullet
-				bs.addBullet(b)
+				g.bulletSet.addBullet(b)
+			}
+			if len(e.bulletSequence[e.nextBullet].bullets) >= 1 {
+				g.playSound(enemyShotSound)
 			}
 			e.framesSinceLastBullet = 0
 			e.nextBullet = (e.nextBullet + 1) % len(e.bulletSequence)
@@ -197,16 +200,17 @@ func initEnemySet() enemySet {
 	}
 }
 
-func (es *enemySet) update(bs *bulletSet, ps *powerUpSet, points *int, bossBattle bool) {
-	for pos := 0; pos < es.numEnemies; pos++ {
-		es.enemies[pos].update(bs)
-		if es.enemies[pos].isOut() {
-			if es.enemies[pos].pv <= 0 {
-				es.enemies[pos].deathAction(bs, ps, points, bossBattle)
+func (g *game) enemySetUpdate() {
+	for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+		g.enemySet.enemies[pos].update(g)
+		if g.enemySet.enemies[pos].isOut() {
+			if g.enemySet.enemies[pos].pv <= 0 {
+				g.enemySet.enemies[pos].deathAction(&(g.bulletSet), &(g.powerUpSet), &(g.player.points), g.level.bossBattle)
+				g.playSound(enemyHurtSound)
 			}
-			es.numEnemies--
-			es.enemies[pos] = es.enemies[es.numEnemies]
-			es.enemies = es.enemies[:es.numEnemies]
+			g.enemySet.numEnemies--
+			g.enemySet.enemies[pos] = g.enemySet.enemies[g.enemySet.numEnemies]
+			g.enemySet.enemies = g.enemySet.enemies[:g.enemySet.numEnemies]
 			pos--
 		}
 	}
