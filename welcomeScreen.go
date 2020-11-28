@@ -73,16 +73,16 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 	s := "Start Game"
 	bounds := text.BoundString(theFont, s)
 	width := bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2, 650, introColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 650, introColor)
 
 	s = "How to Play"
 	bounds = text.BoundString(theFont, s)
 	width = bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2, 700, helpColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 700, helpColor)
 
 	s = "About"
 	bounds = text.BoundString(theFont, s)
 	width = bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2, 750, infoColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 750, infoColor)
 
 }

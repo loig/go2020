@@ -18,38 +18,27 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
-func (g *game) Draw(screen *ebiten.Image) {
-
-	switch g.state {
-	case gameWelcome:
-		g.welcomeDraw(screen)
-	case gameHelp:
-		g.helpDraw(screen)
-	case gameInfo:
-		g.infoDraw(screen)
-	case gameIntro:
-	case gameInLevel1, gameInLevel2:
-		g.level.draw(screen)
-		g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255}) // lag
-		g.enemySet.draw(screen)
-		g.bossSet.draw(screen) // lag
-		g.powerUpSet.draw(screen)
-		g.player.draw(screen) // lag (first bullet ?)
-		g.bossSet.drawUI(screen)
-		g.player.drawUI(screen) // lag (points ?)
-	case gameTransition:
-	case gameFinished:
-	case gameOver:
+func (g *game) infoUpdate() {
+	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		g.state = gameWelcome
 	}
+}
 
-	s := fmt.Sprint(ebiten.CurrentTPS()) //, ebiten.CurrentFPS())
-	ebitenutil.DebugPrint(screen, s)
-
+func (g *game) infoDraw(screen *ebiten.Image) {
+	s := "A game for Game Off 2020, made by:\n\n          Cécile Dumont (graphics)\n\n                              and\n\n       Loïg Jezequel (programming)\n\n\nSource code is under GPL-3.0 License\n                and can be found at\n      https://github.com/loig/go2020"
+	bounds := text.BoundString(theFont, s)
+	width := bounds.Max.X - bounds.Min.X
+	text.Draw(
+		screen,
+		s,
+		theBigFont, screenWidth/2-3*width/4, 300, color.White,
+	)
+	text.Draw(screen, "Press ENTER to quit", theBigFont, 1800, 1040, color.White)
 }

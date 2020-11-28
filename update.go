@@ -25,6 +25,7 @@ func (g *game) Update() error {
 	case gameHelp:
 		g.helpUpdate()
 	case gameInfo:
+		g.infoUpdate()
 	case gameIntro:
 	case gameInLevel1, gameInLevel2:
 		g.bulletSet.update()
