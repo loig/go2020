@@ -102,54 +102,55 @@ var level2SpawnSequence []spawn = []spawn{
 		enemies: []enemySpawn{
 			enemySpawn{enemyType: movingFiringEnemy, y: float64(screenHeight) / 2},
 		},
-		frameDelay: 300,
+		frameDelay: 600,
 	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(3*screenHeight) / 20},
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(6*screenHeight) / 20},
+	/*
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(3*screenHeight) / 20},
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(6*screenHeight) / 20},
+			},
+			frameDelay: 200,
 		},
-		frameDelay: 200,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(17*screenHeight) / 20},
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(14*screenHeight) / 20},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(17*screenHeight) / 20},
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(14*screenHeight) / 20},
+			},
+			frameDelay: 150,
 		},
-		frameDelay: 150,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			},
+			frameDelay: 200,
 		},
-		frameDelay: 200,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(8*screenHeight) / 20},
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(12*screenHeight) / 20},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(8*screenHeight) / 20},
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(12*screenHeight) / 20},
+			},
+			frameDelay: 25,
 		},
-		frameDelay: 25,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(2*screenHeight) / 20},
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(18*screenHeight) / 20},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(2*screenHeight) / 20},
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(18*screenHeight) / 20},
+			},
+			frameDelay: 150,
 		},
-		frameDelay: 150,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(7*screenHeight) / 20},
-			enemySpawn{enemyType: movingFiringEnemy, y: float64(13*screenHeight) / 20},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(7*screenHeight) / 20},
+				enemySpawn{enemyType: movingFiringEnemy, y: float64(13*screenHeight) / 20},
+			},
+			frameDelay: 150,
 		},
-		frameDelay: 150,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 5},
-			enemySpawn{enemyType: midBoss1, y: float64(4*screenHeight) / 5},
-		},
-		frameDelay: 450,
-	},
+		spawn{
+			enemies: []enemySpawn{
+				enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 5},
+				enemySpawn{enemyType: midBoss1, y: float64(4*screenHeight) / 5},
+			},
+			frameDelay: 450,
+		},*/
 }

@@ -18,6 +18,7 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -28,6 +29,13 @@ import (
 const (
 	finishedStart int = iota
 	finishedStep1
+	finishedStep2
+	finishedStep3
+	finishedStep4
+	finishedStep5
+	finishedStep6
+	dummyFinishedStep1
+	dummyFinishedStep2
 	finishedFinished
 )
 
@@ -41,6 +49,7 @@ func (g *game) finishedUpdate() {
 	if g.stateState < finishedFinished {
 		g.stateFrame++
 		if g.stateFrame >= framesPerText {
+			g.stateFrame = 0
 			g.stateState++
 		}
 	}
@@ -49,8 +58,52 @@ func (g *game) finishedUpdate() {
 
 func (g *game) finishedDraw(screen *ebiten.Image) {
 
+	textPos := cutSceneInitTextPos
+
 	if g.stateState >= finishedStep1 {
-		text.Draw(screen, "We did it.", theBigFont, 500, 200, color.White)
+		text.Draw(screen, "We did it.", theBigFont, cutSceneXTextPos, textPos, color.White)
 	}
 
+	textPos += cutSceneTextSep
+
+	if g.stateState >= finishedStep2 {
+		text.Draw(screen, "We finally did it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= finishedStep3 {
+		text.Draw(screen, "The overmind is down.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= finishedStep4 {
+		text.Draw(screen, "At the very moment it died, they all died.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= finishedStep5 {
+		text.Draw(screen, "Now we can rebuild.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= finishedStep6 {
+		text.Draw(screen, "Start a new civilisation.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+	textPos += cutSceneTextSep
+	textPos += cutSceneTextSep
+	textPos += cutSceneTextSep
+	textPos += cutSceneTextSep
+	textPos += cutSceneTextSep
+	textPos += cutSceneTextSep
+
+	if g.stateState >= finishedFinished {
+		s := fmt.Sprint("Final score: ", g.player.points)
+		text.Draw(screen, s, theBigFont, cutSceneXTextPos+400, textPos, color.White)
+	}
 }
