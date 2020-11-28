@@ -38,14 +38,15 @@ func (g *game) Draw(screen *ebiten.Image) {
 		g.introDraw(screen)
 	case gameInLevel1, gameInLevel2:
 		g.level.draw(screen)
-		g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255}) // lag
+		g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
 		g.enemySet.draw(screen)
-		g.bossSet.draw(screen) // lag
+		g.bossSet.draw(screen)
 		g.powerUpSet.draw(screen)
-		g.player.draw(screen) // lag (first bullet ?)
+		g.player.draw(screen)
 		g.bossSet.drawUI(screen)
-		g.player.drawUI(screen) // lag (points ?)
+		g.player.drawUI(screen)
 	case gameTransition:
+		g.transitionDraw(screen)
 	case gameFinished:
 	case gameOver:
 	}

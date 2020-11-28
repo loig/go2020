@@ -25,28 +25,26 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
-const framesPerText = 250
-
 const (
-	introStart int = iota
-	introStep1
-	introFinished
+	transitionStart int = iota
+	transitionStep1
+	transitionFinished
 )
 
-func (g *game) introUpdate() {
+func (g *game) transitionUpdate() {
 
-	if g.stateState >= introFinished && inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if g.stateState >= transitionFinished && inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		g.stateFrame = 0
-		g.state = gameInLevel1
+		g.state = gameInLevel2
 		return
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		g.stateState = introFinished
+		g.stateState = transitionFinished
 		return
 	}
 
-	if g.stateState < introFinished {
+	if g.stateState < transitionFinished {
 		g.stateFrame++
 		if g.stateFrame >= framesPerText {
 			g.stateState++
@@ -55,10 +53,10 @@ func (g *game) introUpdate() {
 
 }
 
-func (g *game) introDraw(screen *ebiten.Image) {
+func (g *game) transitionDraw(screen *ebiten.Image) {
 
-	if g.stateState >= introStep1 {
-		text.Draw(screen, "Generations ago, they arrived.", theBigFont, 500, 200, color.White)
+	if g.stateState >= transitionStep1 {
+		text.Draw(screen, "Leaving the earth was not easy.", theBigFont, 500, 200, color.White)
 	}
 
 	text.Draw(screen, "Press ENTER to continue", theBigFont, 1800, 1040, color.White)

@@ -34,9 +34,10 @@ func (g *game) Update() error {
 		g.bossSet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
 		g.powerUpSet.update()
 		g.player.update(&(g.powerUpSet))
-		g.level.update(&(g.enemySet), &(g.bossSet), &(g.powerUpSet))
+		g.levelUpdate()
 		g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies, g.bossSet.bosses, g.powerUpSet.powerUps)
 	case gameTransition:
+		g.transitionUpdate()
 	case gameFinished:
 	case gameOver:
 	}

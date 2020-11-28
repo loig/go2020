@@ -58,39 +58,42 @@ const (
 	planImageWidth       = 3824
 )
 
-func (l *level) update(es *enemySet, bs *bossSet, ps *powerUpSet) {
-	if !l.bossBattle {
-		l.currentFrame++
-		if l.currentSpawn < len(l.spawnSequence) {
-			if l.lastSpawnFrame+l.spawnSequence[l.currentSpawn].frameDelay == l.currentFrame {
-				for _, e := range l.spawnSequence[l.currentSpawn].enemies {
+func (g *game) levelUpdate() {
+	if !g.level.bossBattle {
+		g.level.currentFrame++
+		if g.level.currentSpawn < len(g.level.spawnSequence) {
+			if g.level.lastSpawnFrame+g.level.spawnSequence[g.level.currentSpawn].frameDelay == g.level.currentFrame {
+				for _, e := range g.level.spawnSequence[g.level.currentSpawn].enemies {
 					if e.enemyType >= midBoss1 {
-						bs.addBoss(e.enemyType, screenWidth-1, e.y)
-						if !l.bossBattle {
-							for ePos := 0; ePos < es.numEnemies; ePos++ {
-								es.enemies[ePos].vx += firstPlanPxPerFrame
+						g.bossSet.addBoss(e.enemyType, screenWidth-1, e.y)
+						if !g.level.bossBattle {
+							for ePos := 0; ePos < g.enemySet.numEnemies; ePos++ {
+								g.enemySet.enemies[ePos].vx += firstPlanPxPerFrame
 							}
-							for pPos := 0; pPos < ps.numPowerUps; pPos++ {
-								ps.powerUps[pPos].vx += firstPlanPxPerFrame
+							for pPos := 0; pPos < g.powerUpSet.numPowerUps; pPos++ {
+								g.powerUpSet.powerUps[pPos].vx += firstPlanPxPerFrame
 							}
-							l.bossBattle = true
+							g.level.bossBattle = true
 						}
 					} else {
-						es.addEnemy(e.enemyType, screenWidth-1, e.y)
+						g.enemySet.addEnemy(e.enemyType, screenWidth-1, e.y)
 					}
 				}
-				l.currentSpawn++
-				l.lastSpawnFrame = l.currentFrame
+				g.level.currentSpawn++
+				g.level.lastSpawnFrame = g.level.currentFrame
 			}
+		} else {
+			// level finished
+			g.state = gameTransition
 		}
 	} else {
-		if bs.numBosses == 0 {
-			l.bossBattle = false
-			for ePos := 0; ePos < es.numEnemies; ePos++ {
-				es.enemies[ePos].vx -= firstPlanPxPerFrame
+		if g.bossSet.numBosses == 0 {
+			g.level.bossBattle = false
+			for ePos := 0; ePos < g.enemySet.numEnemies; ePos++ {
+				g.enemySet.enemies[ePos].vx -= firstPlanPxPerFrame
 			}
-			for pPos := 0; pPos < ps.numPowerUps; pPos++ {
-				ps.powerUps[pPos].vx -= firstPlanPxPerFrame
+			for pPos := 0; pPos < g.powerUpSet.numPowerUps; pPos++ {
+				g.powerUpSet.powerUps[pPos].vx -= firstPlanPxPerFrame
 			}
 		}
 	}
