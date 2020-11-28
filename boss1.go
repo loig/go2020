@@ -18,14 +18,30 @@
 package main
 
 import (
+	"math"
+
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
-	boss1Points = 15000
+	boss1Points                = 15000
+	boss1NumBulletPerShot1     = 16
+	boss1NumBulletPerShot2     = 17
+	boss1NumBulletPerShot3     = 16
+	boss1BulletMultiplier      = 7
+	boss1Loop1                 = 6
+	boss1NumFramePerShot       = 40
+	boss1PVLimit1              = 250
+	boss1PV                    = 500
+	boss1MoveSpeed             = 2
+	boss1Phase2BulletSpeed     = 5
+	boss1Phase2NumFramePerShot = 15
+	boss1Phase2BulletYSpeed    = 0.5
+	boss1NumBulletsPhase2      = 6
 )
 
-func makeBoss1(x, y float64) boss {
+func makeBoss1(y float64) boss {
+	x := float64(screenWidth - 1 + 1224/2)
 	hitb1 := bossHitBox{
 		x:     x,
 		xrel:  175,
@@ -93,7 +109,7 @@ func makeBoss1(x, y float64) boss {
 		xSize:     1224,
 		y:         y,
 		ySize:     1000,
-		pv:        350,
+		pv:        boss1PV,
 		bossType:  boss1,
 		points:    boss1Points,
 		hitBoxes:  []bossHitBox{hitb1, hitb2},
@@ -112,8 +128,101 @@ func (b *boss) boss1Update(bs *bulletSet) bool {
 				b.hitBoxes[pos].hitable = true
 			}
 		}
+	case 1:
+		if b.pv < boss1PVLimit1 {
+			b.phase = 2
+		}
+		b.frame++
+		if b.frame >= boss1NumFramePerShot {
+			b.frame = 0
+			numToShoot := boss1NumBulletPerShot1
+			if b.phaseLoop >= boss1Loop1 {
+				numToShoot = boss1NumBulletPerShot2
+			}
+			if b.phaseLoop >= 2*boss1Loop1 {
+				numToShoot = boss1NumBulletPerShot3
+			}
+			if b.phaseLoop >= 3*boss1Loop1 {
+				numToShoot = boss1NumBulletPerShot2
+			}
+			b.phaseLoop++
+			if b.phaseLoop >= 4*boss1Loop1 {
+				b.phaseLoop = 0
+			}
+			for bNum := 0; bNum < numToShoot; bNum++ {
+				increase := (b.phaseLoop % 2) * boss1BulletMultiplier
+				angle := (math.Pi/2)*float64(bNum+increase)/float64(numToShoot-1+2*increase) + 3*math.Pi/4
+				vx := midBoss1BulletSpeedPhase1 * math.Cos(angle)
+				vy := midBoss1BulletSpeedPhase1 * -math.Sin(angle)
+				bs.addBullet(bullet{
+					x:     b.x + 90,
+					y:     b.y - 10,
+					vx:    vx,
+					vy:    vy,
+					image: enemyBasicBullet,
+				})
+			}
+			return true
+		}
+	case 2:
+		b.frame = 0
+		b.y -= boss1MoveSpeed
+		if b.y < float64(screenHeight)/4 {
+			b.phase = 3
+		}
+	case 3:
+		b.y += boss1MoveSpeed
+		if b.y > float64(3*screenHeight)/4 {
+			b.phase = 4
+		}
+	case 4:
+		b.y -= boss1MoveSpeed
+		if b.y < float64(screenHeight)/4 {
+			b.phase = 5
+		}
+		b.frame++
+		if b.frame >= boss1Phase2NumFramePerShot {
+			b.frame = 0
+			b.phase2AddBullets(bs)
+		}
+	case 5:
+		b.y += boss1MoveSpeed
+		if b.y > float64(3*screenHeight)/4 {
+			b.phase = 4
+		}
+		b.frame++
+		if b.frame >= boss1Phase2NumFramePerShot {
+			b.frame = 0
+			b.phase2AddBullets(bs)
+		}
 	}
 	return false
+}
+
+func (b boss) phase2AddBullets(bs *bulletSet) {
+	bs.addBullet(bullet{
+		x:     b.x + 90,
+		y:     b.y - 10,
+		vx:    -boss1Phase2BulletSpeed,
+		vy:    0,
+		image: enemyBasicBullet,
+	})
+	for i := 0; i < boss1NumBulletsPhase2; i++ {
+		bs.addBullet(bullet{
+			x:     b.x + 90,
+			y:     b.y - 10,
+			vx:    -boss1Phase2BulletSpeed,
+			vy:    -float64(i+1) * boss1Phase2BulletYSpeed,
+			image: enemyBasicBullet,
+		})
+		bs.addBullet(bullet{
+			x:     b.x + 90,
+			y:     b.y - 10,
+			vx:    -boss1Phase2BulletSpeed,
+			vy:    float64(i+1) * boss1Phase2BulletYSpeed,
+			image: enemyBasicBullet,
+		})
+	}
 }
 
 func (b *boss) boss1Draw(screen *ebiten.Image) {

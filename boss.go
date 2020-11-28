@@ -230,14 +230,14 @@ func (bs *bossSet) draw(screen *ebiten.Image) {
 	}
 }
 
-func (bs *bossSet) addBoss(bossType int, x, y float64) {
+func (bs *bossSet) addBoss(bossType int, y float64) {
 	bs.numBosses++
 	var b boss
 	switch bossType {
 	case midBoss1:
-		b = makeMidBoss1(x, y)
+		b = makeMidBoss1(y)
 	case boss1:
-		b = makeBoss1(x, y)
+		b = makeBoss1(y)
 	}
 	bs.totalPvMax += b.pv
 	bs.bosses = append(bs.bosses, &b)

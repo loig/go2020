@@ -61,7 +61,7 @@ func (g *game) levelUpdate() {
 			if g.level.lastSpawnFrame+g.level.spawnSequence[g.level.currentSpawn].frameDelay == g.level.currentFrame {
 				for _, e := range g.level.spawnSequence[g.level.currentSpawn].enemies {
 					if e.enemyType >= midBoss1 {
-						g.bossSet.addBoss(e.enemyType, screenWidth-1, e.y)
+						g.bossSet.addBoss(e.enemyType, e.y)
 						if !g.level.bossBattle {
 							for ePos := 0; ePos < g.enemySet.numEnemies; ePos++ {
 								g.enemySet.enemies[ePos].vx += firstPlanPxPerFrame

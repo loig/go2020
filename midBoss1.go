@@ -25,9 +25,11 @@ import (
 
 const (
 	midBoss1Points = 5000
+	midBoss1PV     = 200
 )
 
-func makeMidBoss1(x, y float64) boss {
+func makeMidBoss1(y float64) boss {
+	x := float64(screenWidth - 1)
 	hb := bossHitBox{
 		x:     x,
 		y:     y,
@@ -46,7 +48,7 @@ func makeMidBoss1(x, y float64) boss {
 		xSize:    50,
 		y:        y,
 		ySize:    300,
-		pv:       150,
+		pv:       midBoss1PV,
 		bossType: midBoss1,
 		points:   midBoss1Points,
 		hitBoxes: []bossHitBox{hb},
