@@ -30,6 +30,8 @@ func (g *game) gameOverUpdate() {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		// go to title screen
 		loadFirstImages()
+		g.stopMusic()
+		infiniteMusic = music2
 		g.stateFrame = 0
 		g.state = gameWelcome
 		g.stateState = 0

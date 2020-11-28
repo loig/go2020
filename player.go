@@ -299,6 +299,8 @@ func (g *game) playerUpdate() {
 		g.playSound(playerHurtSound)
 		if g.player.lives <= 0 {
 			disposeLevelImages()
+			g.stopMusic()
+			infiniteMusic = music1
 			if g.state == gameInLevel1 {
 				disposeLevel1Enemies()
 			} else {

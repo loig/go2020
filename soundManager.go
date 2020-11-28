@@ -63,6 +63,7 @@ func (g *game) updateMusic() {
 // stop the music
 func (g *game) stopMusic() {
 	if g.audio.musicPlayer != nil && g.audio.musicPlayer.IsPlaying() {
+		g.audio.musicPlayer.Rewind()
 		error := g.audio.musicPlayer.Close()
 		if error != nil {
 			log.Panic("Sound problem:", error)
@@ -106,10 +107,10 @@ func (g *game) initAudio() {
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
-	tduration, _ := time.ParseDuration("10s")
+	tduration, _ := time.ParseDuration("1m36s")
 	duration := tduration.Seconds()
 	bytes := int64(math.Round(duration * 4 * float64(44100)))
-	tduration, _ = time.ParseDuration("10s")
+	tduration, _ = time.ParseDuration("50ms")
 	duration = tduration.Seconds()
 	introBytes := int64(math.Round(duration * 4 * float64(44100)))
 	music1 = audio.NewInfiniteLoopWithIntro(sound, introBytes, bytes)
