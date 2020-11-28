@@ -18,42 +18,24 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
-func (g *game) Draw(screen *ebiten.Image) {
+func (g *game) gameOverUpdate() {
 
-	switch g.state {
-	case gameWelcome:
-		g.welcomeDraw(screen)
-	case gameHelp:
-		g.helpDraw(screen)
-	case gameInfo:
-		g.infoDraw(screen)
-	case gameIntro:
-		g.introDraw(screen)
-	case gameInLevel1, gameInLevel2:
-		g.level.draw(screen)
-		g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
-		g.enemySet.draw(screen)
-		g.bossSet.draw(screen)
-		g.powerUpSet.draw(screen)
-		g.player.draw(screen)
-		g.bossSet.drawUI(screen)
-		g.player.drawUI(screen)
-	case gameTransition:
-		g.transitionDraw(screen)
-	case gameFinished:
-		g.finishedDraw(screen)
-	case gameOver:
-		g.gameOverDraw(screen)
+	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		// go to title screen
 	}
 
-	s := fmt.Sprint(ebiten.CurrentTPS()) //, ebiten.CurrentFPS())
-	ebitenutil.DebugPrint(screen, s)
+}
 
+func (g *game) gameOverDraw(screen *ebiten.Image) {
+
+	text.Draw(screen, "Game Over", theBigFont, 500, 200, color.White)
+
+	text.Draw(screen, "Press ENTER to restart", theBigFont, 1800, 1040, color.White)
 }

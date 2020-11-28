@@ -328,26 +328,29 @@ func (p *player) checkCollisions(bs []*bullet, es []*enemy, bbs []*boss, ps []*p
 	}
 }
 
-func (p *player) update(ps *powerUpSet) {
-	if p.collision {
-		p.lives--
-		p.releasePowerUps(ps)
-		p.reset()
+func (g *game) playerUpdate() {
+	if g.player.collision {
+		g.player.lives--
+		if g.player.lives <= 0 {
+			g.state = gameOver
+		}
+		g.player.releasePowerUps(&(g.powerUpSet))
+		g.player.reset()
 	} else {
-		if p.invincibleFrames > 0 {
-			p.invincibleFrames--
+		if g.player.invincibleFrames > 0 {
+			g.player.invincibleFrames--
 		}
 	}
-	p.hullSet = false
-	p.cHull = nil
-	p.laserOn = false
-	p.move()
-	p.managePowerUp()
-	p.fire()
-	p.moveOptions()
-	p.bullets.update()
-	p.updateBox()
-	p.checkLiveWin()
+	g.player.hullSet = false
+	g.player.cHull = nil
+	g.player.laserOn = false
+	g.player.move()
+	g.player.managePowerUp()
+	g.player.fire()
+	g.player.moveOptions()
+	g.player.bullets.update()
+	g.player.updateBox()
+	g.player.checkLiveWin()
 }
 
 func (p *player) move() {

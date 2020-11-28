@@ -84,7 +84,11 @@ func (g *game) levelUpdate() {
 			}
 		} else {
 			// level finished
-			g.state = gameTransition
+			if g.state == gameInLevel1 {
+				g.state = gameTransition
+			} else {
+				g.state = gameFinished
+			}
 		}
 	} else {
 		if g.bossSet.numBosses == 0 {
