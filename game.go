@@ -51,60 +51,97 @@ const (
 
 func initGame() *game {
 
-	// images
+	loadFirstImages()
+	loadDurableImages()
+
+	// font
+	tt, err := opentype.Parse(fonts.Roboto)
+	if err != nil {
+		panic(err)
+	}
+
+	const dpi = 72
+	theFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
+		Size:    24,
+		DPI:     dpi,
+		Hinting: font.HintingFull,
+	})
+	if err != nil {
+		panic(err)
+	}
+	theBigFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
+		Size:    32,
+		DPI:     dpi,
+		Hinting: font.HintingFull,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	text.CacheGlyphs(theFont, "0123456789-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+	return &game{}
+}
+
+func disposeFirstImages() {
+	titleScreenImage.Dispose()
+}
+
+func loadFirstImages() {
 	img, _, err := ebitenutil.NewImageFromFile("assets/Titre.png")
 	if err != nil {
 		panic(err)
 	}
 	titleScreenImage = img
+}
+
+func loadDurableImages() {
+
+	img, _, err := ebitenutil.NewImageFromFile("assets/Vaisseau.png")
+	if err != nil {
+		panic(err)
+	}
+	playerImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Tir1.png")
+	if err != nil {
+		panic(err)
+	}
+	playerBulletImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Gros-tir.png")
+	if err != nil {
+		panic(err)
+	}
+	playerBigBulletImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Option.png")
+	if err != nil {
+		panic(err)
+	}
+	optionImage = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Laser1.png")
+	if err != nil {
+		panic(err)
+	}
+	laserImage1 = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Laser2.png")
+	if err != nil {
+		panic(err)
+	}
+	laserImage2 = img
+	img, _, err = ebitenutil.NewImageFromFile("assets/Laser3.png")
+	if err != nil {
+		panic(err)
+	}
+	laserImage3 = img
+	laserImage = laserImage1
 
 	img, _, err = ebitenutil.NewImageFromFile("assets/Tir2.png")
 	if err != nil {
 		panic(err)
 	}
 	enemyBasicBullet = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi1.png")
-	if err != nil {
-		panic(err)
-	}
-	staticEnemyImage = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi2.png")
-	if err != nil {
-		panic(err)
-	}
-	staticFiringEnemyImage = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi3.png")
-	if err != nil {
-		panic(err)
-	}
-	staticExplodingEnemyImage = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.png")
-	if err != nil {
-		panic(err)
-	}
-	movingFiringEnemyImage = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.2.png")
-	if err != nil {
-		panic(err)
-	}
-	movingFiringEnemyImage2 = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.3.png")
-	if err != nil {
-		panic(err)
-	}
-	movingFiringEnemyImage3 = img
-
-	img, _, err = ebitenutil.NewImageFromFile("assets/Boss1.png")
-	if err != nil {
-		panic(err)
-	}
-	boss1Image = img
 
 	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-aucun.png")
 	if err != nil {
@@ -141,39 +178,4 @@ func initGame() *game {
 		panic(err)
 	}
 	lifeImage = img
-
-	// font
-	tt, err := opentype.Parse(fonts.Roboto)
-	if err != nil {
-		panic(err)
-	}
-
-	const dpi = 72
-	theFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
-		Size:    24,
-		DPI:     dpi,
-		Hinting: font.HintingFull,
-	})
-	if err != nil {
-		panic(err)
-	}
-	theBigFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
-		Size:    32,
-		DPI:     dpi,
-		Hinting: font.HintingFull,
-	})
-	if err != nil {
-		panic(err)
-	}
-
-	text.CacheGlyphs(theFont, "0123456789-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-	return &game{
-		bulletSet:  initBulletSet(),
-		player:     initPlayer(),
-		enemySet:   initEnemySet(),
-		bossSet:    initBossSet(),
-		powerUpSet: initPowerUpSet(),
-		level:      initLevel(),
-	}
 }

@@ -38,6 +38,8 @@ func (g *game) introUpdate() {
 	if g.stateState >= introFinished && inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		g.stateFrame = 0
 		g.state = gameInLevel1
+		disposeFirstImages()
+		g.setUpLevel1()
 		return
 	}
 

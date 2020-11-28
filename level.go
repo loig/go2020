@@ -25,14 +25,9 @@ import (
 )
 
 type level struct {
-	firstPlan        *ebiten.Image
 	firstPlanHeight  int
-	secondPlan       *ebiten.Image
 	secondPlanHeight int
-	thirdPlan        *ebiten.Image
 	thirdPlanHeight  int
-	fourthPlan       *ebiten.Image
-	background       *ebiten.Image
 	spawnSequence    []spawn
 	currentSpawn     int
 	currentFrame     int
@@ -84,9 +79,12 @@ func (g *game) levelUpdate() {
 			}
 		} else {
 			// level finished
+			disposeLevelImages()
 			if g.state == gameInLevel1 {
+				disposeLevel1Enemies()
 				g.state = gameTransition
 			} else {
+				disposeLevel2Enemies()
 				g.state = gameFinished
 			}
 		}
@@ -107,21 +105,21 @@ func (l level) draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 
 	screen.DrawImage(
-		l.background,
+		levelBackground,
 		op,
 	)
 
 	fourthPlanShift := fourthPlanPxPerFrame * float64(l.currentFrame)
-	drawFourthPlan(screen, l.fourthPlan, fourthPlanShift)
+	drawFourthPlan(screen, levelFourthPlan, fourthPlanShift)
 
 	thirdPlanStart := (thirdPlanPxPerFrame * l.currentFrame) % planImageWidth
-	drawPlan(screen, l.thirdPlan, thirdPlanStart, l.thirdPlanHeight)
+	drawPlan(screen, levelThirdPlan, thirdPlanStart, l.thirdPlanHeight)
 
 	secondPlanStart := (secondPlanPxPerFrame * l.currentFrame) % planImageWidth
-	drawPlan(screen, l.secondPlan, secondPlanStart, l.secondPlanHeight)
+	drawPlan(screen, levelSecondPlan, secondPlanStart, l.secondPlanHeight)
 
 	firstPlanStart := (firstPlanPxPerFrame * l.currentFrame) % planImageWidth
-	drawPlan(screen, l.firstPlan, firstPlanStart, l.firstPlanHeight)
+	drawPlan(screen, levelFirstPlan, firstPlanStart, l.firstPlanHeight)
 }
 
 func drawPlan(screen, plan *ebiten.Image, start, planHeight int) {
@@ -150,4 +148,12 @@ func drawFourthPlan(screen, plan *ebiten.Image, shift float64) {
 		plan,
 		op,
 	)
+}
+
+func disposeLevelImages() {
+	levelFirstPlan.Dispose()
+	levelSecondPlan.Dispose()
+	levelThirdPlan.Dispose()
+	levelFourthPlan.Dispose()
+	levelBackground.Dispose()
 }

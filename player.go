@@ -28,10 +28,6 @@ import (
 )
 
 type player struct {
-	image            *ebiten.Image
-	fireImage        *ebiten.Image
-	bigFireImage     *ebiten.Image
-	laserImage       *ebiten.Image
 	x                float64
 	y                float64
 	vx               float64
@@ -107,13 +103,9 @@ const (
 )
 
 var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}
-var optionImage *ebiten.Image
-var laserImage1 *ebiten.Image
-var laserImage2 *ebiten.Image
-var laserImage3 *ebiten.Image
 
 func initPlayer() player {
-	var p player = player{
+	return player{
 		x: pInitX, y: pInitY,
 		xSize: pWidth, ySize: pHeight,
 		bullets:         initBulletSet(),
@@ -125,43 +117,6 @@ func initPlayer() player {
 		positionHistory: makePositionHistory(pInitX, pInitY),
 		lives:           pInitLives,
 	}
-	img, _, err := ebitenutil.NewImageFromFile("assets/Vaisseau.png")
-	if err != nil {
-		panic(err)
-	}
-	p.image = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Tir1.png")
-	if err != nil {
-		panic(err)
-	}
-	p.fireImage = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Gros-tir.png")
-	if err != nil {
-		panic(err)
-	}
-	p.bigFireImage = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Option.png")
-	if err != nil {
-		panic(err)
-	}
-	optionImage = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Laser1.png")
-	if err != nil {
-		panic(err)
-	}
-	laserImage1 = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Laser2.png")
-	if err != nil {
-		panic(err)
-	}
-	laserImage2 = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Laser3.png")
-	if err != nil {
-		panic(err)
-	}
-	laserImage3 = img
-	p.laserImage = laserImage1
-	return p
 }
 
 func (p *player) reset() {
@@ -181,15 +136,25 @@ func (p *player) reset() {
 	p.currentPowerUp = 0
 	p.allPowerUp = false
 	p.usedPowerUp = 0
-	p.laserImage = laserImage1
 	p.laserLevel = 0
+	laserImage = laserImage1
+}
+
+func (p *player) initialPosition() {
+	p.x = pInitX
+	p.y = pInitY
+	p.bullets = initBulletSet()
+	p.collision = false
+	p.lastBullet = 0
+	p.currentPosition = 0
+	p.positionHistory = makePositionHistory(pInitX, pInitY)
 }
 
 func (p player) draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(p.xmin(), p.ymin())
 	screen.DrawImage(
-		p.image,
+		playerImage,
 		op,
 	)
 	cHull := p.convexHull()
@@ -208,7 +173,7 @@ func (p player) draw(screen *ebiten.Image) {
 		op = &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(p.laser.xmin(), p.laser.y-laserImageHeight/2)
 		screen.DrawImage(
-			p.laserImage,
+			laserImage,
 			op,
 		)
 		currentMaxX := p.laser.xmin() + laserImageWidth
@@ -216,7 +181,7 @@ func (p player) draw(screen *ebiten.Image) {
 			op2 := &ebiten.DrawImageOptions{}
 			op2.GeoM.Translate(currentMaxX, p.laser.y-laserImageHeight/2)
 			screen.DrawImage(
-				p.laserImage.SubImage(image.Rect(laserImageOffset, 0, laserImageWidth, laserImageHeight)).(*ebiten.Image),
+				laserImage.SubImage(image.Rect(laserImageOffset, 0, laserImageWidth, laserImageHeight)).(*ebiten.Image),
 				op2,
 			)
 			currentMaxX += laserImageWidth - laserImageOffset
@@ -332,6 +297,12 @@ func (g *game) playerUpdate() {
 	if g.player.collision {
 		g.player.lives--
 		if g.player.lives <= 0 {
+			disposeLevelImages()
+			if g.state == gameInLevel1 {
+				disposeLevel1Enemies()
+			} else {
+				disposeLevel2Enemies()
+			}
 			g.state = gameOver
 		}
 		g.player.releasePowerUps(&(g.powerUpSet))
@@ -467,7 +438,7 @@ func (p *player) fire() {
 					x: p.x, y: p.y,
 					vx: pBulletSpeed, vy: pOtherBulletSpeed[bNum],
 					ax: 0, ay: 0,
-					image: p.fireImage,
+					image: playerBulletImage,
 				})
 			}
 		} else if p.currentFire == 1 {
@@ -475,7 +446,7 @@ func (p *player) fire() {
 				x: p.x, y: p.y,
 				vx: pBulletSpeed, vy: 0,
 				ax: 0, ay: 0,
-				image: p.bigFireImage,
+				image: playerBigBulletImage,
 			})
 		}
 		for oNum := 0; oNum < p.numOptions; oNum++ {
@@ -483,7 +454,7 @@ func (p *player) fire() {
 				x: p.options[oNum].x, y: p.options[oNum].y,
 				vx: pBulletSpeed, vy: 0,
 				ax: 0, ay: 0,
-				image: p.fireImage,
+				image: playerBulletImage,
 			})
 		}
 	}
@@ -541,11 +512,11 @@ func (p *player) applyPowerUp() {
 			p.laserLevel++
 			switch p.laserLevel {
 			case 0:
-				p.laserImage = laserImage1
+				laserImage = laserImage1
 			case 1:
-				p.laserImage = laserImage2
+				laserImage = laserImage2
 			case 2:
-				p.laserImage = laserImage3
+				laserImage = laserImage3
 			}
 		}
 	case 3:

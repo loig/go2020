@@ -30,6 +30,13 @@ const (
 
 var titleScreenImage *ebiten.Image
 
+// level graphics
+var levelFirstPlan *ebiten.Image
+var levelSecondPlan *ebiten.Image
+var levelThirdPlan *ebiten.Image
+var levelFourthPlan *ebiten.Image
+var levelBackground *ebiten.Image
+
 // enemy graphics
 var enemyBasicBullet *ebiten.Image
 var staticEnemyImage *ebiten.Image
@@ -53,3 +60,13 @@ var lifeImage *ebiten.Image
 // font
 var theFont font.Face
 var theBigFont font.Face
+
+// player graphics
+var optionImage *ebiten.Image
+var laserImage1 *ebiten.Image
+var laserImage2 *ebiten.Image
+var laserImage3 *ebiten.Image
+var laserImage *ebiten.Image
+var playerImage *ebiten.Image
+var playerBulletImage *ebiten.Image
+var playerBigBulletImage *ebiten.Image
