@@ -25,11 +25,24 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
-const framesPerText = 250
+const (
+	framesPerText       = 358
+	cutSceneInitTextPos = 200
+	cutSceneTextSep     = 50
+	cutSceneXTextPos    = 500
+)
 
 const (
-	introStart int = iota
-	introStep1
+	introStep1 int = iota
+	introStep2
+	introStep3
+	introStep4
+	introStep5
+	introStep6
+	introStep7
+	introStep8
+	introStep9
+	introStep10
 	introFinished
 )
 
@@ -39,7 +52,7 @@ func (g *game) introUpdate() {
 		g.stateFrame = 0
 		g.state = gameInLevel1
 		disposeFirstImages()
-		g.stopMusic()
+		g.fadeOutMusic(true)
 		infiniteMusic = music2
 		g.setUpLevel1()
 		return
@@ -54,6 +67,7 @@ func (g *game) introUpdate() {
 		g.stateFrame++
 		if g.stateFrame >= framesPerText {
 			g.stateState++
+			g.stateFrame = 0
 		}
 	}
 
@@ -61,9 +75,65 @@ func (g *game) introUpdate() {
 
 func (g *game) introDraw(screen *ebiten.Image) {
 
+	textPos := cutSceneInitTextPos
+
 	if g.stateState >= introStep1 {
-		text.Draw(screen, "Generations ago, they arrived.", theBigFont, 500, 200, color.White)
+		text.Draw(screen, "Generations ago, they arrived.", theBigFont, cutSceneXTextPos, textPos, color.White)
 	}
 
-	text.Draw(screen, "Press ENTER to continue", theBigFont, 1800, 1040, color.White)
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep2 {
+		text.Draw(screen, "Nobody knew where they came from.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep3 {
+		text.Draw(screen, "Nobody knew why they came here.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep4 {
+		text.Draw(screen, "Nobody knew nothing, but many died.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep5 {
+		text.Draw(screen, "For long we believed they would leave.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep6 {
+		text.Draw(screen, "After centuries we had to change our mind.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep7 {
+		text.Draw(screen, "I took us even more time to strike back.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep8 {
+		text.Draw(screen, "The overmind is on the moon, we know for sure.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep9 {
+		text.Draw(screen, "Destroying it will require sacrifices.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= introStep10 {
+		text.Draw(screen, "But first, we need to leave the ground.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	text.Draw(screen, "Press ENTER to continue", theBigFont, 1750, 1040, color.White)
 }

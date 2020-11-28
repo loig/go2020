@@ -29,9 +29,19 @@ import (
 )
 
 type soundManager struct {
-	audioContext *audio.Context
-	musicPlayer  *audio.Player
+	audioContext      *audio.Context
+	musicPlayer       *audio.Player
+	musicFadeOut      bool
+	musicDelay        bool
+	musicFadeOutFrame int
+	musicDelayFrame   int
 }
+
+const (
+	baseMusicVolume  = 1
+	fadeOutNumFrames = framesBeforeLevel
+	delayNumFrames   = 120
+)
 
 const (
 	playerShotSound int = iota
@@ -49,13 +59,30 @@ func (g *game) updateMusic() {
 			g.audio.musicPlayer.Rewind()
 			g.audio.musicPlayer.Play()
 		}
-	} else {
-		var error error
-		g.audio.musicPlayer, error = audio.NewPlayer(g.audio.audioContext, infiniteMusic)
-		if error != nil {
-			log.Panic("Audio problem:", error)
+		if g.audio.musicFadeOut {
+			g.audio.musicFadeOutFrame++
+			volume := baseMusicVolume * (1 - float64(g.audio.musicFadeOutFrame)/float64(fadeOutNumFrames))
+			g.audio.musicPlayer.SetVolume(volume)
+			if g.audio.musicFadeOutFrame >= fadeOutNumFrames {
+				g.audio.musicFadeOut = false
+				g.stopMusic()
+			}
 		}
-		g.audio.musicPlayer.Play()
+	} else {
+		if g.audio.musicDelay {
+			g.audio.musicDelayFrame++
+			if g.audio.musicDelayFrame >= delayNumFrames {
+				g.audio.musicDelay = false
+			}
+		} else {
+			var error error
+			g.audio.musicPlayer, error = audio.NewPlayer(g.audio.audioContext, infiniteMusic)
+			if error != nil {
+				log.Panic("Audio problem:", error)
+			}
+			g.audio.musicPlayer.SetVolume(baseMusicVolume)
+			g.audio.musicPlayer.Play()
+		}
 	}
 
 }
@@ -70,6 +97,14 @@ func (g *game) stopMusic() {
 		}
 		g.audio.musicPlayer = nil
 	}
+}
+
+// fade out the music
+func (g *game) fadeOutMusic(withDelay bool) {
+	g.audio.musicFadeOut = true
+	g.audio.musicFadeOutFrame = 0
+	g.audio.musicDelay = withDelay
+	g.audio.musicDelayFrame = 0
 }
 
 // play a sound

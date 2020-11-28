@@ -62,5 +62,5 @@ func (g *game) transitionDraw(screen *ebiten.Image) {
 		text.Draw(screen, "Leaving the earth was not easy.", theBigFont, 500, 200, color.White)
 	}
 
-	text.Draw(screen, "Press ENTER to continue", theBigFont, 1800, 1040, color.White)
+	text.Draw(screen, "Press ENTER to continue", theBigFont, 1750, 1040, color.White)
 }

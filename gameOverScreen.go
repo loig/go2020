@@ -43,5 +43,5 @@ func (g *game) gameOverDraw(screen *ebiten.Image) {
 
 	text.Draw(screen, "Game Over", theBigFont, 500, 200, color.White)
 
-	text.Draw(screen, "Press ENTER to restart", theBigFont, 1800, 1040, color.White)
+	text.Draw(screen, "Press ENTER to restart", theBigFont, 1750, 1040, color.White)
 }

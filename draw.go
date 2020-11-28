@@ -37,14 +37,16 @@ func (g *game) Draw(screen *ebiten.Image) {
 	case gameIntro:
 		g.introDraw(screen)
 	case gameInLevel1, gameInLevel2:
-		g.level.draw(screen)
-		g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
-		g.enemySet.draw(screen)
-		g.bossSet.draw(screen)
-		g.powerUpSet.draw(screen)
-		g.player.draw(screen)
-		g.bossSet.drawUI(screen)
-		g.player.drawUI(screen)
+		if g.stateFrame >= framesBeforeLevel {
+			g.level.draw(screen)
+			g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
+			g.enemySet.draw(screen)
+			g.bossSet.draw(screen)
+			g.powerUpSet.draw(screen)
+			g.player.draw(screen)
+			g.bossSet.drawUI(screen)
+			g.player.drawUI(screen)
+		}
 	case gameTransition:
 		g.transitionDraw(screen)
 	case gameFinished:

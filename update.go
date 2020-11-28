@@ -31,6 +31,9 @@ func (g *game) Update() error {
 	case gameIntro:
 		g.introUpdate()
 	case gameInLevel1, gameInLevel2:
+		if g.stateFrame < framesBeforeLevel {
+			g.stateFrame++
+		}
 		g.bulletSet.update()
 		g.enemySetUpdate()
 		g.bossSetUpdate()
