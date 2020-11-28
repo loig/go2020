@@ -26,8 +26,16 @@ import (
 )
 
 const (
-	transitionStart int = iota
-	transitionStep1
+	transitionStep1 int = iota
+	transitionStep2
+	transitionStep3
+	transitionStep4
+	transitionStep5
+	transitionStep6
+	transitionStep7
+	transitionStep8
+	transitionStep9
+	transitionStep10
 	transitionFinished
 )
 
@@ -35,10 +43,10 @@ func (g *game) transitionUpdate() {
 
 	if g.stateState >= transitionFinished && inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		g.stateFrame = 0
-		g.setUpLevel2()
-		g.stopMusic()
-		infiniteMusic = music2
 		g.state = gameInLevel2
+		g.fadeOutMusic(true)
+		infiniteMusic = music2
+		g.setUpLevel2()
 		return
 	}
 
@@ -50,6 +58,7 @@ func (g *game) transitionUpdate() {
 	if g.stateState < transitionFinished {
 		g.stateFrame++
 		if g.stateFrame >= framesPerText {
+			g.stateFrame = 0
 			g.stateState++
 		}
 	}
@@ -58,9 +67,71 @@ func (g *game) transitionUpdate() {
 
 func (g *game) transitionDraw(screen *ebiten.Image) {
 
+	textPos := cutSceneInitTextPos
+
 	if g.stateState >= transitionStep1 {
-		text.Draw(screen, "Leaving the earth was not easy.", theBigFont, 500, 200, color.White)
+		text.Draw(screen, "Leaving our earth was not easy.", theBigFont, cutSceneXTextPos, textPos, color.White)
 	}
 
-	text.Draw(screen, "Press ENTER to continue", theBigFont, 1750, 1040, color.White)
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep2 {
+		text.Draw(screen, "It took us many tries.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep3 {
+		text.Draw(screen, "Many years.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep4 {
+		text.Draw(screen, "Many generations in fact.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep5 {
+		text.Draw(screen, "But we made it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep6 {
+		text.Draw(screen, "Reaching the moon was even more difficult.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep7 {
+		text.Draw(screen, "But we made it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep8 {
+		text.Draw(screen, "The overmind is now in our reach.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep9 {
+		text.Draw(screen, "Killing it will require greater sacrifices.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	textPos += cutSceneTextSep
+
+	if g.stateState >= transitionStep10 {
+		text.Draw(screen, "But we will make it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+	}
+
+	enterColor := color.Gray16{0x555f}
+	s := "Press ENTER to skip"
+	if g.stateState >= transitionFinished {
+		enterColor = color.White
+		s = "Press ENTER to continue"
+	}
+	text.Draw(screen, s, theBigFont, 1750, 1040, enterColor)
 }

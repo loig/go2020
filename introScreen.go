@@ -120,7 +120,7 @@ func (g *game) introDraw(screen *ebiten.Image) {
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep8 {
-		text.Draw(screen, "The overmind is on the moon, we know for sure.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		text.Draw(screen, "Their overmind is on the moon, we know for sure.", theBigFont, cutSceneXTextPos, textPos, color.White)
 	}
 
 	textPos += cutSceneTextSep
@@ -132,7 +132,7 @@ func (g *game) introDraw(screen *ebiten.Image) {
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep10 {
-		text.Draw(screen, "But first, we need to leave the ground.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		text.Draw(screen, "As a first step, we need to leave the ground.", theBigFont, cutSceneXTextPos, textPos, color.White)
 	}
 
 	enterColor := color.Gray16{0x555f}
