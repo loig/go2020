@@ -26,6 +26,8 @@ import (
 )
 
 type game struct {
+	state      int
+	stateState int
 	bulletSet  bulletSet
 	player     player
 	enemySet   enemySet
@@ -33,6 +35,18 @@ type game struct {
 	powerUpSet powerUpSet
 	level      level
 }
+
+const (
+	gameWelcome int = iota
+	gameHelp
+	gameInfo
+	gameIntro
+	gameInLevel1
+	gameTransition
+	gameInLevel2
+	gameFinished
+	gameOver
+)
 
 func initGame() *game {
 
@@ -130,6 +144,14 @@ func initGame() *game {
 	const dpi = 72
 	theFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
 		Size:    24,
+		DPI:     dpi,
+		Hinting: font.HintingFull,
+	})
+	if err != nil {
+		panic(err)
+	}
+	theBigFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
+		Size:    32,
 		DPI:     dpi,
 		Hinting: font.HintingFull,
 	})

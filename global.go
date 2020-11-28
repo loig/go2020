@@ -50,3 +50,4 @@ var lifeImage *ebiten.Image
 
 // font
 var theFont font.Face
+var theBigFont font.Face

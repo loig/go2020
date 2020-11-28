@@ -19,13 +19,23 @@ package main
 
 func (g *game) Update() error {
 
-	g.bulletSet.update()
-	g.enemySet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points), g.level.bossBattle)
-	g.bossSet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
-	g.powerUpSet.update()
-	g.player.update(&(g.powerUpSet))
-	g.level.update(&(g.enemySet), &(g.bossSet), &(g.powerUpSet))
-	g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies, g.bossSet.bosses, g.powerUpSet.powerUps)
-
+	switch g.state {
+	case gameWelcome:
+		g.welcomeUpdate()
+	case gameHelp:
+	case gameInfo:
+	case gameIntro:
+	case gameInLevel1, gameInLevel2:
+		g.bulletSet.update()
+		g.enemySet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points), g.level.bossBattle)
+		g.bossSet.update(&(g.bulletSet), &(g.powerUpSet), &(g.player.points))
+		g.powerUpSet.update()
+		g.player.update(&(g.powerUpSet))
+		g.level.update(&(g.enemySet), &(g.bossSet), &(g.powerUpSet))
+		g.player.checkCollisions(g.bulletSet.bullets, g.enemySet.enemies, g.bossSet.bosses, g.powerUpSet.powerUps)
+	case gameTransition:
+	case gameFinished:
+	case gameOver:
+	}
 	return nil
 }
