@@ -26,7 +26,7 @@ import (
 )
 
 const (
-	framesPerText       = 358
+	framesPerText       = 178
 	cutSceneInitTextPos = 200
 	cutSceneTextSep     = 50
 	cutSceneXTextPos    = 500
@@ -135,5 +135,11 @@ func (g *game) introDraw(screen *ebiten.Image) {
 		text.Draw(screen, "But first, we need to leave the ground.", theBigFont, cutSceneXTextPos, textPos, color.White)
 	}
 
-	text.Draw(screen, "Press ENTER to continue", theBigFont, 1750, 1040, color.White)
+	enterColor := color.Gray16{0x555f}
+	s := "Press ENTER to skip"
+	if g.stateState >= introFinished {
+		enterColor = color.White
+		s = "Press ENTER to continue"
+	}
+	text.Draw(screen, s, theBigFont, 1750, 1040, enterColor)
 }
