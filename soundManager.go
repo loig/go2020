@@ -106,10 +106,13 @@ func (g *game) initAudio() {
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
-	tduration, _ := time.ParseDuration("30s")
+	tduration, _ := time.ParseDuration("10s")
 	duration := tduration.Seconds()
 	bytes := int64(math.Round(duration * 4 * float64(44100)))
-	music1 = audio.NewInfiniteLoop(sound, bytes)
+	tduration, _ = time.ParseDuration("10s")
+	duration = tduration.Seconds()
+	introBytes := int64(math.Round(duration * 4 * float64(44100)))
+	music1 = audio.NewInfiniteLoopWithIntro(sound, introBytes, bytes)
 
 	soundFile, error = ebitenutil.OpenFile("assets/level.mp3")
 	if error != nil {
@@ -119,10 +122,13 @@ func (g *game) initAudio() {
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
-	tduration, _ = time.ParseDuration("30s")
+	tduration, _ = time.ParseDuration("1m20s")
 	duration = tduration.Seconds()
 	bytes = int64(math.Round(duration * 4 * float64(44100)))
-	music2 = audio.NewInfiniteLoop(sound, bytes)
+	tduration, _ = time.ParseDuration("100ms")
+	duration = tduration.Seconds()
+	introBytes = int64(math.Round(duration * 4 * float64(44100)))
+	music2 = audio.NewInfiniteLoopWithIntro(sound, introBytes, bytes)
 	infiniteMusic = music2
 
 	// sounds
