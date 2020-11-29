@@ -155,11 +155,13 @@ func (p *player) initialPosition() {
 
 func (p player) draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(p.xmin(), p.ymin())
-	screen.DrawImage(
-		playerImage,
-		op,
-	)
+	if p.invincibleFrames <= 0 || (p.invincibleFrames/7)%2 == 0 {
+		op.GeoM.Translate(p.xmin(), p.ymin())
+		screen.DrawImage(
+			playerImage,
+			op,
+		)
+	}
 	cHull := p.convexHull()
 	hullColor := color.RGBA{255, 0, 0, 255}
 	if p.invincibleFrames > 0 {
