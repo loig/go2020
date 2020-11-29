@@ -217,8 +217,8 @@ func (g *game) enemySetUpdate() {
 }
 
 func (es *enemySet) draw(screen *ebiten.Image) {
-	for _, e := range es.enemies {
-		e.draw(screen)
+	for pos := 0; pos < es.numEnemies; pos++ {
+		es.enemies[pos].draw(screen)
 	}
 }
 

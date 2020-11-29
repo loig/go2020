@@ -175,7 +175,7 @@ func (bs *bulletSet) update() {
 }
 
 func (bs *bulletSet) draw(screen *ebiten.Image, color color.Color) {
-	for _, b := range bs.bullets {
-		b.draw(screen, color)
+	for pos := 0; pos < bs.numBullets; pos++ {
+		bs.bullets[pos].draw(screen, color)
 	}
 }

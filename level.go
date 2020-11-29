@@ -33,6 +33,8 @@ type level struct {
 	currentFrame     int
 	lastSpawnFrame   int
 	bossBattle       bool
+	endLevelFrames   int
+	endLevel         bool
 }
 
 type spawn struct {
@@ -52,34 +54,54 @@ const (
 	fourthPlanPxPerFrame = 0.25
 	planImageWidth       = 3824
 	framesBeforeLevel    = 180
+	framesAtEndOfLevel   = 180
 )
 
 func (g *game) levelUpdate() {
-	if !g.level.bossBattle {
-		g.level.currentFrame++
-		if g.level.currentSpawn < len(g.level.spawnSequence) {
-			if g.level.lastSpawnFrame+g.level.spawnSequence[g.level.currentSpawn].frameDelay == g.level.currentFrame {
-				for _, e := range g.level.spawnSequence[g.level.currentSpawn].enemies {
-					if e.enemyType >= midBoss1 {
-						g.bossSet.addBoss(e.enemyType, e.y)
-						if !g.level.bossBattle {
-							for ePos := 0; ePos < g.enemySet.numEnemies; ePos++ {
-								g.enemySet.enemies[ePos].vx += firstPlanPxPerFrame
-							}
-							for pPos := 0; pPos < g.powerUpSet.numPowerUps; pPos++ {
-								g.powerUpSet.powerUps[pPos].vx += firstPlanPxPerFrame
-							}
-							g.level.bossBattle = true
-						}
-					} else {
-						g.enemySet.addEnemy(e.enemyType, screenWidth-1, e.y)
-					}
-				}
-				g.level.currentSpawn++
-				g.level.lastSpawnFrame = g.level.currentFrame
-			}
-		} else {
+	if !g.level.bossBattle && !g.level.endLevel {
+		if g.level.currentSpawn >= len(g.level.spawnSequence) {
 			// level finished
+			g.level.endLevel = true
+			g.bulletSet.numBullets = 0
+			g.enemySet.numEnemies = 0
+			g.level.endLevelFrames = 0
+			g.audio.musicPlayer.SetVolume(0)
+			return
+		}
+		g.level.currentFrame++
+		if g.level.lastSpawnFrame+g.level.spawnSequence[g.level.currentSpawn].frameDelay == g.level.currentFrame {
+			for _, e := range g.level.spawnSequence[g.level.currentSpawn].enemies {
+				if e.enemyType >= midBoss1 {
+					g.bossSet.addBoss(e.enemyType, e.y)
+					if !g.level.bossBattle {
+						for ePos := 0; ePos < g.enemySet.numEnemies; ePos++ {
+							g.enemySet.enemies[ePos].vx += firstPlanPxPerFrame
+						}
+						for pPos := 0; pPos < g.powerUpSet.numPowerUps; pPos++ {
+							g.powerUpSet.powerUps[pPos].vx += firstPlanPxPerFrame
+						}
+						g.level.bossBattle = true
+					}
+				} else {
+					g.enemySet.addEnemy(e.enemyType, screenWidth-1, e.y)
+				}
+			}
+			g.level.currentSpawn++
+			g.level.lastSpawnFrame = g.level.currentFrame
+		}
+	} else if g.level.bossBattle {
+		if g.bossSet.numBosses == 0 {
+			g.level.bossBattle = false
+			for ePos := 0; ePos < g.enemySet.numEnemies; ePos++ {
+				g.enemySet.enemies[ePos].vx -= firstPlanPxPerFrame
+			}
+			for pPos := 0; pPos < g.powerUpSet.numPowerUps; pPos++ {
+				g.powerUpSet.powerUps[pPos].vx -= firstPlanPxPerFrame
+			}
+		}
+	} else if g.level.endLevel {
+		g.level.endLevelFrames++
+		if g.level.endLevelFrames >= framesAtEndOfLevel {
 			disposeLevelImages()
 			g.stopMusic()
 			g.stateState = 0
@@ -91,16 +113,6 @@ func (g *game) levelUpdate() {
 			} else {
 				disposeLevel2Enemies()
 				g.state = gameFinished
-			}
-		}
-	} else {
-		if g.bossSet.numBosses == 0 {
-			g.level.bossBattle = false
-			for ePos := 0; ePos < g.enemySet.numEnemies; ePos++ {
-				g.enemySet.enemies[ePos].vx -= firstPlanPxPerFrame
-			}
-			for pPos := 0; pPos < g.powerUpSet.numPowerUps; pPos++ {
-				g.powerUpSet.powerUps[pPos].vx -= firstPlanPxPerFrame
 			}
 		}
 	}

@@ -235,65 +235,65 @@ func (p *player) hasCollided() {
 	p.collision = true
 }
 
-func (p *player) checkCollisions(bs []*bullet, es []*enemy, bbs []*boss, ps []*powerUp) {
-	for oNum := 0; oNum < p.numOptions; oNum++ {
-		o := p.options[oNum]
-		for _, b := range bs {
-			collide(o, b)
+func (g *game) checkCollisions() {
+	for oNum := 0; oNum < g.player.numOptions; oNum++ {
+		o := g.player.options[oNum]
+		for pos := 0; pos < g.bulletSet.numBullets; pos++ {
+			collide(o, g.bulletSet.bullets[pos])
 		}
-		for _, e := range es {
-			collide(o, e)
+		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+			collide(o, g.enemySet.enemies[pos])
 		}
-		for _, b := range bbs {
-			for pos := 0; pos < len(b.hitBoxes); pos++ {
-				collide(o, &(b.hitBoxes[pos]))
+		for pos := 0; pos < g.bossSet.numBosses; pos++ {
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+				collide(o, &(g.bossSet.bosses[pos].hitBoxes[ppos]))
 			}
 		}
 	}
-	if p.invincibleFrames <= 0 {
-		for _, b := range bs {
-			collide(p, b)
+	if g.player.invincibleFrames <= 0 {
+		for pos := 0; pos < g.bulletSet.numBullets; pos++ {
+			collide(&(g.player), g.bulletSet.bullets[pos])
 		}
-		for _, e := range es {
-			collide(p, e)
+		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+			collide(&(g.player), g.enemySet.enemies[pos])
 		}
-		for _, b := range bbs {
-			for pos := 0; pos < len(b.hitBoxes); pos++ {
-				collide(p, &(b.hitBoxes[pos]))
+		for pos := 0; pos < g.bossSet.numBosses; pos++ {
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+				collide(&(g.player), &(g.bossSet.bosses[pos].hitBoxes[ppos]))
 			}
-			for pos := 0; pos < len(b.hurtBoxes); pos++ {
-				collide(p, &(b.hurtBoxes[pos]))
-			}
-		}
-	}
-	if p.laserOn {
-		for _, e := range es {
-			collide(&(p.laser), e)
-		}
-		for _, b := range bbs {
-			for pos := 0; pos < len(b.hitBoxes); pos++ {
-				collide(&(p.laser), &(b.hitBoxes[pos]))
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hurtBoxes); ppos++ {
+				collide(&(g.player), &(g.bossSet.bosses[pos].hurtBoxes[ppos]))
 			}
 		}
 	}
-	for _, b := range p.bullets.bullets {
-		for _, e := range es {
-			collide(b, e)
+	if g.player.laserOn {
+		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+			collide(&(g.player.laser), g.enemySet.enemies[pos])
 		}
-		for _, bb := range bbs {
-			for pos := 0; pos < len(bb.hitBoxes); pos++ {
-				collide(b, &(bb.hitBoxes[pos]))
+		for pos := 0; pos < g.bossSet.numBosses; pos++ {
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+				collide(&(g.player.laser), &(g.bossSet.bosses[pos].hitBoxes[ppos]))
+			}
+		}
+	}
+	for _, b := range g.player.bullets.bullets {
+		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+			collide(b, g.enemySet.enemies[pos])
+		}
+		for pos := 0; pos < g.bossSet.numBosses; pos++ {
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+				collide(b, &(g.bossSet.bosses[pos].hitBoxes[ppos]))
 			}
 		}
 		if b.isBig {
-			for _, bb := range bs {
-				collideNoHarm(b, bb)
+			for pos := 0; pos < g.bulletSet.numBullets; pos++ {
+				collideNoHarm(b, g.bulletSet.bullets[pos])
 			}
 		}
 	}
-	for _, pu := range ps {
-		if collideNoHarm(p, pu) {
-			p.getPowerUp()
+	for pos := 0; pos < g.powerUpSet.numPowerUps; pos++ {
+		if collideNoHarm(&(g.player), g.powerUpSet.powerUps[pos]) {
+			g.player.getPowerUp()
 		}
 	}
 }

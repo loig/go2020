@@ -112,7 +112,7 @@ func (ps *powerUpSet) update() {
 }
 
 func (ps *powerUpSet) draw(screen *ebiten.Image) {
-	for _, p := range ps.powerUps {
-		p.draw(screen)
+	for pos := 0; pos < ps.numPowerUps; pos++ {
+		ps.powerUps[pos].draw(screen)
 	}
 }
