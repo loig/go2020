@@ -18,13 +18,23 @@
 package main
 
 import (
+	"math/rand"
+
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
-	boss2Points               = 15000
-	boss2PV                   = 10 //750
-	boss2DeathAnimationFrames = 180
+	boss2Points                  = 15000
+	boss2PV                      = 10 //750
+	boss2DeathAnimationFrames    = 180
+	boss2BulletXShift            = -250
+	boss2BulletMaxY              = 900
+	boss2BulletMinY              = 200
+	boss2LastPhaseFramePerBullet = 50
+	boss2Phase1NumBullets        = 14
+	boss2Phase1NumBulletsMore    = 10
+	boss2Phase1FramePerBullet    = 150
+	boss2Phase1BulletSpeed       = 3
 )
 
 func makeBoss2(y float64) boss {
@@ -105,7 +115,41 @@ func (b *boss) boss2Update(bs *bulletSet, p *player) bool {
 		}
 		b.x -= 5
 	case 1:
+		b.frame++
+		if b.frame >= boss2Phase1FramePerBullet {
+			b.frame = 0
+			noBulletNum := rand.Intn(boss2Phase1NumBullets-2) + 1
+			for bNum := 0; bNum < boss2Phase1NumBullets; bNum++ {
+				if bNum != noBulletNum {
+					y := float64(boss2BulletMinY) + float64(bNum*(boss2BulletMaxY-boss2BulletMinY))/float64(boss2Phase1NumBullets-1)
+					bs.addBullet(bullet{
+						x:     b.x + boss2BulletXShift,
+						y:     y,
+						vx:    -boss2Phase1BulletSpeed,
+						vy:    0,
+						image: enemyBasicBullet,
+					})
+				}
+			}
+			for bNum := 0; bNum < boss2Phase1NumBulletsMore; bNum++ {
+				bs.addBullet(bullet{
+					x:     b.x + boss2BulletXShift,
+					y:     boss2BulletMaxY,
+					vx:    -boss2Phase1BulletSpeed,
+					vy:    +0.125 * float64(bNum),
+					image: enemyBasicBullet,
+				})
+				bs.addBullet(bullet{
+					x:     b.x + boss2BulletXShift,
+					y:     boss2BulletMinY,
+					vx:    -boss2Phase1BulletSpeed,
+					vy:    -0.125 * float64(bNum),
+					image: enemyBasicBullet,
+				})
+			}
+		}
 	case 100:
+		b.frame++
 		hb := bossHitBox{
 			x:     b.x,
 			xrel:  120,
@@ -123,6 +167,18 @@ func (b *boss) boss2Update(bs *bulletSet, p *player) bool {
 		hb.updateBox()
 		if collideNoHarm(p, &hb) {
 			b.pv = 0
+		}
+		if b.frame > boss2LastPhaseFramePerBullet {
+			y := float64(rand.Intn(boss2BulletMaxY-boss2BulletMinY+1) + boss2BulletMinY)
+			vy := float64(rand.Intn(5) - 2)
+			bs.addBullet(bullet{
+				x:     b.x + boss2BulletXShift,
+				y:     y,
+				vx:    -2,
+				vy:    vy,
+				image: enemyBasicBullet,
+			})
+			b.frame = 0
 		}
 	}
 	return false
