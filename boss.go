@@ -101,16 +101,6 @@ func (b *bossHitBox) hasCollided() {
 }
 
 func (b *boss) update(g *game) {
-	var hasFired bool
-	switch b.bossType {
-	case midBoss1:
-		hasFired = b.midBoss1Update(&(g.bulletSet))
-	case boss1:
-		hasFired = b.boss1Update(&(g.bulletSet))
-	}
-	if hasFired {
-		g.playSound(enemyShotSound)
-	}
 	var wasHurt bool
 	for pos := 0; pos < len(b.hitBoxes); pos++ {
 		b.pv -= b.hitBoxes[pos].collisions
@@ -122,7 +112,19 @@ func (b *boss) update(g *game) {
 	if wasHurt {
 		g.playSound(bossHurtSound)
 	}
-	if b.x+b.hitBoxes[0].xrel != b.hitBoxes[0].x || b.y+b.hitBoxes[0].yrel != b.hitBoxes[0].y {
+	var hasFired bool
+	switch b.bossType {
+	case midBoss1:
+		hasFired = b.midBoss1Update(&(g.bulletSet))
+	case boss1:
+		hasFired = b.boss1Update(&(g.bulletSet))
+	case boss2:
+		hasFired = b.boss2Update(&(g.bulletSet), &(g.player))
+	}
+	if hasFired {
+		g.playSound(enemyShotSound)
+	}
+	if len(b.hitBoxes) > 0 && (b.x+b.hitBoxes[0].xrel != b.hitBoxes[0].x || b.y+b.hitBoxes[0].yrel != b.hitBoxes[0].y) {
 		for pos := 0; pos < len(b.hitBoxes); pos++ {
 			b.hitBoxes[pos].x = b.x + b.hitBoxes[pos].xrel
 			b.hitBoxes[pos].y = b.y + b.hitBoxes[pos].yrel
@@ -144,6 +146,8 @@ func (b *boss) draw(screen *ebiten.Image) {
 		b.midBoss1Draw(screen)
 	case boss1:
 		b.boss1Draw(screen)
+	case boss2:
+		b.boss2Draw(screen)
 	}
 	if isDebug() {
 		if !b.isDead() {
@@ -252,6 +256,8 @@ func (bs *bossSet) addBoss(bossType int, y float64) {
 		b = makeMidBoss1(y)
 	case boss1:
 		b = makeBoss1(y)
+	case boss2:
+		b = makeBoss2(y)
 	}
 	bs.totalPvMax += b.pv
 	bs.bosses = append(bs.bosses, &b)

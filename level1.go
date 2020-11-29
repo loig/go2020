@@ -127,13 +127,6 @@ func loadLevel1Background() {
 var level1SpawnSequence []spawn = []spawn{
 	spawn{
 		enemies: []enemySpawn{
-			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 2},
-		},
-		frameDelay: 600,
-	},
-
-	spawn{
-		enemies: []enemySpawn{
 			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
 		},
 		frameDelay: 600,
@@ -502,7 +495,7 @@ var level1SpawnSequence []spawn = []spawn{
 		enemies: []enemySpawn{
 			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 2},
 		},
-		frameDelay: 500,
+		frameDelay: 525,
 	},
 	// Part 2
 	spawn{
@@ -1108,6 +1101,6 @@ var level1SpawnSequence []spawn = []spawn{
 		enemies: []enemySpawn{
 			enemySpawn{enemyType: boss1, y: float64(screenHeight) / 2},
 		},
-		frameDelay: 550,
+		frameDelay: 600,
 	},
 }

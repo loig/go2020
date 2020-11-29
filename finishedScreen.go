@@ -27,8 +27,7 @@ import (
 )
 
 const (
-	finishedStart int = iota
-	finishedStep1
+	finishedStep1 int = iota
 	finishedStep2
 	finishedStep3
 	finishedStep4

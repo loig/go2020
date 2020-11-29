@@ -32,6 +32,7 @@ const (
 	movingFiringEnemy
 	midBoss1
 	boss1
+	boss2
 )
 
 const (
@@ -59,7 +60,7 @@ func makeStaticEnemy(x, y float64) enemy {
 		vx: -firstPlanPxPerFrame + xSpeed, vy: ySpeed,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
-		powerUpProba: 12,
+		powerUpProba: 15,
 		hullAt00: []point{
 			point{-xSize/2 + 7, -ySize/2 + 7},
 			point{-xSize/2 + 7, ySize / 2},
@@ -83,7 +84,7 @@ func makeStaticExplodingEnemy(x, y float64) enemy {
 		vx: -firstPlanPxPerFrame + xSpeed, vy: ySpeed,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
-		powerUpProba: 6,
+		powerUpProba: 8,
 		hullAt00: []point{
 			point{-xSize / 2, -ySize / 2},
 			point{-xSize / 2, ySize / 2},
@@ -115,7 +116,7 @@ func makeStaticFiringEnemy(x, y float64) enemy {
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
-		powerUpProba: 8,
+		powerUpProba: 10,
 		hullAt00: []point{
 			point{-xSize / 4, -ySize/3 - 3},
 			point{-xSize / 4, ySize/3 + 5},
@@ -150,7 +151,7 @@ func makeStaticFiringUpEnemy(x, y float64) enemy {
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
-		powerUpProba: 8,
+		powerUpProba: 10,
 		hullAt00: []point{
 			point{-xSize/3 - 5, -ySize / 4},
 			point{-xSize / 7, ySize / 2},
@@ -185,7 +186,7 @@ func makeStaticFiringDownEnemy(x, y float64) enemy {
 		vx: -firstPlanPxPerFrame, vy: 0,
 		xSize: xSize, ySize: ySize,
 		pv:           1,
-		powerUpProba: 8,
+		powerUpProba: 10,
 		hullAt00: []point{
 			point{-xSize / 7, -ySize / 2},
 			point{-xSize/3 - 3, ySize / 4},
