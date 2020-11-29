@@ -54,7 +54,7 @@ const (
 	fourthPlanPxPerFrame = 0.25
 	planImageWidth       = 3824
 	framesBeforeLevel    = 180
-	framesAtEndOfLevel   = 180
+	framesAtEndOfLevel   = 240
 )
 
 func (g *game) levelUpdate() {

@@ -87,3 +87,66 @@ func intersectHulls(o collidableObject, oo collidableObject) bool {
 	}
 	return true
 }
+
+func (g *game) checkCollisions() {
+	for oNum := 0; oNum < g.player.numOptions; oNum++ {
+		o := g.player.options[oNum]
+		for pos := 0; pos < g.bulletSet.numBullets; pos++ {
+			collide(o, g.bulletSet.bullets[pos])
+		}
+		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+			collide(o, g.enemySet.enemies[pos])
+		}
+		for pos := 0; pos < g.bossSet.numBosses; pos++ {
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+				collide(o, &(g.bossSet.bosses[pos].hitBoxes[ppos]))
+			}
+		}
+	}
+	if g.player.invincibleFrames <= 0 {
+		for pos := 0; pos < g.bulletSet.numBullets; pos++ {
+			collide(&(g.player), g.bulletSet.bullets[pos])
+		}
+		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+			collide(&(g.player), g.enemySet.enemies[pos])
+		}
+		for pos := 0; pos < g.bossSet.numBosses; pos++ {
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+				collide(&(g.player), &(g.bossSet.bosses[pos].hitBoxes[ppos]))
+			}
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hurtBoxes); ppos++ {
+				collide(&(g.player), &(g.bossSet.bosses[pos].hurtBoxes[ppos]))
+			}
+		}
+	}
+	if g.player.laserOn {
+		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+			collide(&(g.player.laser), g.enemySet.enemies[pos])
+		}
+		for pos := 0; pos < g.bossSet.numBosses; pos++ {
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+				collide(&(g.player.laser), &(g.bossSet.bosses[pos].hitBoxes[ppos]))
+			}
+		}
+	}
+	for _, b := range g.player.bullets.bullets {
+		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+			collide(b, g.enemySet.enemies[pos])
+		}
+		for pos := 0; pos < g.bossSet.numBosses; pos++ {
+			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+				collide(b, &(g.bossSet.bosses[pos].hitBoxes[ppos]))
+			}
+		}
+		if b.isBig {
+			for pos := 0; pos < g.bulletSet.numBullets; pos++ {
+				collideNoHarm(b, g.bulletSet.bullets[pos])
+			}
+		}
+	}
+	for pos := 0; pos < g.powerUpSet.numPowerUps; pos++ {
+		if collideNoHarm(&(g.player), g.powerUpSet.powerUps[pos]) {
+			g.player.getPowerUp()
+		}
+	}
+}

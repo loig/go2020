@@ -38,6 +38,7 @@ const (
 	boss1Phase2NumFramePerShot = 15
 	boss1Phase2BulletYSpeed    = 0.5
 	boss1NumBulletsPhase2      = 6
+	boss1DeathAnimationFrames  = 180
 )
 
 func makeBoss1(y float64) boss {
@@ -105,15 +106,16 @@ func makeBoss1(y float64) boss {
 	}
 	hurtb2.updateBox()
 	return boss{
-		x:         x,
-		xSize:     1224,
-		y:         y,
-		ySize:     1000,
-		pv:        boss1PV,
-		bossType:  boss1,
-		points:    boss1Points,
-		hitBoxes:  []bossHitBox{hitb1, hitb2},
-		hurtBoxes: []bossHitBox{hurtb1, hurtb2},
+		x:              x,
+		xSize:          1224,
+		y:              y,
+		ySize:          1000,
+		pv:             boss1PV,
+		bossType:       boss1,
+		points:         boss1Points,
+		hitBoxes:       []bossHitBox{hitb1, hitb2},
+		hurtBoxes:      []bossHitBox{hurtb1, hurtb2},
+		numDeathFrames: boss1DeathAnimationFrames,
 	}
 }
 
@@ -228,6 +230,10 @@ func (b boss) phase2AddBullets(bs *bulletSet) {
 func (b *boss) boss1Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(b.x-b.xSize/2, b.y-b.ySize/2)
+	if b.pv <= 0 {
+		alpha := float64(b.deathAnimationFrame) / float64(b.numDeathFrames)
+		op.ColorM.Translate(0, 0, 0, -alpha)
+	}
 	screen.DrawImage(
 		boss1Image,
 		op,
