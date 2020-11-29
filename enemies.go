@@ -86,10 +86,10 @@ func makeStaticExplodingEnemy(x, y float64) enemy {
 		pv:           1,
 		powerUpProba: 8,
 		hullAt00: []point{
-			point{-xSize / 2, -ySize / 2},
-			point{-xSize / 2, ySize / 2},
-			point{xSize / 2, ySize / 2},
-			point{xSize / 2, -ySize / 2},
+			point{-xSize/2 + 7, -ySize/2 + 7},
+			point{-xSize/2 + 7, ySize / 2},
+			point{xSize/2 - 2, ySize / 2},
+			point{xSize/2 - 2, -ySize/2 + 7},
 		},
 		deathBlow: []bullet{
 			bullet{vx: -10},

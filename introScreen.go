@@ -50,13 +50,11 @@ func (g *game) introUpdate() {
 
 	if g.stateState >= introFinished && inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		g.stateFrame = 0
-		//g.state = gameInLevel1
-		g.state = gameInLevel2
+		g.state = gameInLevel1
 		disposeFirstImages()
 		g.fadeOutMusic(true)
 		infiniteMusic = music2
-		//g.setUpLevel1()
-		g.setUpLevel2()
+		g.setUpLevel1()
 		return
 	}
 

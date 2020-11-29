@@ -25,8 +25,8 @@ import (
 )
 
 const (
-	oSizex = 30
-	oSizey = 30
+	oSizex = 35
+	oSizey = 35
 )
 
 type option struct {
@@ -52,10 +52,10 @@ func (o option) ymax() float64 {
 
 func (o option) convexHull() []point {
 	return []point{
-		point{o.xmin(), o.ymin()},
-		point{o.xmax(), o.ymin()},
-		point{o.xmax(), o.ymax()},
-		point{o.xmin(), o.ymax()},
+		point{o.xmin() + 2, o.ymin() + 2},
+		point{o.xmax() - 2, o.ymin() + 2},
+		point{o.xmax() - 2, o.ymax() - 2},
+		point{o.xmin() + 2, o.ymax() - 2},
 	}
 }
 

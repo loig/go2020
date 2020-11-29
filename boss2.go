@@ -97,16 +97,17 @@ func makeBoss2(y float64) boss {
 	}
 	hurtB2.updateBox()
 	return boss{
-		x:              x,
-		xSize:          711,
-		y:              y + 30,
-		ySize:          825,
-		pv:             boss2PV,
-		bossType:       boss2,
-		points:         boss2Points,
-		hitBoxes:       []bossHitBox{hitB1},
-		hurtBoxes:      []bossHitBox{hurtB1, hurtB2},
-		numDeathFrames: boss2DeathAnimationFrames,
+		x:                        x,
+		xSize:                    711,
+		y:                        y + 30,
+		ySize:                    825,
+		pv:                       boss2PV,
+		bossType:                 boss2,
+		points:                   boss2Points,
+		hitBoxes:                 []bossHitBox{hitB1},
+		hurtBoxes:                []bossHitBox{hurtB1, hurtB2},
+		numDeathFrames:           boss2DeathAnimationFrames,
+		invulnerabilityNumFrames: 2,
 	}
 }
 

@@ -32,8 +32,7 @@ func (g *game) setUpLevel2() {
 
 	g.level = l
 	g.bulletSet = initBulletSet()
-	//g.player.initialPosition()
-	g.player = initPlayer()
+	g.player.initialPosition()
 	g.enemySet = initEnemySet()
 	g.bossSet = initBossSet()
 	g.powerUpSet = initPowerUpSet()
@@ -126,734 +125,6 @@ func loadLevel2Background() {
 }
 
 var level2SpawnSequence []spawn = []spawn{
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 13},
-		},
-		frameDelay: 250,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 3},
-		},
-		frameDelay: 35,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 3},
-		},
-		frameDelay: 24,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(10*screenHeight) / 14},
-		},
-		frameDelay: 38,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 8},
-		},
-		frameDelay: 27,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 7},
-		},
-		frameDelay: 18,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(8*screenHeight) / 14},
-		},
-		frameDelay: 17,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 11,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(3*screenHeight) / 4},
-		},
-		frameDelay: 19,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(6*screenHeight) / 14},
-		},
-		frameDelay: 55,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(11*screenHeight) / 15},
-		},
-		frameDelay: 44,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(2*screenHeight) / 15},
-		},
-		frameDelay: 68,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 6},
-		},
-		frameDelay: 67,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(10*screenHeight) / 11},
-		},
-		frameDelay: 50,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 10},
-		},
-		frameDelay: 53,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 13},
-		},
-		frameDelay: 55,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 3},
-		},
-		frameDelay: 51,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(3*screenHeight) / 10},
-		},
-		frameDelay: 53,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
-		},
-		frameDelay: 37,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(8*screenHeight) / 9},
-		},
-		frameDelay: 26,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 5},
-		},
-		frameDelay: 47,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 13},
-		},
-		frameDelay: 63,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(11*screenHeight) / 13},
-		},
-		frameDelay: 48,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(6*screenHeight) / 8},
-		},
-		frameDelay: 10,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 14},
-		},
-		frameDelay: 35,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 25,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
-		},
-		frameDelay: 20,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 28,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 3},
-		},
-		frameDelay: 34,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 4},
-		},
-		frameDelay: 61,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(11*screenHeight) / 13},
-		},
-		frameDelay: 31,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 3},
-		},
-		frameDelay: 63,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 6},
-		},
-		frameDelay: 22,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 12},
-		},
-		frameDelay: 37,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 10},
-		},
-		frameDelay: 34,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(8*screenHeight) / 11},
-		},
-		frameDelay: 62,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(12*screenHeight) / 13},
-		},
-		frameDelay: 30,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 13},
-		},
-		frameDelay: 50,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 6},
-		},
-		frameDelay: 15,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 8},
-		},
-		frameDelay: 32,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 9},
-		},
-		frameDelay: 68,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 14},
-		},
-		frameDelay: 52,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 5},
-		},
-		frameDelay: 16,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 7},
-		},
-		frameDelay: 54,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 9},
-		},
-		frameDelay: 61,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 12},
-		},
-		frameDelay: 50,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 7},
-		},
-		frameDelay: 40,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 9},
-		},
-		frameDelay: 15,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 16},
-		},
-		frameDelay: 58,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 7},
-		},
-		frameDelay: 30,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 11},
-		},
-		frameDelay: 21,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 13},
-		},
-		frameDelay: 69,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 9},
-		},
-		frameDelay: 38,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 10},
-		},
-		frameDelay: 68,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(3*screenHeight) / 6},
-		},
-		frameDelay: 47,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 63,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 4},
-		},
-		frameDelay: 20,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 3},
-		},
-		frameDelay: 50,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(6*screenHeight) / 9},
-		},
-		frameDelay: 51,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 12},
-		},
-		frameDelay: 64,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 31,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 8},
-		},
-		frameDelay: 69,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 15},
-		},
-		frameDelay: 14,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(11*screenHeight) / 16},
-		},
-		frameDelay: 69,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 50,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(14*screenHeight) / 16},
-		},
-		frameDelay: 45,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 13},
-		},
-		frameDelay: 24,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(5*screenHeight) / 7},
-		},
-		frameDelay: 48,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 6},
-		},
-		frameDelay: 64,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 11},
-		},
-		frameDelay: 16,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(12*screenHeight) / 14},
-		},
-		frameDelay: 52,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 4},
-		},
-		frameDelay: 15,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 6},
-		},
-		frameDelay: 59,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 13},
-		},
-		frameDelay: 61,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 10},
-		},
-		frameDelay: 49,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 10},
-		},
-		frameDelay: 38,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 6},
-		},
-		frameDelay: 65,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 3},
-		},
-		frameDelay: 36,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 11},
-		},
-		frameDelay: 49,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 5},
-		},
-		frameDelay: 57,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 6},
-		},
-		frameDelay: 41,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 15},
-		},
-		frameDelay: 46,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 9},
-		},
-		frameDelay: 46,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 59,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 9},
-		},
-		frameDelay: 59,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 6},
-		},
-		frameDelay: 32,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 23,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 55,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 11},
-		},
-		frameDelay: 46,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 12},
-		},
-		frameDelay: 27,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 5},
-		},
-		frameDelay: 43,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 5},
-		},
-		frameDelay: 15,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 6},
-		},
-		frameDelay: 13,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 5},
-		},
-		frameDelay: 23,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 4},
-		},
-		frameDelay: 18,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 13},
-		},
-		frameDelay: 36,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 13},
-		},
-		frameDelay: 67,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 6},
-		},
-		frameDelay: 20,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
-		},
-		frameDelay: 14,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 5},
-		},
-		frameDelay: 26,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(10*screenHeight) / 14},
-		},
-		frameDelay: 64,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(5*screenHeight) / 11},
-		},
-		frameDelay: 10,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 16},
-		},
-		frameDelay: 14,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(6*screenHeight) / 10},
-		},
-		frameDelay: 45,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(15*screenHeight) / 16},
-		},
-		frameDelay: 55,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 13},
-		},
-		frameDelay: 41,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 11},
-		},
-		frameDelay: 45,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 9},
-		},
-		frameDelay: 67,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 10},
-		},
-		frameDelay: 29,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(6*screenHeight) / 7},
-		},
-		frameDelay: 16,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 11},
-		},
-		frameDelay: 64,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 10},
-		},
-		frameDelay: 20,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 7},
-		},
-		frameDelay: 13,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 16},
-		},
-		frameDelay: 55,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 10},
-		},
-		frameDelay: 64,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 11},
-		},
-		frameDelay: 57,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
-		},
-		frameDelay: 17,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 11},
-		},
-		frameDelay: 30,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 8},
-		},
-		frameDelay: 43,
-	},
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: staticExplodingEnemy, y: float64(2*screenHeight) / 3},
-		},
-		frameDelay: 20,
-	},
-
-	spawn{
-		enemies: []enemySpawn{
-			enemySpawn{enemyType: boss2, y: float64(screenHeight) / 2},
-		},
-		frameDelay: 450,
-	},
-
 	spawn{
 		enemies: []enemySpawn{
 			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 13},
@@ -1407,6 +678,877 @@ var level2SpawnSequence []spawn = []spawn{
 		enemies: []enemySpawn{
 			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 5},
 			enemySpawn{enemyType: midBoss1, y: float64(4*screenHeight) / 5},
+		},
+		frameDelay: 450,
+	},
+	// Part 2
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 13},
+		},
+		frameDelay: 250,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 3},
+		},
+		frameDelay: 35,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 3},
+		},
+		frameDelay: 24,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(10*screenHeight) / 14},
+		},
+		frameDelay: 38,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 8},
+		},
+		frameDelay: 27,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 7},
+		},
+		frameDelay: 18,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(8*screenHeight) / 14},
+		},
+		frameDelay: 17,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 11,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(3*screenHeight) / 4},
+		},
+		frameDelay: 19,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(6*screenHeight) / 14},
+		},
+		frameDelay: 55,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(11*screenHeight) / 15},
+		},
+		frameDelay: 44,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(2*screenHeight) / 15},
+		},
+		frameDelay: 68,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 6},
+		},
+		frameDelay: 67,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(10*screenHeight) / 11},
+		},
+		frameDelay: 50,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 10},
+		},
+		frameDelay: 53,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 13},
+		},
+		frameDelay: 55,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 3},
+		},
+		frameDelay: 51,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(3*screenHeight) / 10},
+		},
+		frameDelay: 53,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
+		},
+		frameDelay: 37,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(8*screenHeight) / 9},
+		},
+		frameDelay: 26,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 5},
+		},
+		frameDelay: 47,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 13},
+		},
+		frameDelay: 63,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(11*screenHeight) / 13},
+		},
+		frameDelay: 48,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(6*screenHeight) / 8},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 14},
+		},
+		frameDelay: 35,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 25,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
+		},
+		frameDelay: 20,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 28,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 3},
+		},
+		frameDelay: 34,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 4},
+		},
+		frameDelay: 61,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(11*screenHeight) / 13},
+		},
+		frameDelay: 31,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 3},
+		},
+		frameDelay: 63,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 6},
+		},
+		frameDelay: 22,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 12},
+		},
+		frameDelay: 37,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 10},
+		},
+		frameDelay: 34,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(8*screenHeight) / 11},
+		},
+		frameDelay: 62,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(12*screenHeight) / 13},
+		},
+		frameDelay: 30,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 13},
+		},
+		frameDelay: 50,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 6},
+		},
+		frameDelay: 15,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 8},
+		},
+		frameDelay: 32,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 9},
+		},
+		frameDelay: 68,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 14},
+		},
+		frameDelay: 52,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 5},
+		},
+		frameDelay: 16,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 7},
+		},
+		frameDelay: 54,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 9},
+		},
+		frameDelay: 61,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 12},
+		},
+		frameDelay: 50,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 7},
+		},
+		frameDelay: 40,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 9},
+		},
+		frameDelay: 15,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 16},
+		},
+		frameDelay: 58,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 7},
+		},
+		frameDelay: 30,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 11},
+		},
+		frameDelay: 21,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 13},
+		},
+		frameDelay: 69,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 9},
+		},
+		frameDelay: 38,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 10},
+		},
+		frameDelay: 68,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(3*screenHeight) / 6},
+		},
+		frameDelay: 47,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 63,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 4},
+		},
+		frameDelay: 20,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 3},
+		},
+		frameDelay: 50,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(6*screenHeight) / 9},
+		},
+		frameDelay: 51,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 12},
+		},
+		frameDelay: 64,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 31,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 8},
+		},
+		frameDelay: 69,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 15},
+		},
+		frameDelay: 14,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(11*screenHeight) / 16},
+		},
+		frameDelay: 69,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 50,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(14*screenHeight) / 16},
+		},
+		frameDelay: 45,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 13},
+		},
+		frameDelay: 24,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(5*screenHeight) / 7},
+		},
+		frameDelay: 48,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 6},
+		},
+		frameDelay: 64,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 11},
+		},
+		frameDelay: 16,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(12*screenHeight) / 14},
+		},
+		frameDelay: 52,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 4},
+		},
+		frameDelay: 15,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 6},
+		},
+		frameDelay: 59,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 13},
+		},
+		frameDelay: 61,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 10},
+		},
+		frameDelay: 49,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 10},
+		},
+		frameDelay: 38,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 6},
+		},
+		frameDelay: 65,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 3},
+		},
+		frameDelay: 36,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 11},
+		},
+		frameDelay: 49,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 5},
+		},
+		frameDelay: 57,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 6},
+		},
+		frameDelay: 41,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 15},
+		},
+		frameDelay: 46,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(5*screenHeight) / 9},
+		},
+		frameDelay: 46,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 59,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 9},
+		},
+		frameDelay: 59,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 6},
+		},
+		frameDelay: 32,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 23,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 55,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 11},
+		},
+		frameDelay: 46,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 12},
+		},
+		frameDelay: 27,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 5},
+		},
+		frameDelay: 43,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 5},
+		},
+		frameDelay: 15,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 6},
+		},
+		frameDelay: 13,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 5},
+		},
+		frameDelay: 23,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 4},
+		},
+		frameDelay: 18,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 13},
+		},
+		frameDelay: 36,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 13},
+		},
+		frameDelay: 67,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 6},
+		},
+		frameDelay: 20,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
+		},
+		frameDelay: 14,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 5},
+		},
+		frameDelay: 26,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(10*screenHeight) / 14},
+		},
+		frameDelay: 64,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(5*screenHeight) / 11},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 16},
+		},
+		frameDelay: 14,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(6*screenHeight) / 10},
+		},
+		frameDelay: 45,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(15*screenHeight) / 16},
+		},
+		frameDelay: 55,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 13},
+		},
+		frameDelay: 41,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(4*screenHeight) / 11},
+		},
+		frameDelay: 45,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 9},
+		},
+		frameDelay: 67,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(7*screenHeight) / 10},
+		},
+		frameDelay: 29,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(6*screenHeight) / 7},
+		},
+		frameDelay: 16,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(4*screenHeight) / 11},
+		},
+		frameDelay: 64,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 10},
+		},
+		frameDelay: 20,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 7},
+		},
+		frameDelay: 13,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(8*screenHeight) / 16},
+		},
+		frameDelay: 55,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(4*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(10*screenHeight) / 20},
+			enemySpawn{enemyType: movingFiringEnemy, y: float64(16*screenHeight) / 20},
+		},
+		frameDelay: 10,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 10},
+		},
+		frameDelay: 64,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(2*screenHeight) / 11},
+		},
+		frameDelay: 57,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(1*screenHeight) / 2},
+		},
+		frameDelay: 17,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticEnemy, y: float64(9*screenHeight) / 11},
+		},
+		frameDelay: 30,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(7*screenHeight) / 8},
+		},
+		frameDelay: 43,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: staticExplodingEnemy, y: float64(2*screenHeight) / 3},
+		},
+		frameDelay: 20,
+	},
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: boss2, y: float64(screenHeight) / 2},
 		},
 		frameDelay: 450,
 	},

@@ -25,21 +25,24 @@ import (
 )
 
 type boss struct {
-	x                   float64
-	xSize               float64
-	y                   float64
-	ySize               float64
-	pv                  int
-	phase               int
-	phaseLoop           int
-	phaseInfo           int
-	bossType            int
-	frame               int
-	points              int
-	hitBoxes            []bossHitBox
-	hurtBoxes           []bossHitBox
-	deathAnimationFrame int
-	numDeathFrames      int
+	x                        float64
+	xSize                    float64
+	y                        float64
+	ySize                    float64
+	pv                       int
+	phase                    int
+	phaseLoop                int
+	phaseInfo                int
+	bossType                 int
+	frame                    int
+	points                   int
+	hitBoxes                 []bossHitBox
+	hurtBoxes                []bossHitBox
+	deathAnimationFrame      int
+	numDeathFrames           int
+	invulnerabilityFrame     int
+	invulnerabilityNumFrames int
+	isInvulnerable           bool
 }
 
 type bossHitBox struct {
@@ -102,9 +105,19 @@ func (b *bossHitBox) hasCollided() {
 }
 
 func (b *boss) update(g *game) {
+	currentPv := b.pv
+	if b.isInvulnerable {
+		b.invulnerabilityFrame++
+		if b.invulnerabilityFrame >= b.invulnerabilityNumFrames {
+			b.invulnerabilityFrame = 0
+			b.isInvulnerable = false
+		}
+	}
 	var wasHurt bool
 	for pos := 0; pos < len(b.hitBoxes); pos++ {
-		b.pv -= b.hitBoxes[pos].collisions
+		if !b.isInvulnerable {
+			b.pv -= b.hitBoxes[pos].collisions
+		}
 		if b.hitBoxes[pos].collisions > 0 {
 			b.hitBoxes[pos].collisions = 0
 			wasHurt = true
@@ -138,6 +151,10 @@ func (b *boss) update(g *game) {
 			b.hurtBoxes[pos].updateBox()
 			b.hurtBoxes[pos].hullSet = false
 		}
+	}
+	if currentPv > b.pv {
+		b.isInvulnerable = true
+		b.invulnerabilityFrame = 0
 	}
 }
 

@@ -48,14 +48,15 @@ func makeMidBoss1(y float64) boss {
 	}
 	hb.updateBox()
 	return boss{
-		x:        x,
-		xSize:    300,
-		y:        y,
-		ySize:    300,
-		pv:       midBoss1PV,
-		bossType: midBoss1,
-		points:   midBoss1Points,
-		hitBoxes: []bossHitBox{hb},
+		x:                        x,
+		xSize:                    300,
+		y:                        y,
+		ySize:                    300,
+		pv:                       midBoss1PV,
+		bossType:                 midBoss1,
+		points:                   midBoss1Points,
+		hitBoxes:                 []bossHitBox{hb},
+		invulnerabilityNumFrames: 5,
 	}
 }
 
