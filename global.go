@@ -42,6 +42,8 @@ var levelBackground *ebiten.Image
 var enemyBasicBullet *ebiten.Image
 var staticEnemyImage *ebiten.Image
 var staticFiringEnemyImage *ebiten.Image
+var staticFiringDownEnemyImage *ebiten.Image
+var staticFiringUpEnemyImage *ebiten.Image
 var staticExplodingEnemyImage *ebiten.Image
 var movingFiringEnemyImage *ebiten.Image
 var movingFiringEnemyImage2 *ebiten.Image

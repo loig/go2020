@@ -64,7 +64,7 @@ func (b *bullet) update() {
 }
 
 func (b bullet) isOut() bool {
-	return b.collision || b.xmax() < 0 || b.ymax() < 0 || b.xmin() >= screenWidth || b.ymin() >= screenHeight
+	return b.collision || b.xmax() < 0 || b.ymax() < 0 || b.xmin() >= screenWidth+200 || b.ymin() >= screenHeight
 }
 
 func (b bullet) draw(screen *ebiten.Image, color color.Color) {
