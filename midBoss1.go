@@ -33,19 +33,23 @@ func makeMidBoss1(y float64) boss {
 	hb := bossHitBox{
 		x:     x,
 		y:     y,
-		xSize: 50,
+		xSize: 500,
 		ySize: 300,
 		hullShape: []point{
-			point{x: -25, y: -150},
-			point{x: -25, y: 150},
-			point{x: 25, y: 150},
-			point{x: 25, y: -150},
+			point{x: -5, y: -145},
+			point{x: -60, y: -72},
+			point{x: -60, y: 72},
+			point{x: -5, y: 145},
+			point{x: 145, y: 145},
+			point{x: 200, y: 72},
+			point{x: 200, y: -72},
+			point{x: 145, y: -145},
 		},
 	}
 	hb.updateBox()
 	return boss{
 		x:        x,
-		xSize:    50,
+		xSize:    300,
 		y:        y,
 		ySize:    300,
 		pv:       midBoss1PV,
@@ -105,5 +109,10 @@ func (b *boss) midBoss1Update(bs *bulletSet) bool {
 }
 
 func (b *boss) midBoss1Draw(screen *ebiten.Image) {
-
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(b.x-b.xSize/4, b.y-b.ySize/2)
+	screen.DrawImage(
+		midBoss1Image,
+		op,
+	)
 }

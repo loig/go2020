@@ -51,6 +51,7 @@ var movingFiringEnemyImage3 *ebiten.Image
 
 // boss graphics
 var boss1Image *ebiten.Image
+var midBoss1Image *ebiten.Image
 
 // ui graphics
 var noBonusImage *ebiten.Image

@@ -74,6 +74,12 @@ func loadLevel1Enemies() {
 		panic(err)
 	}
 	boss1Image = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Midboss.png")
+	if err != nil {
+		panic(err)
+	}
+	midBoss1Image = img
 }
 
 func disposeLevel1Enemies() {
@@ -83,6 +89,7 @@ func disposeLevel1Enemies() {
 	staticFiringDownEnemyImage.Dispose()
 	staticExplodingEnemyImage.Dispose()
 	boss1Image.Dispose()
+	midBoss1Image.Dispose()
 }
 
 func loadLevel1Background() {
@@ -118,6 +125,13 @@ func loadLevel1Background() {
 }
 
 var level1SpawnSequence []spawn = []spawn{
+	spawn{
+		enemies: []enemySpawn{
+			enemySpawn{enemyType: midBoss1, y: float64(screenHeight) / 2},
+		},
+		frameDelay: 600,
+	},
+
 	spawn{
 		enemies: []enemySpawn{
 			enemySpawn{enemyType: staticEnemy, y: float64(3*screenHeight) / 4},
