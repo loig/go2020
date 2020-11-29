@@ -145,36 +145,38 @@ func (b *boss) draw(screen *ebiten.Image) {
 	case boss1:
 		b.boss1Draw(screen)
 	}
-	if !b.isDead() {
-		for pos := 0; pos < len(b.hitBoxes); pos++ {
-			// draw hitBox
-			cHull := b.hitBoxes[pos].convexHull()
-			hullColor := color.RGBA{0, 255, 0, 255}
-			for i := 0; i < len(cHull); i++ {
-				ii := (i + 1) % len(cHull)
-				ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+	if isDebug() {
+		if !b.isDead() {
+			for pos := 0; pos < len(b.hitBoxes); pos++ {
+				// draw hitBox
+				cHull := b.hitBoxes[pos].convexHull()
+				hullColor := color.RGBA{0, 255, 0, 255}
+				for i := 0; i < len(cHull); i++ {
+					ii := (i + 1) % len(cHull)
+					ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+				}
+				// draw rectangle
+				boxColor := color.RGBA{0, 255, 255, 255}
+				ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymin(), boxColor)
+				ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymax(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymax(), boxColor)
+				ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymax(), boxColor)
+				ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymax(), boxColor)
 			}
-			// draw rectangle
-			boxColor := color.RGBA{0, 255, 255, 255}
-			ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymin(), boxColor)
-			ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymax(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymax(), boxColor)
-			ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmin(), b.hitBoxes[pos].ymax(), boxColor)
-			ebitenutil.DrawLine(screen, b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymin(), b.hitBoxes[pos].xmax(), b.hitBoxes[pos].ymax(), boxColor)
-		}
-		for pos := 0; pos < len(b.hurtBoxes); pos++ {
-			// draw hitBox
-			cHull := b.hurtBoxes[pos].convexHull()
-			hullColor := color.RGBA{0, 255, 0, 255}
-			for i := 0; i < len(cHull); i++ {
-				ii := (i + 1) % len(cHull)
-				ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+			for pos := 0; pos < len(b.hurtBoxes); pos++ {
+				// draw hitBox
+				cHull := b.hurtBoxes[pos].convexHull()
+				hullColor := color.RGBA{0, 255, 0, 255}
+				for i := 0; i < len(cHull); i++ {
+					ii := (i + 1) % len(cHull)
+					ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+				}
+				// draw rectangle
+				boxColor := color.RGBA{0, 255, 255, 255}
+				ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymin(), boxColor)
+				ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymax(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymax(), boxColor)
+				ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymax(), boxColor)
+				ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymax(), boxColor)
 			}
-			// draw rectangle
-			boxColor := color.RGBA{0, 255, 255, 255}
-			ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymin(), boxColor)
-			ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymax(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymax(), boxColor)
-			ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmin(), b.hurtBoxes[pos].ymax(), boxColor)
-			ebitenutil.DrawLine(screen, b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymin(), b.hurtBoxes[pos].xmax(), b.hurtBoxes[pos].ymax(), boxColor)
 		}
 	}
 }

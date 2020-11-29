@@ -76,10 +76,12 @@ func (b bullet) draw(screen *ebiten.Image, color color.Color) {
 			op,
 		)
 	}
-	cHull := b.convexHull()
-	for i := 0; i < len(cHull); i++ {
-		ii := (i + 1) % len(cHull)
-		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color)
+	if isDebug() {
+		cHull := b.convexHull()
+		for i := 0; i < len(cHull); i++ {
+			ii := (i + 1) % len(cHull)
+			ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color)
+		}
 	}
 }
 

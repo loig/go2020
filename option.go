@@ -68,9 +68,11 @@ func (o option) draw(screen *ebiten.Image) {
 		optionImage,
 		op,
 	)
-	cHull := o.convexHull()
-	for i := 0; i < len(cHull); i++ {
-		ii := (i + 1) % len(cHull)
-		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{0, 255, 0, 255})
+	if isDebug() {
+		cHull := o.convexHull()
+		for i := 0; i < len(cHull); i++ {
+			ii := (i + 1) % len(cHull)
+			ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{0, 255, 0, 255})
+		}
 	}
 }

@@ -94,8 +94,8 @@ const (
 	pFrameBetweenOptions  = 10
 	pInvicibleDuration    = 120
 	pInitLives            = 3
-	pMaxLives             = 7
-	pPointsForLive        = 25000
+	pMaxLives             = 5
+	pPointsForLive        = 50000
 	pPointsPerPowerUp     = 500
 	laserImageWidth       = 138
 	laserImageHeight      = 30
@@ -154,28 +154,8 @@ func (p *player) initialPosition() {
 }
 
 func (p player) draw(screen *ebiten.Image) {
-	op := &ebiten.DrawImageOptions{}
-	if p.invincibleFrames <= 0 || (p.invincibleFrames/7)%2 == 0 {
-		op.GeoM.Translate(p.xmin(), p.ymin())
-		screen.DrawImage(
-			playerImage,
-			op,
-		)
-	}
-	cHull := p.convexHull()
-	hullColor := color.RGBA{255, 0, 0, 255}
-	if p.invincibleFrames > 0 {
-		hullColor = color.RGBA{255, 255, 0, 255}
-	}
-	for i := 0; i < len(cHull); i++ {
-		ii := (i + 1) % len(cHull)
-		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
-	}
-	for oPos := 0; oPos < p.numOptions; oPos++ {
-		p.options[oPos].draw(screen)
-	}
 	if p.laserOn {
-		op = &ebiten.DrawImageOptions{}
+		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(p.laser.xmin(), p.laser.y-laserImageHeight/2)
 		screen.DrawImage(
 			laserImage,
@@ -191,9 +171,33 @@ func (p player) draw(screen *ebiten.Image) {
 			)
 			currentMaxX += laserImageWidth - laserImageOffset
 		}
-		p.laser.draw(screen, color.RGBA{255, 0, 0, 255})
+		if isDebug() {
+			p.laser.draw(screen, color.RGBA{255, 0, 0, 255})
+		}
 	}
 	p.bullets.draw(screen, color.RGBA{255, 0, 0, 255})
+	op := &ebiten.DrawImageOptions{}
+	if p.invincibleFrames <= 0 || (p.invincibleFrames/7)%2 == 0 {
+		op.GeoM.Translate(p.xmin(), p.ymin()+8)
+		screen.DrawImage(
+			playerImage,
+			op,
+		)
+	}
+	if isDebug() {
+		cHull := p.convexHull()
+		hullColor := color.RGBA{255, 0, 0, 255}
+		if p.invincibleFrames > 0 {
+			hullColor = color.RGBA{255, 255, 0, 255}
+		}
+		for i := 0; i < len(cHull); i++ {
+			ii := (i + 1) % len(cHull)
+			ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+		}
+	}
+	for oPos := 0; oPos < p.numOptions; oPos++ {
+		p.options[oPos].draw(screen)
+	}
 }
 
 func (p *player) updateBox() {
@@ -381,7 +385,7 @@ func (p *player) fire(g *game) {
 		if p.currentFire == 0 {
 			for bNum := 0; bNum < p.numShot; bNum++ {
 				p.bullets.addBullet(bullet{
-					x: p.x, y: p.y,
+					x: p.x + 30, y: p.y + 10,
 					imageXShift: playerXBulletShift, imageYShift: playerYBulletShift,
 					vx: pBulletSpeed, vy: pOtherBulletSpeed[bNum],
 					ax: 0, ay: 0,
