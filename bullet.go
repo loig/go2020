@@ -25,24 +25,26 @@ import (
 )
 
 type bullet struct {
-	name      string
-	x         float64
-	y         float64
-	vx        float64
-	vy        float64
-	ax        float64
-	ay        float64
-	xSize     float64
-	ySize     float64
-	collision bool
-	hullSet   bool
-	cHull     []point
-	xMin      float64
-	yMin      float64
-	xMax      float64
-	yMax      float64
-	isBig     bool
-	image     *ebiten.Image
+	name        string
+	x           float64
+	imageXShift float64
+	imageYShift float64
+	y           float64
+	vx          float64
+	vy          float64
+	ax          float64
+	ay          float64
+	xSize       float64
+	ySize       float64
+	collision   bool
+	hullSet     bool
+	cHull       []point
+	xMin        float64
+	yMin        float64
+	xMax        float64
+	yMax        float64
+	isBig       bool
+	image       *ebiten.Image
 }
 
 const (
@@ -66,18 +68,18 @@ func (b bullet) isOut() bool {
 }
 
 func (b bullet) draw(screen *ebiten.Image, color color.Color) {
-	cHull := b.convexHull()
-	for i := 0; i < len(cHull); i++ {
-		ii := (i + 1) % len(cHull)
-		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color)
-	}
 	if b.image != nil {
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(b.xmin(), b.ymin())
+		op.GeoM.Translate(b.xmin()+b.imageXShift, b.ymin()+b.imageYShift)
 		screen.DrawImage(
 			b.image,
 			op,
 		)
+	}
+	cHull := b.convexHull()
+	for i := 0; i < len(cHull); i++ {
+		ii := (i + 1) % len(cHull)
+		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color)
 	}
 }
 
@@ -103,7 +105,8 @@ func (b *bullet) convexHull() []point {
 			b.cHull = []point{
 				point{b.xmin(), b.ymin()},
 				point{b.xmin(), b.ymax()},
-				point{b.xmax(), (b.ymax() + b.ymin()) / 2},
+				point{b.xmax(), (b.ymax()+b.ymin())/2 + 30},
+				point{b.xmax(), (b.ymax()+b.ymin())/2 - 30},
 			}
 		} else {
 			b.cHull = []point{
@@ -148,7 +151,7 @@ func (bs *bulletSet) addBullet(b bullet) {
 
 func (bs *bulletSet) addBigBullet(b bullet) {
 	bb := b
-	bb.xSize = 56
+	bb.xSize = 20
 	bb.ySize = 140
 	bb.xMin = bb.x - bb.xSize/2
 	bb.xMax = bb.x + bb.xSize/2

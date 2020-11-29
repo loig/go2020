@@ -49,13 +49,13 @@ func loadLevel1Enemies() {
 	if err != nil {
 		panic(err)
 	}
-	staticFiringEnemyImage = img
+	staticExplodingEnemyImage = img
 
 	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi3.png")
 	if err != nil {
 		panic(err)
 	}
-	staticExplodingEnemyImage = img
+	staticFiringEnemyImage = img
 
 	img, _, err = ebitenutil.NewImageFromFile("assets/Boss1.png")
 	if err != nil {

@@ -70,36 +70,39 @@ type playerPosition struct {
 }
 
 const (
-	pInitX               = 100
-	pInitY               = screenHeight / 2
-	pWidth               = 100
-	pHeight              = 62
-	pMaxVCap             = 10
-	pVStep               = 2
-	pVInit               = 6
-	pAx                  = 1
-	pAy                  = 1
-	pBulletInterval      = 15
-	pBulletSpeed         = 12
-	pMaxShot             = 5  // for basic shot only
-	pMinDelay            = 20 // for big shot only
-	pMaxDelay            = 80
-	pShotDelayStep       = 20
-	pMaxShotWidth        = 18 // for laser shot only
-	pMinShotWidth        = 6
-	pShotWidthIncrease   = 6
-	pMaxOption           = 3
-	pDifferentPowerUps   = 4
-	pMoveRecorded        = 32
-	pFrameBetweenOptions = 10
-	pInvicibleDuration   = 120
-	pInitLives           = 3
-	pMaxLives            = 7
-	pPointsForLive       = 25000
-	pPointsPerPowerUp    = 500
-	laserImageWidth      = 138
-	laserImageHeight     = 30
-	laserImageOffset     = 30
+	pInitX                = 100
+	pInitY                = screenHeight / 2
+	pWidth                = 100
+	pHeight               = 62
+	pMaxVCap              = 10
+	pVStep                = 2
+	pVInit                = 6
+	pAx                   = 1
+	pAy                   = 1
+	pBulletInterval       = 15
+	pBulletSpeed          = 12
+	pMaxShot              = 5  // for basic shot only
+	pMinDelay             = 20 // for big shot only
+	pMaxDelay             = 80
+	pShotDelayStep        = 20
+	pMaxShotWidth         = 18 // for laser shot only
+	pMinShotWidth         = 6
+	pShotWidthIncrease    = 6
+	pMaxOption            = 3
+	pDifferentPowerUps    = 4
+	pMoveRecorded         = 32
+	pFrameBetweenOptions  = 10
+	pInvicibleDuration    = 120
+	pInitLives            = 3
+	pMaxLives             = 7
+	pPointsForLive        = 25000
+	pPointsPerPowerUp     = 500
+	laserImageWidth       = 138
+	laserImageHeight      = 30
+	laserImageOffset      = 30
+	playerXBulletShift    = -20
+	playerYBulletShift    = -4
+	playerXBigBulletShift = -35
 )
 
 var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}
@@ -158,9 +161,9 @@ func (p player) draw(screen *ebiten.Image) {
 		op,
 	)
 	cHull := p.convexHull()
-	hullColor := color.RGBA{0, 255, 0, 255}
+	hullColor := color.RGBA{255, 0, 0, 255}
 	if p.invincibleFrames > 0 {
-		hullColor = color.RGBA{0, 255, 255, 255}
+		hullColor = color.RGBA{255, 255, 0, 255}
 	}
 	for i := 0; i < len(cHull); i++ {
 		ii := (i + 1) % len(cHull)
@@ -186,9 +189,9 @@ func (p player) draw(screen *ebiten.Image) {
 			)
 			currentMaxX += laserImageWidth - laserImageOffset
 		}
-		p.laser.draw(screen, color.RGBA{0, 255, 0, 255})
+		p.laser.draw(screen, color.RGBA{255, 0, 0, 255})
 	}
-	p.bullets.draw(screen, color.RGBA{0, 255, 0, 255})
+	p.bullets.draw(screen, color.RGBA{255, 0, 0, 255})
 }
 
 func (p *player) updateBox() {
@@ -440,6 +443,7 @@ func (p *player) fire(g *game) {
 			for bNum := 0; bNum < p.numShot; bNum++ {
 				p.bullets.addBullet(bullet{
 					x: p.x, y: p.y,
+					imageXShift: playerXBulletShift, imageYShift: playerYBulletShift,
 					vx: pBulletSpeed, vy: pOtherBulletSpeed[bNum],
 					ax: 0, ay: 0,
 					image: playerBulletImage,
@@ -448,7 +452,8 @@ func (p *player) fire(g *game) {
 		} else if p.currentFire == 1 {
 			p.bullets.addBigBullet(bullet{
 				x: p.x, y: p.y,
-				vx: pBulletSpeed, vy: 0,
+				imageXShift: playerXBigBulletShift,
+				vx:          pBulletSpeed, vy: 0,
 				ax: 0, ay: 0,
 				image: playerBigBulletImage,
 			})
