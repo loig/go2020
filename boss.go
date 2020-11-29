@@ -32,6 +32,7 @@ type boss struct {
 	pv                  int
 	phase               int
 	phaseLoop           int
+	phaseInfo           int
 	bossType            int
 	frame               int
 	points              int

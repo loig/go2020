@@ -130,19 +130,32 @@ func (g *game) checkCollisions() {
 		}
 	}
 	for _, b := range g.player.bullets.bullets {
-		for pos := 0; pos < g.enemySet.numEnemies; pos++ {
-			collide(b, g.enemySet.enemies[pos])
-		}
-		for pos := 0; pos < g.bossSet.numBosses; pos++ {
-			for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
-				collide(b, &(g.bossSet.bosses[pos].hitBoxes[ppos]))
-			}
-		}
 		if b.isBig {
-			for pos := 0; pos < g.bulletSet.numBullets; pos++ {
-				collideNoHarm(b, g.bulletSet.bullets[pos])
+			for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+				collideNoHarm(b, g.enemySet.enemies[pos])
+			}
+			for pos := 0; pos < g.bossSet.numBosses; pos++ {
+				for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+					collideNoHarm(b, &(g.bossSet.bosses[pos].hitBoxes[ppos]))
+				}
+			}
+		} else {
+			for pos := 0; pos < g.enemySet.numEnemies; pos++ {
+				collide(b, g.enemySet.enemies[pos])
+			}
+			for pos := 0; pos < g.bossSet.numBosses; pos++ {
+				for ppos := 0; ppos < len(g.bossSet.bosses[pos].hitBoxes); ppos++ {
+					collide(b, &(g.bossSet.bosses[pos].hitBoxes[ppos]))
+				}
 			}
 		}
+		/*
+			if b.isBig {
+				for pos := 0; pos < g.bulletSet.numBullets; pos++ {
+					collideNoHarm(b, g.bulletSet.bullets[pos])
+				}
+			}
+		*/
 	}
 	for pos := 0; pos < g.powerUpSet.numPowerUps; pos++ {
 		if collideNoHarm(&(g.player), g.powerUpSet.powerUps[pos]) {

@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	for i := 0; i < 80; i++ {
+	for i := 0; i < 120; i++ {
 		k1 := rand.Intn(15) + 2
 		k2 := rand.Intn(k1-1) + 1
 		d := rand.Intn(60) + 10

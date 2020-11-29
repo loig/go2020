@@ -25,16 +25,26 @@ import (
 
 const (
 	boss2Points                  = 15000
-	boss2PV                      = 10 //750
+	boss2PV                      = 500
+	boss2EndPhase1PV             = 350
+	boss2EndPhase2PV             = 200
 	boss2DeathAnimationFrames    = 180
 	boss2BulletXShift            = -250
 	boss2BulletMaxY              = 900
 	boss2BulletMinY              = 200
 	boss2LastPhaseFramePerBullet = 50
 	boss2Phase1NumBullets        = 14
-	boss2Phase1NumBulletsMore    = 10
-	boss2Phase1FramePerBullet    = 150
-	boss2Phase1BulletSpeed       = 3
+	boss2Phase1NumBulletsMore    = 15
+	boss2Phase1FramePerBullet    = 275
+	boss2Phase1BulletSpeed       = 5
+	boss2Phase2NumBullets        = 14
+	boss2Phase2FramePerBullet    = 325
+	boss2Phase2BulletSpeed       = 2
+	boss2Phase3FramePerBullet    = 16
+	boss2Phase3NumBullets        = 14
+	boss2Phase3BulletSpeed       = 5
+	boss2Phase3LoopLimit         = 13
+	boss2Phase3InterShotFrames   = 200
 )
 
 func makeBoss2(y float64) boss {
@@ -112,20 +122,104 @@ func (b *boss) boss2Update(bs *bulletSet, p *player) bool {
 		if b.x < 6*screenWidth/7 {
 			b.phase = 1
 			b.hitBoxes[0].hitable = true
+			b.frame = boss2Phase1FramePerBullet
 		}
 		b.x -= 5
-	case 1:
+	case 1, 2:
+		if b.pv < boss2EndPhase1PV {
+			b.phase = 2
+		}
+		if b.pv < boss2EndPhase2PV {
+			b.phase = 3
+			b.phaseLoop = 0
+			b.phaseInfo = boss2Phase3NumBullets / 2
+			b.frame = -450
+			p.numOptions = 0
+		}
+		numBullets := boss2Phase1NumBullets
+		framePerBullet := boss2Phase1FramePerBullet
+		bulletSpeed := float64(boss2Phase1BulletSpeed)
 		b.frame++
-		if b.frame >= boss2Phase1FramePerBullet {
+		b.phaseLoop++
+		hasShot := false
+		for i := 1; i < b.phase+1; i++ {
+			frame := b.frame
+			if i == 2 {
+				numBullets = boss2Phase2NumBullets
+				framePerBullet = boss2Phase2FramePerBullet
+				bulletSpeed = float64(boss2Phase2BulletSpeed)
+				frame = b.phaseLoop
+			}
+			if frame >= framePerBullet {
+				if i == 1 {
+					b.frame = 0
+				} else {
+					b.phaseLoop = 0
+				}
+				noBulletNum := rand.Intn(numBullets-2) + 1
+				for bNum := 0; bNum < numBullets; bNum++ {
+					if bNum != noBulletNum {
+						y := float64(boss2BulletMinY) + float64(bNum*(boss2BulletMaxY-boss2BulletMinY))/float64(numBullets-1)
+						bs.addBullet(bullet{
+							x:     b.x + boss2BulletXShift,
+							y:     y,
+							vx:    -bulletSpeed,
+							vy:    0,
+							image: enemyBasicBullet,
+						})
+					}
+				}
+				for bNum := 0; bNum < boss2Phase1NumBulletsMore; bNum++ {
+					bs.addBullet(bullet{
+						x:     b.x + boss2BulletXShift,
+						y:     boss2BulletMaxY,
+						vx:    -bulletSpeed,
+						vy:    +0.125 * float64(bNum),
+						image: enemyBasicBullet,
+					})
+					bs.addBullet(bullet{
+						x:     b.x + boss2BulletXShift,
+						y:     boss2BulletMinY,
+						vx:    -bulletSpeed,
+						vy:    -0.125 * float64(bNum),
+						image: enemyBasicBullet,
+					})
+				}
+				hasShot = true
+			}
+		}
+		return hasShot
+	case 3:
+		b.frame++
+		if b.phaseLoop >= boss2Phase3LoopLimit {
+			if b.frame >= boss2Phase3InterShotFrames {
+				b.frame = 0
+				b.phaseLoop = 0
+			}
+			return false
+		}
+		if b.frame >= boss2Phase3FramePerBullet {
 			b.frame = 0
-			noBulletNum := rand.Intn(boss2Phase1NumBullets-2) + 1
-			for bNum := 0; bNum < boss2Phase1NumBullets; bNum++ {
-				if bNum != noBulletNum {
-					y := float64(boss2BulletMinY) + float64(bNum*(boss2BulletMaxY-boss2BulletMinY))/float64(boss2Phase1NumBullets-1)
+			b.phaseLoop++
+			numBullets := boss2Phase3NumBullets
+			bulletSpeed := float64(boss2Phase3BulletSpeed)
+			noBulletNum := b.phaseInfo
+			if b.phaseLoop%2 == 0 {
+				noBulletNum = b.phaseInfo + rand.Intn(3) - 1
+				if noBulletNum <= 0 {
+					noBulletNum = 1
+				} else if noBulletNum >= numBullets-2 {
+					noBulletNum = numBullets - 3
+				}
+				b.phaseInfo = noBulletNum
+			}
+			for bNum := 0; bNum < numBullets; bNum++ {
+				if bNum != noBulletNum && bNum != noBulletNum+1 {
+					y := float64(boss2BulletMinY) + float64(bNum*(boss2BulletMaxY-boss2BulletMinY))/float64(numBullets-1)
 					bs.addBullet(bullet{
 						x:     b.x + boss2BulletXShift,
 						y:     y,
-						vx:    -boss2Phase1BulletSpeed,
+						vx:    -bulletSpeed,
 						vy:    0,
 						image: enemyBasicBullet,
 					})
@@ -135,18 +229,19 @@ func (b *boss) boss2Update(bs *bulletSet, p *player) bool {
 				bs.addBullet(bullet{
 					x:     b.x + boss2BulletXShift,
 					y:     boss2BulletMaxY,
-					vx:    -boss2Phase1BulletSpeed,
+					vx:    -bulletSpeed,
 					vy:    +0.125 * float64(bNum),
 					image: enemyBasicBullet,
 				})
 				bs.addBullet(bullet{
 					x:     b.x + boss2BulletXShift,
 					y:     boss2BulletMinY,
-					vx:    -boss2Phase1BulletSpeed,
+					vx:    -bulletSpeed,
 					vy:    -0.125 * float64(bNum),
 					image: enemyBasicBullet,
 				})
 			}
+			return true
 		}
 	case 100:
 		b.frame++
@@ -179,6 +274,7 @@ func (b *boss) boss2Update(bs *bulletSet, p *player) bool {
 				image: enemyBasicBullet,
 			})
 			b.frame = 0
+			return true
 		}
 	}
 	return false
