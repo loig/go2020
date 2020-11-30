@@ -55,7 +55,9 @@ func (g *game) Draw(screen *ebiten.Image) {
 		g.gameOverDraw(screen)
 	}
 
-	s := fmt.Sprint(ebiten.CurrentTPS()) //, ebiten.CurrentFPS())
-	ebitenutil.DebugPrint(screen, s)
+	if isDebug() {
+		s := fmt.Sprint(ebiten.CurrentTPS()) //, ebiten.CurrentFPS())
+		ebitenutil.DebugPrint(screen, s)
+	}
 
 }

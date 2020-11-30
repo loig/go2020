@@ -20,7 +20,6 @@ package main
 import (
 	"fmt"
 	"image"
-	"image/color"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -91,7 +90,7 @@ func (p player) drawUI(screen *ebiten.Image) {
 			case 3:
 				switch p.currentFire {
 				case 0:
-					s = "Large Shot"
+					s = "Moon Shot"
 				case 1:
 					s = "Laser"
 				case 2:
@@ -106,7 +105,11 @@ func (p player) drawUI(screen *ebiten.Image) {
 		height := bounds.Max.Y - bounds.Min.Y
 		xFTranslate := (screenWidth-bonusDisplayWidth)/2 + (puNum*2-1)*bonusDisplayWidth/8 - width/2
 		yFTranslate := screenHeight - bottomUIOffset + bonusDisplayHeight/2 + height/2
-		text.Draw(screen, s, theFont, xFTranslate, yFTranslate, color.White)
+		color := textDarkColor
+		if puNum == p.currentPowerUp {
+			color = textLightColor
+		}
+		text.Draw(screen, s, theFont, xFTranslate, yFTranslate, color)
 	}
 
 	// Draw points
@@ -116,7 +119,7 @@ func (p player) drawUI(screen *ebiten.Image) {
 	height := bounds.Max.Y - bounds.Min.Y
 	xFTranslate := screenWidth - rightUIOffset - width
 	yFTranslate := topUIOffset - height
-	text.Draw(screen, s, theFont, xFTranslate, yFTranslate, color.White)
+	text.Draw(screen, s, theFont, xFTranslate, yFTranslate, scoreColor)
 
 }
 

@@ -18,6 +18,8 @@
 package main
 
 import (
+	"image/color"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"golang.org/x/image/font"
@@ -66,6 +68,10 @@ var lifeImage *ebiten.Image
 var theFont font.Face
 var theBigFont font.Face
 
+var textLightColor color.Color = color.RGBA{205, 204, 191, 255}
+var textDarkColor color.Color = color.RGBA{196, 192, 172, 255}
+var scoreColor color.Color = color.RGBA{65, 71, 115, 255}
+
 // player graphics
 var optionImage *ebiten.Image
 var laserImage1 *ebiten.Image
@@ -75,6 +81,7 @@ var laserImage *ebiten.Image
 var playerImage *ebiten.Image
 var playerBulletImage *ebiten.Image
 var playerBigBulletImage *ebiten.Image
+var bonusImage *ebiten.Image
 
 // sounds
 var infiniteMusic *audio.InfiniteLoop

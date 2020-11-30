@@ -26,6 +26,8 @@ import (
 func main() {
 	//defer profile.Start().Stop()
 
+	//defer profile.Start(profile.MemProfile).Stop()
+
 	ebiten.SetWindowSize(screenWidth/2, screenHeight/2)
 	ebiten.SetWindowTitle("Game Off 2020")
 	if err := ebiten.RunGame(initGame()); err != nil {

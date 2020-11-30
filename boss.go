@@ -125,6 +125,9 @@ func (b *boss) update(g *game) {
 	}
 	if wasHurt {
 		g.playSound(bossHurtSound)
+	} else {
+		b.isInvulnerable = false
+		b.invulnerabilityFrame = 0
 	}
 	var hasFired bool
 	switch b.bossType {

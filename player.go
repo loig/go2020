@@ -62,6 +62,9 @@ type player struct {
 	points           int
 	lastLiveWon      int
 	lives            int
+	isDead           bool
+	deadNumFrames    int
+	deadFrame        int
 }
 
 type playerPosition struct {
@@ -92,7 +95,7 @@ const (
 	pDifferentPowerUps    = 4
 	pMoveRecorded         = 32
 	pFrameBetweenOptions  = 10
-	pInvicibleDuration    = 120
+	pInvicibleDuration    = 180
 	pInitLives            = 3
 	pMaxLives             = 5
 	pPointsForLive        = 50000
@@ -103,6 +106,7 @@ const (
 	playerXBulletShift    = -20
 	playerYBulletShift    = -4
 	playerXBigBulletShift = -35
+	pDeadNumFrames        = 120
 )
 
 var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}
@@ -119,6 +123,7 @@ func initPlayer() player {
 		vCap:            pVInit,
 		positionHistory: makePositionHistory(pInitX, pInitY),
 		lives:           pInitLives,
+		deadNumFrames:   pDeadNumFrames,
 	}
 }
 
@@ -140,6 +145,8 @@ func (p *player) reset() {
 	p.allPowerUp = false
 	p.usedPowerUp = 0
 	p.laserLevel = 0
+	p.deadFrame = 0
+	p.isDead = false
 	laserImage = laserImage1
 }
 
@@ -176,23 +183,25 @@ func (p player) draw(screen *ebiten.Image) {
 		}
 	}
 	p.bullets.draw(screen, color.RGBA{255, 0, 0, 255})
-	op := &ebiten.DrawImageOptions{}
-	if p.invincibleFrames <= 0 || (p.invincibleFrames/7)%2 == 0 {
-		op.GeoM.Translate(p.xmin(), p.ymin()+8)
-		screen.DrawImage(
-			playerImage,
-			op,
-		)
-	}
-	if isDebug() {
-		cHull := p.convexHull()
-		hullColor := color.RGBA{255, 0, 0, 255}
-		if p.invincibleFrames > 0 {
-			hullColor = color.RGBA{255, 255, 0, 255}
+	if !p.isDead {
+		op := &ebiten.DrawImageOptions{}
+		if p.invincibleFrames <= 0 || (p.invincibleFrames/7)%2 == 0 {
+			op.GeoM.Translate(p.xmin(), p.ymin()+8)
+			screen.DrawImage(
+				playerImage,
+				op,
+			)
 		}
-		for i := 0; i < len(cHull); i++ {
-			ii := (i + 1) % len(cHull)
-			ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+		if isDebug() {
+			cHull := p.convexHull()
+			hullColor := color.RGBA{255, 0, 0, 255}
+			if p.invincibleFrames > 0 {
+				hullColor = color.RGBA{255, 255, 0, 255}
+			}
+			for i := 0; i < len(cHull); i++ {
+				ii := (i + 1) % len(cHull)
+				ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, hullColor)
+			}
 		}
 	}
 	for oPos := 0; oPos < p.numOptions; oPos++ {
@@ -226,9 +235,9 @@ func (p *player) ymax() float64 {
 func (p *player) convexHull() []point {
 	if !p.hullSet {
 		p.cHull = []point{
-			point{p.x - p.xSize/3, p.y + p.ySize/4},
-			point{p.x + p.xSize/2, p.y + p.ySize/4},
-			point{p.x - p.xSize/2, p.y - p.ySize/3},
+			point{p.x - p.xSize/3, p.y + p.ySize/4 - 2},
+			point{p.x + p.xSize/2 - 5, p.y + p.ySize/4 - 4},
+			point{p.x - p.xSize/2 + 6, p.y - p.ySize/3 + 3},
 		}
 		p.hullSet = true
 	}
@@ -240,37 +249,51 @@ func (p *player) hasCollided() {
 }
 
 func (g *game) playerUpdate() {
-	if g.player.collision {
-		g.player.lives--
-		g.playSound(playerHurtSound)
-		if g.player.lives <= 0 {
-			disposeLevelImages()
-			g.stopMusic()
-			infiniteMusic = music1
-			if g.state == gameInLevel1 {
-				disposeLevel1Enemies()
+	if g.player.isDead {
+		g.player.deadFrame++
+		if g.player.deadFrame >= g.player.deadNumFrames {
+			if g.player.lives <= 0 {
+				disposeLevelImages()
+				g.stopMusic()
+				infiniteMusic = music1
+				if g.state == gameInLevel1 {
+					disposeLevel1Enemies()
+				} else {
+					disposeLevel2Enemies()
+				}
+				g.state = gameOver
 			} else {
-				disposeLevel2Enemies()
+				g.player.isDead = false
 			}
-			g.state = gameOver
 		}
-		g.player.releasePowerUps(&(g.powerUpSet))
-		g.player.reset()
 	} else {
-		if g.player.invincibleFrames > 0 {
-			g.player.invincibleFrames--
+		if g.player.collision {
+			g.player.lives--
+			g.playSound(playerHurtSound)
+			g.player.releasePowerUps(&(g.powerUpSet))
+			g.player.reset()
+			g.player.isDead = true
+			g.player.deadFrame = 0
+		} else {
+			if g.player.invincibleFrames > 0 {
+				g.player.invincibleFrames--
+			}
 		}
 	}
 	g.player.hullSet = false
 	g.player.cHull = nil
 	g.player.laserOn = false
-	g.player.move()
-	g.player.managePowerUp()
-	g.player.fire(g)
-	g.player.moveOptions()
+	if !g.player.isDead {
+		g.player.move()
+		g.player.managePowerUp()
+		g.player.fire(g)
+		g.player.moveOptions()
+	}
 	g.player.bullets.update()
-	g.player.updateBox()
-	g.player.checkLiveWin()
+	if !g.player.isDead {
+		g.player.updateBox()
+		g.player.checkLiveWin()
+	}
 }
 
 func (p *player) move() {

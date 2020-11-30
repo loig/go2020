@@ -182,4 +182,10 @@ func loadDurableImages() {
 		panic(err)
 	}
 	lifeImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus.png")
+	if err != nil {
+		panic(err)
+	}
+	bonusImage = img
 }

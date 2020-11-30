@@ -44,10 +44,15 @@ func (p powerUp) isOut() bool {
 }
 
 func (p powerUp) draw(screen *ebiten.Image) {
-	cHull := p.convexHull()
-	for i := 0; i < len(cHull); i++ {
-		ii := (i + 1) % len(cHull)
-		ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{0, 0, 255, 255})
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(p.xmin(), p.ymin())
+	screen.DrawImage(bonusImage, op)
+	if isDebug() {
+		cHull := p.convexHull()
+		for i := 0; i < len(cHull); i++ {
+			ii := (i + 1) % len(cHull)
+			ebitenutil.DrawLine(screen, cHull[i].x, cHull[i].y, cHull[ii].x, cHull[ii].y, color.RGBA{255, 0, 0, 255})
+		}
 	}
 }
 
@@ -93,8 +98,8 @@ func initPowerUpSet() powerUpSet {
 }
 
 func (ps *powerUpSet) addPowerUp(p powerUp) {
-	p.xSize = 10
-	p.ySize = 10
+	p.xSize = 44
+	p.ySize = 44
 	ps.numPowerUps++
 	ps.powerUps = append(ps.powerUps, &p)
 }
