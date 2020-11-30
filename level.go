@@ -70,6 +70,7 @@ func (g *game) levelUpdate() {
 			g.bulletSet.numBullets = 0
 			g.enemySet.numEnemies = 0
 			g.level.endLevelFrames = 0
+			g.player.bullets.numBullets = 0
 			g.audio.musicPlayer.SetVolume(0)
 			return
 		}

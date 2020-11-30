@@ -271,6 +271,7 @@ func (g *game) playerUpdate() {
 			g.player.lives--
 			g.playSound(playerHurtSound)
 			g.player.releasePowerUps(&(g.powerUpSet))
+			g.player.bullets = initBulletSet()
 			g.player.reset()
 			g.player.isDead = true
 			g.player.deadFrame = 0
@@ -283,14 +284,12 @@ func (g *game) playerUpdate() {
 	g.player.hullSet = false
 	g.player.cHull = nil
 	g.player.laserOn = false
-	if !g.player.isDead {
+	if !g.player.isDead && !g.level.endLevel {
 		g.player.move()
 		g.player.managePowerUp()
 		g.player.fire(g)
 		g.player.moveOptions()
-	}
-	g.player.bullets.update()
-	if !g.player.isDead {
+		g.player.bullets.update()
 		g.player.updateBox()
 		g.player.checkLiveWin()
 	}
