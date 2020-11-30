@@ -95,7 +95,7 @@ const (
 	pDifferentPowerUps    = 4
 	pMoveRecorded         = 32
 	pFrameBetweenOptions  = 10
-	pInvicibleDuration    = 180
+	pInvicibleDuration    = 150
 	pInitLives            = 3
 	pMaxLives             = 5
 	pPointsForLive        = 50000
@@ -106,7 +106,7 @@ const (
 	playerXBulletShift    = -20
 	playerYBulletShift    = -4
 	playerXBigBulletShift = -35
-	pDeadNumFrames        = 120
+	pDeadNumFrames        = 90
 )
 
 var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}

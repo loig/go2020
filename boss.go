@@ -43,6 +43,7 @@ type boss struct {
 	invulnerabilityFrame     int
 	invulnerabilityNumFrames int
 	isInvulnerable           bool
+	framesSinceLastHurtSound int
 }
 
 type bossHitBox struct {
@@ -106,6 +107,7 @@ func (b *bossHitBox) hasCollided() {
 
 func (b *boss) update(g *game) {
 	currentPv := b.pv
+	b.framesSinceLastHurtSound++
 	if b.isInvulnerable {
 		b.invulnerabilityFrame++
 		if b.invulnerabilityFrame >= b.invulnerabilityNumFrames {
@@ -123,24 +125,30 @@ func (b *boss) update(g *game) {
 			wasHurt = true
 		}
 	}
-	if wasHurt {
+	if wasHurt && b.framesSinceLastHurtSound > b.invulnerabilityNumFrames {
 		g.playSound(bossHurtSound)
+		b.framesSinceLastHurtSound = 0
 	} else {
 		b.isInvulnerable = false
 		b.invulnerabilityFrame = 0
 	}
-	var hasFired bool
+	//var hasFired bool
 	switch b.bossType {
 	case midBoss1:
-		hasFired = b.midBoss1Update(&(g.bulletSet))
+		//hasFired =
+		b.midBoss1Update(&(g.bulletSet))
 	case boss1:
-		hasFired = b.boss1Update(&(g.bulletSet))
+		//hasFired =
+		b.boss1Update(&(g.bulletSet))
 	case boss2:
-		hasFired = b.boss2Update(&(g.bulletSet), &(g.player))
+		//hasFired =
+		b.boss2Update(&(g.bulletSet), &(g.player))
 	}
-	if hasFired {
-		g.playSound(enemyShotSound)
-	}
+	/*
+		if hasFired {
+			g.playSound(enemyShotSound)
+		}
+	*/
 	if len(b.hitBoxes) > 0 && (b.x+b.hitBoxes[0].xrel != b.hitBoxes[0].x || b.y+b.hitBoxes[0].yrel != b.hitBoxes[0].y) {
 		for pos := 0; pos < len(b.hitBoxes); pos++ {
 			b.hitBoxes[pos].x = b.x + b.hitBoxes[pos].xrel

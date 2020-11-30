@@ -45,7 +45,7 @@ const (
 
 const (
 	playerShotSound int = iota
-	enemyShotSound
+	//enemyShotSound
 	playerHurtSound
 	enemyHurtSound
 	bossHurtSound
@@ -113,8 +113,8 @@ func (g *game) playSound(sound int) {
 	switch sound {
 	case playerShotSound:
 		soundBytes = playerShotBytes
-	case enemyShotSound:
-		soundBytes = enemyShotBytes
+	/*case enemyShotSound:
+	soundBytes = enemyShotBytes*/
 	case playerHurtSound:
 		soundBytes = playerHurtBytes
 	case enemyHurtSound:
@@ -181,18 +181,19 @@ func (g *game) initAudio() {
 		log.Panic("Audio problem:", error)
 	}
 
-	soundFile, error = ebitenutil.OpenFile("assets/enemyshot.mp3")
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
-	enemyShotBytes, error = ioutil.ReadAll(sound)
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
+	/*
+		soundFile, error = ebitenutil.OpenFile("assets/enemyshot.mp3")
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}
+		sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}
+		enemyShotBytes, error = ioutil.ReadAll(sound)
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}*/
 
 	soundFile, error = ebitenutil.OpenFile("assets/playerhurt.mp3")
 	if error != nil {
@@ -220,18 +221,21 @@ func (g *game) initAudio() {
 		log.Panic("Audio problem:", error)
 	}
 
-	soundFile, error = ebitenutil.OpenFile("assets/bosshurt.mp3")
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
-	bossHurtBytes, error = ioutil.ReadAll(sound)
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
+	/*
+		soundFile, error = ebitenutil.OpenFile("assets/bosshurt.mp3")
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}
+		sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}
+		bossHurtBytes, error = ioutil.ReadAll(sound)
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}
+	*/
+	bossHurtBytes = enemyHurtBytes
 
 	soundFile, error = ebitenutil.OpenFile("assets/menu.mp3")
 	if error != nil {

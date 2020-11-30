@@ -150,9 +150,11 @@ func (e *enemy) update(g *game) {
 				b.image = enemyBasicBullet
 				g.bulletSet.addBullet(b)
 			}
-			if len(e.bulletSequence[e.nextBullet].bullets) >= 1 {
-				g.playSound(enemyShotSound)
-			}
+			/*
+				if len(e.bulletSequence[e.nextBullet].bullets) >= 1 {
+					g.playSound(enemyShotSound)
+				}
+			*/
 			e.framesSinceLastBullet = 0
 			e.nextBullet = (e.nextBullet + 1) % len(e.bulletSequence)
 		}
