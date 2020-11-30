@@ -81,30 +81,36 @@ func (p player) drawUI(screen *ebiten.Image) {
 	// Display power ups names
 	for puNum := 1; puNum <= pDifferentPowerUps; puNum++ {
 		var s string = "-"
+		shiftText := 4
 		if p.isAppliablePowerUp(puNum) {
 			switch puNum {
 			case 1:
 				s = "Speed Up"
+				shiftText = -4
 			case 2:
 				s = "Better Shot"
+				shiftText = -2
 			case 3:
 				switch p.currentFire {
 				case 0:
 					s = "Moon Shot"
+					shiftText = -2
 				case 1:
 					//	s = "Laser"
 					// case 2:
 					s = "Base Shot"
+					shiftText = -2
 				}
 			case 4:
 				s = "New Option"
+				shiftText = -4
 			}
 		}
 		bounds := text.BoundString(theFont, s)
 		width := bounds.Max.X - bounds.Min.X
 		height := bounds.Max.Y - bounds.Min.Y
 		xFTranslate := (screenWidth-bonusDisplayWidth)/2 + (puNum*2-1)*bonusDisplayWidth/8 - width/2
-		yFTranslate := screenHeight - bottomUIOffset + bonusDisplayHeight/2 + height/2
+		yFTranslate := screenHeight - bottomUIOffset + bonusDisplayHeight/2 + height/2 + shiftText
 		color := textDarkColor
 		if puNum == p.currentPowerUp {
 			color = textLightColor
