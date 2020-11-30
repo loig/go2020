@@ -25,16 +25,21 @@ import (
 )
 
 type level struct {
-	firstPlanHeight  int
-	secondPlanHeight int
-	thirdPlanHeight  int
-	spawnSequence    []spawn
-	currentSpawn     int
-	currentFrame     int
-	lastSpawnFrame   int
-	bossBattle       bool
-	endLevelFrames   int
-	endLevel         bool
+	firstPlanHeight       int
+	secondPlanHeight      int
+	thirdPlanHeight       int
+	fourthPlanYShift      int
+	fourthPlanWidth       int
+	fourthPlanTotalXShift int
+	levelTotalFrames      int
+	spawnSequence         []spawn
+	currentSpawn          int
+	currentFrame          int
+	lastSpawnFrame        int
+	bossBattle            bool
+	endLevelFrames        int
+	endLevel              bool
+	countFrames           int
 }
 
 type spawn struct {
@@ -126,8 +131,11 @@ func (l level) draw(screen *ebiten.Image) {
 		op,
 	)
 
-	fourthPlanShift := fourthPlanPxPerFrame * float64(l.currentFrame)
-	drawFourthPlan(screen, levelFourthPlan, fourthPlanShift)
+	fourthPlanStartPos := float64(l.levelTotalFrames)*fourthPlanPxPerFrame - 584
+	fourthPlanShift := fourthPlanPxPerFrame*float64(l.currentFrame) - fourthPlanStartPos
+	if fourthPlanShift > 0 {
+		drawFourthPlan(screen, levelFourthPlan, fourthPlanShift, float64(l.fourthPlanYShift))
+	}
 
 	thirdPlanStart := (thirdPlanPxPerFrame * l.currentFrame) % planImageWidth
 	drawPlan(screen, levelThirdPlan, thirdPlanStart, l.thirdPlanHeight)
@@ -158,9 +166,9 @@ func drawPlan(screen, plan *ebiten.Image, start, planHeight int) {
 	}
 }
 
-func drawFourthPlan(screen, plan *ebiten.Image, shift float64) {
+func drawFourthPlan(screen, plan *ebiten.Image, xshift, yshift float64) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(screenWidth-shift, 0)
+	op.GeoM.Translate(screenWidth-xshift, yshift)
 	screen.DrawImage(
 		plan,
 		op,

@@ -28,6 +28,9 @@ func (g *game) setUpLevel1() {
 	l.firstPlanHeight = 396
 	l.secondPlanHeight = 342
 	l.thirdPlanHeight = 404
+	l.fourthPlanYShift = 48
+	l.fourthPlanTotalXShift = 584
+	l.levelTotalFrames = 8661
 	l.spawnSequence = level1SpawnSequence
 
 	g.level = l

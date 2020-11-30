@@ -25,9 +25,9 @@ func (g *game) setUpLevel2() {
 	loadLevel2Background()
 
 	var l level
-	l.firstPlanHeight = 396
-	l.secondPlanHeight = 342
-	l.thirdPlanHeight = 404
+	l.firstPlanHeight = 285
+	l.secondPlanHeight = 402
+	l.thirdPlanHeight = 424
 	l.spawnSequence = level2SpawnSequence
 
 	g.level = l
