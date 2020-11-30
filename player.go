@@ -495,7 +495,7 @@ func (p *player) applyPowerUp() {
 		}
 	case 3:
 		p.currentFire++
-		p.currentFire = p.currentFire % 3
+		p.currentFire = p.currentFire % 2
 	case 4:
 		p.numOptions++
 	}

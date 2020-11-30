@@ -92,8 +92,8 @@ func (p player) drawUI(screen *ebiten.Image) {
 				case 0:
 					s = "Moon Shot"
 				case 1:
-					s = "Laser"
-				case 2:
+					//	s = "Laser"
+					// case 2:
 					s = "Base Shot"
 				}
 			case 4:
