@@ -286,7 +286,7 @@ func (g *game) playerUpdate() {
 	g.player.laserOn = false
 	if !g.player.isDead && !g.level.endLevel {
 		g.player.move()
-		g.player.managePowerUp()
+		g.player.managePowerUp(g)
 		g.player.fire(g)
 		g.player.moveOptions()
 		g.player.bullets.update()
@@ -434,16 +434,17 @@ func (p *player) fire(g *game) {
 	}
 }
 
-func (p *player) getPowerUp() {
-	p.points += pPointsPerPowerUp
-	if !p.allPowerUp {
-		start := p.currentPowerUp
-		p.currentPowerUp = (p.currentPowerUp + 1) % (pDifferentPowerUps + 1)
-		for !p.isAppliablePowerUp(p.currentPowerUp) && p.currentPowerUp != start {
-			p.currentPowerUp = (p.currentPowerUp + 1) % (pDifferentPowerUps + 1)
+func (g *game) playerGetPowerUp() {
+	g.player.points += pPointsPerPowerUp
+	g.playSound(getBonusSound)
+	if !g.player.allPowerUp {
+		start := g.player.currentPowerUp
+		g.player.currentPowerUp = (g.player.currentPowerUp + 1) % (pDifferentPowerUps + 1)
+		for !g.player.isAppliablePowerUp(g.player.currentPowerUp) && g.player.currentPowerUp != start {
+			g.player.currentPowerUp = (g.player.currentPowerUp + 1) % (pDifferentPowerUps + 1)
 		}
-		if p.currentPowerUp == start && !p.isAppliablePowerUp(p.currentPowerUp) {
-			p.allPowerUp = true
+		if g.player.currentPowerUp == start && !g.player.isAppliablePowerUp(g.player.currentPowerUp) {
+			g.player.allPowerUp = true
 		}
 	}
 }
@@ -503,10 +504,11 @@ func (p *player) applyPowerUp() {
 	p.currentPowerUp = 0
 }
 
-func (p *player) managePowerUp() {
+func (p *player) managePowerUp(g *game) {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		if !p.allPowerUp && p.isAppliablePowerUp(p.currentPowerUp) {
 			p.applyPowerUp()
+			g.playSound(useBonusSound)
 		}
 	}
 }

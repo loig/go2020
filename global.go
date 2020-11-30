@@ -88,9 +88,9 @@ var infiniteMusic *audio.InfiniteLoop
 var music1 *audio.InfiniteLoop
 var music2 *audio.InfiniteLoop
 var playerShotBytes []byte
-
-//var enemyShotBytes []byte
 var playerHurtBytes []byte
 var enemyHurtBytes []byte
 var bossHurtBytes []byte
 var menuBytes []byte
+var getBonusBytes []byte
+var useBonusBytes []byte

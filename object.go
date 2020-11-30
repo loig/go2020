@@ -159,7 +159,7 @@ func (g *game) checkCollisions() {
 	}
 	for pos := 0; pos < g.powerUpSet.numPowerUps; pos++ {
 		if collideNoHarm(&(g.player), g.powerUpSet.powerUps[pos]) {
-			g.player.getPowerUp()
+			g.playerGetPowerUp()
 		}
 	}
 }

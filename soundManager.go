@@ -50,6 +50,8 @@ const (
 	enemyHurtSound
 	bossHurtSound
 	menuSound
+	getBonusSound
+	useBonusSound
 )
 
 // loop the music
@@ -123,6 +125,10 @@ func (g *game) playSound(sound int) {
 		soundBytes = bossHurtBytes
 	case menuSound:
 		soundBytes = menuBytes
+	case getBonusSound:
+		soundBytes = getBonusBytes
+	case useBonusSound:
+		soundBytes = useBonusBytes
 	}
 	soundPlayer := audio.NewPlayerFromBytes(g.audio.audioContext, soundBytes)
 	soundPlayer.Play()
@@ -246,6 +252,32 @@ func (g *game) initAudio() {
 		log.Panic("Audio problem:", error)
 	}
 	menuBytes, error = ioutil.ReadAll(sound)
+	if error != nil {
+		log.Panic("Audio problem:", error)
+	}
+
+	soundFile, error = ebitenutil.OpenFile("assets/getbonus.mp3")
+	if error != nil {
+		log.Panic("Audio problem:", error)
+	}
+	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	if error != nil {
+		log.Panic("Audio problem:", error)
+	}
+	getBonusBytes, error = ioutil.ReadAll(sound)
+	if error != nil {
+		log.Panic("Audio problem:", error)
+	}
+
+	soundFile, error = ebitenutil.OpenFile("assets/usebonus.mp3")
+	if error != nil {
+		log.Panic("Audio problem:", error)
+	}
+	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	if error != nil {
+		log.Panic("Audio problem:", error)
+	}
+	useBonusBytes, error = ioutil.ReadAll(sound)
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
