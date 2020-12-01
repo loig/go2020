@@ -114,6 +114,7 @@ var pOtherBulletSpeed [5]float64 = [5]float64{0, 1, -1, 2, -2}
 func initPlayer() player {
 	return player{
 		x: pInitX, y: pInitY,
+		xMin: pInitX - pWidth/2, yMin: pInitY - pHeight/2,
 		xSize: pWidth, ySize: pHeight,
 		bullets:         initBulletSet(),
 		lastBullet:      pBulletInterval,

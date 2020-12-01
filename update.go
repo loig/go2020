@@ -38,7 +38,9 @@ func (g *game) Update() error {
 		g.enemySetUpdate()
 		g.bossSetUpdate()
 		g.powerUpSet.update()
+		//if g.stateFrame >= framesBeforeLevel {
 		g.playerUpdate()
+		//}
 		g.explosionSetUpdate()
 		g.levelUpdate()
 		g.checkCollisions()

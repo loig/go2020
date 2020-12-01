@@ -37,17 +37,22 @@ func (g *game) Draw(screen *ebiten.Image) {
 	case gameIntro:
 		g.introDraw(screen)
 	case gameInLevel1, gameInLevel2:
-		// if g.stateFrame < framesBeforeLevel { dessiner image noire de + en + transparente et l'afficher au dessus }
-		if g.stateFrame >= framesBeforeLevel {
-			g.level.draw(screen)
-			g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
-			g.enemySet.draw(screen)
-			g.bossSet.draw(screen)
-			g.powerUpSet.draw(screen)
-			g.player.draw(screen)
-			g.explosionSetDraw(screen)
-			g.bossSet.drawUI(screen)
-			g.player.drawUI(screen)
+		//if g.stateFrame >= framesBeforeLevel {
+		g.level.draw(screen)
+		g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
+		g.enemySet.draw(screen)
+		g.bossSet.draw(screen)
+		g.powerUpSet.draw(screen)
+		g.player.draw(screen)
+		g.explosionSetDraw(screen)
+		g.bossSet.drawUI(screen)
+		g.player.drawUI(screen)
+		//}
+		if g.stateFrame < framesBeforeLevel {
+			alpha := float64(g.stateFrame) / float64(framesBeforeLevel)
+			op := &ebiten.DrawImageOptions{}
+			op.ColorM.Translate(-1, -1, -1, -alpha)
+			screen.DrawImage(levelBackground, op)
 		}
 	case gameTransition:
 		g.transitionDraw(screen)
