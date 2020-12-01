@@ -211,7 +211,8 @@ func (g *game) enemySetUpdate() {
 			if g.enemySet.enemies[pos].pv <= 0 {
 				g.enemySet.enemies[pos].deathAction(&(g.bulletSet), &(g.powerUpSet), &(g.player.points), g.level.bossBattle)
 				g.playSound(enemyHurtSound)
-				g.addExplosion(g.enemySet.enemies[pos].x, g.enemySet.enemies[pos].y)
+				isBig := g.enemySet.enemies[pos].xSize >= 100
+				g.addExplosion(g.enemySet.enemies[pos].x, g.enemySet.enemies[pos].y, 0, isBig)
 			}
 			g.enemySet.numEnemies--
 			g.enemySet.enemies[pos] = g.enemySet.enemies[g.enemySet.numEnemies]

@@ -86,6 +86,7 @@ var bonusImage *ebiten.Image
 
 // explosion graphics
 var explosionImages [explosionNumSteps]*ebiten.Image
+var bigExplosionImages [explosionNumSteps]*ebiten.Image
 
 // sounds
 var infiniteMusic *audio.InfiniteLoop

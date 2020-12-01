@@ -158,6 +158,16 @@ func (b *boss) boss2Update(bs *bulletSet, p *player) bool {
 					b.phaseLoop = 0
 				}
 				noBulletNum := rand.Intn(numBullets-2) + 1
+				if b.phase == 2 {
+					boundMin := numBullets / 4
+					boundMax := 3 * numBullets / 4
+					if noBulletNum < boundMin {
+						noBulletNum = boundMin
+					}
+					if noBulletNum > boundMax {
+						noBulletNum = boundMax
+					}
+				}
 				for bNum := 0; bNum < numBullets; bNum++ {
 					if bNum != noBulletNum {
 						y := float64(boss2BulletMinY) + float64(bNum*(boss2BulletMaxY-boss2BulletMinY))/float64(numBullets-1)

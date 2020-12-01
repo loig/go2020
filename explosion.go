@@ -33,6 +33,8 @@ type explosion struct {
 	y     float64
 	frame int
 	step  int
+	delay int
+	isBig bool
 }
 
 type explosionSet struct {
@@ -43,18 +45,27 @@ type explosionSet struct {
 func (g *game) explosionSetUpdate() {
 
 	for pos := 0; pos < g.explosions.numExplosions; pos++ {
-		g.explosions.explosions[pos].x -= firstPlanPxPerFrame
-		if g.explosions.explosions[pos].frame >= explosionNumFrames {
-			g.explosions.explosions[pos].step++
-			g.explosions.explosions[pos].frame = 0
-			if g.explosions.explosions[pos].step >= explosionNumSteps {
-				g.explosions.numExplosions--
-				g.explosions.explosions[pos] = g.explosions.explosions[g.explosions.numExplosions]
-				g.explosions.explosions = g.explosions.explosions[:g.explosions.numExplosions]
-				pos--
+		if !g.level.bossBattle && !g.level.endLevel {
+			g.explosions.explosions[pos].x -= firstPlanPxPerFrame
+		}
+		if g.explosions.explosions[pos].delay >= 0 {
+			g.explosions.explosions[pos].delay--
+			if g.explosions.explosions[pos].delay == 0 {
+				g.playSound(enemyHurtSound)
 			}
 		} else {
-			g.explosions.explosions[pos].frame++
+			if g.explosions.explosions[pos].frame >= explosionNumFrames {
+				g.explosions.explosions[pos].step++
+				g.explosions.explosions[pos].frame = 0
+				if g.explosions.explosions[pos].step >= explosionNumSteps {
+					g.explosions.numExplosions--
+					g.explosions.explosions[pos] = g.explosions.explosions[g.explosions.numExplosions]
+					g.explosions.explosions = g.explosions.explosions[:g.explosions.numExplosions]
+					pos--
+				}
+			} else {
+				g.explosions.explosions[pos].frame++
+			}
 		}
 	}
 
@@ -65,12 +76,16 @@ func (g game) explosionSetDraw(screen *ebiten.Image) {
 	for pos := 0; pos < g.explosions.numExplosions; pos++ {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(g.explosions.explosions[pos].x-explosionHalfXSize, g.explosions.explosions[pos].y-explosionHalfYSize)
-		screen.DrawImage(explosionImages[g.explosions.explosions[pos].step], op)
+		if g.explosions.explosions[pos].isBig {
+			screen.DrawImage(bigExplosionImages[g.explosions.explosions[pos].step], op)
+		} else {
+			screen.DrawImage(explosionImages[g.explosions.explosions[pos].step], op)
+		}
 	}
 
 }
 
-func (g *game) addExplosion(x, y float64) {
-	g.explosions.explosions = append(g.explosions.explosions, explosion{x: x, y: y})
+func (g *game) addExplosion(x, y float64, delay int, isBig bool) {
+	g.explosions.explosions = append(g.explosions.explosions, explosion{x: x, y: y, delay: delay, isBig: isBig})
 	g.explosions.numExplosions++
 }

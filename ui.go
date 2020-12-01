@@ -67,7 +67,7 @@ func (p player) drawUI(screen *ebiten.Image) {
 
 	// Draw lifes
 	xTranslate = float64(leftUIOffset)
-	yTranslate = topUIOffset - lifeDisplayHeight
+	yTranslate = topUIOffset - lifeDisplayHeight - 5
 	for i := 0; i < p.lives; i++ {
 		op = &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(xTranslate, yTranslate)

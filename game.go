@@ -225,4 +225,40 @@ func loadDurableImages() {
 		panic(err)
 	}
 	explosionImages[5] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion1.png")
+	if err != nil {
+		panic(err)
+	}
+	bigExplosionImages[0] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion2.png")
+	if err != nil {
+		panic(err)
+	}
+	bigExplosionImages[1] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion3.png")
+	if err != nil {
+		panic(err)
+	}
+	bigExplosionImages[2] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion4.png")
+	if err != nil {
+		panic(err)
+	}
+	bigExplosionImages[3] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion5.png")
+	if err != nil {
+		panic(err)
+	}
+	bigExplosionImages[4] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion6.png")
+	if err != nil {
+		panic(err)
+	}
+	bigExplosionImages[5] = img
 }

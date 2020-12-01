@@ -37,6 +37,7 @@ func (g *game) Draw(screen *ebiten.Image) {
 	case gameIntro:
 		g.introDraw(screen)
 	case gameInLevel1, gameInLevel2:
+		// if g.stateFrame < framesBeforeLevel { dessiner image noire de + en + transparente et l'afficher au dessus }
 		if g.stateFrame >= framesBeforeLevel {
 			g.level.draw(screen)
 			g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})

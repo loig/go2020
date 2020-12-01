@@ -132,7 +132,7 @@ func (l level) draw(screen *ebiten.Image) {
 		op,
 	)
 
-	fourthPlanStartPos := float64(l.levelTotalFrames)*fourthPlanPxPerFrame - 584
+	fourthPlanStartPos := float64(l.levelTotalFrames)*fourthPlanPxPerFrame - float64(l.fourthPlanTotalXShift)
 	fourthPlanShift := fourthPlanPxPerFrame*float64(l.currentFrame) - fourthPlanStartPos
 	if fourthPlanShift > 0 {
 		drawFourthPlan(screen, levelFourthPlan, fourthPlanShift, float64(l.fourthPlanYShift))

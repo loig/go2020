@@ -257,6 +257,10 @@ func (g *game) bossSetUpdate() {
 		if g.bossSet.bosses[pos].isDead() {
 			g.player.points += g.bossSet.bosses[pos].points
 			g.bossSet.deadBosses = append(g.bossSet.deadBosses, g.bossSet.bosses[pos])
+			g.addExplosion(g.bossSet.bosses[pos].x, g.bossSet.bosses[pos].y, 1, true)
+			g.addExplosion(g.bossSet.bosses[pos].x+30, g.bossSet.bosses[pos].y+70, 20, false)
+			g.addExplosion(g.bossSet.bosses[pos].x-50, g.bossSet.bosses[pos].y-32, 38, false)
+			g.addExplosion(g.bossSet.bosses[pos].x+40, g.bossSet.bosses[pos].y-55, 52, false)
 			g.bossSet.numBosses--
 			g.bossSet.bosses[pos] = g.bossSet.bosses[g.bossSet.numBosses]
 			g.bossSet.bosses = g.bossSet.bosses[:g.bossSet.numBosses]

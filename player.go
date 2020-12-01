@@ -271,8 +271,8 @@ func (g *game) playerUpdate() {
 		if g.player.collision {
 			g.player.lives--
 			g.playSound(playerHurtSound)
-			g.addExplosion(g.player.x, g.player.y)
-			g.player.releasePowerUps(&(g.powerUpSet))
+			g.addExplosion(g.player.x, g.player.y, 0, true)
+			g.player.releasePowerUps(&(g.powerUpSet), g.level.bossBattle)
 			g.player.bullets = initBulletSet()
 			g.player.reset()
 			g.player.isDead = true
@@ -532,14 +532,18 @@ func (p *player) checkLiveWin() {
 	}
 }
 
-func (p *player) releasePowerUps(ps *powerUpSet) {
+func (p *player) releasePowerUps(ps *powerUpSet, isBossBattle bool) {
 	numToLaunch := p.usedPowerUp / 2
 	for i := 0; i < numToLaunch; i++ {
 		xShift := rand.Intn(3) - 1
 		yShift := rand.Intn(3) - 1
+		vx := float64(xShift)
+		if !isBossBattle {
+			vx -= firstPlanPxPerFrame
+		}
 		ps.addPowerUp(powerUp{
 			x: p.x + float64(10*i), y: p.y + float64(10*i),
-			vx: -firstPlanPxPerFrame + float64(xShift), vy: float64(yShift),
+			vx: vx, vy: float64(yShift),
 		})
 	}
 }
