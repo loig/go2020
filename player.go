@@ -508,7 +508,7 @@ func (p *player) applyPowerUp() {
 }
 
 func (p *player) managePowerUp(g *game) {
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyControl) {
 		if !p.allPowerUp && p.isAppliablePowerUp(p.currentPowerUp) {
 			p.applyPowerUp()
 			g.playSound(useBonusSound)
