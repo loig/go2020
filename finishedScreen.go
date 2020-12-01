@@ -55,6 +55,9 @@ func (g *game) finishedUpdate() {
 
 func (g *game) finishedDraw(screen *ebiten.Image) {
 
+	op := &ebiten.DrawImageOptions{}
+	screen.DrawImage(transitionScreenImage, op)
+
 	textPos := cutSceneInitTextPos
 
 	if g.stateState >= finishedStep1 {
@@ -91,9 +94,6 @@ func (g *game) finishedDraw(screen *ebiten.Image) {
 		displayCutSceneText("Start a new civilisation from our ashes.", textPos, screen)
 	}
 
-	textPos += cutSceneTextSep
-	textPos += cutSceneTextSep
-	textPos += cutSceneTextSep
 	textPos += cutSceneTextSep
 	textPos += cutSceneTextSep
 	textPos += cutSceneTextSep
