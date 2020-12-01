@@ -201,12 +201,15 @@ func (b *boss) boss2Update(bs *bulletSet, p *player) bool {
 		}
 		if b.frame >= boss2Phase3FramePerBullet {
 			b.frame = 0
-			b.phaseLoop++
 			numBullets := boss2Phase3NumBullets
 			bulletSpeed := float64(boss2Phase3BulletSpeed)
 			noBulletNum := b.phaseInfo
 			if b.phaseLoop%2 == 0 {
-				noBulletNum = b.phaseInfo + rand.Intn(3) - 1
+				if b.phaseLoop != 0 {
+					noBulletNum = b.phaseInfo + rand.Intn(3) - 1
+				} else {
+					noBulletNum = rand.Intn(numBullets-3) + 1
+				}
 				if noBulletNum <= 0 {
 					noBulletNum = 1
 				} else if noBulletNum >= numBullets-2 {
@@ -242,6 +245,7 @@ func (b *boss) boss2Update(bs *bulletSet, p *player) bool {
 					image: enemyBasicBullet,
 				})
 			}
+			b.phaseLoop++
 			return true
 		}
 	case 100:
