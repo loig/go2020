@@ -261,6 +261,20 @@ func (g *game) bossSetUpdate() {
 			g.addExplosion(g.bossSet.bosses[pos].x+30, g.bossSet.bosses[pos].y+70, 20, false)
 			g.addExplosion(g.bossSet.bosses[pos].x-50, g.bossSet.bosses[pos].y-32, 38, false)
 			g.addExplosion(g.bossSet.bosses[pos].x+40, g.bossSet.bosses[pos].y-55, 52, false)
+			if g.bossSet.bosses[pos].bossType >= boss1 {
+				g.addExplosion(g.bossSet.bosses[pos].x-50, g.bossSet.bosses[pos].y-300, 70, true)
+				g.addExplosion(g.bossSet.bosses[pos].x+35, g.bossSet.bosses[pos].y+400, 90, false)
+				g.addExplosion(g.bossSet.bosses[pos].x-70, g.bossSet.bosses[pos].y-150, 10, false)
+				g.addExplosion(g.bossSet.bosses[pos].x+100, g.bossSet.bosses[pos].y-345, 100, false)
+				g.addExplosion(g.bossSet.bosses[pos].x+180, g.bossSet.bosses[pos].y+250, 110, true)
+				g.addExplosion(g.bossSet.bosses[pos].x+30, g.bossSet.bosses[pos].y+170, 120, false)
+				g.addExplosion(g.bossSet.bosses[pos].x-150, g.bossSet.bosses[pos].y-32, 135, false)
+				g.addExplosion(g.bossSet.bosses[pos].x+40, g.bossSet.bosses[pos].y-255, 150, false)
+				g.addExplosion(g.bossSet.bosses[pos].x+30, g.bossSet.bosses[pos].y-150, 140, true)
+				g.addExplosion(g.bossSet.bosses[pos].x+120, g.bossSet.bosses[pos].y+370, 160, false)
+				g.addExplosion(g.bossSet.bosses[pos].x-50, g.bossSet.bosses[pos].y-232, 175, false)
+				g.addExplosion(g.bossSet.bosses[pos].x+67, g.bossSet.bosses[pos].y-155, 85, false)
+			}
 			g.bossSet.numBosses--
 			g.bossSet.bosses[pos] = g.bossSet.bosses[g.bossSet.numBosses]
 			g.bossSet.bosses = g.bossSet.bosses[:g.bossSet.numBosses]
