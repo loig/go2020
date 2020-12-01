@@ -21,6 +21,7 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
@@ -30,6 +31,7 @@ func (g *game) gameOverUpdate() {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		// go to title screen
 		loadFirstImages()
+		gameOverScreenImage.Dispose()
 		g.stopMusic()
 		infiniteMusic = music2
 		g.stateFrame = 0
@@ -41,7 +43,19 @@ func (g *game) gameOverUpdate() {
 
 func (g *game) gameOverDraw(screen *ebiten.Image) {
 
-	text.Draw(screen, "Game Over", theBigFont, 900, 400, color.White)
+	op := &ebiten.DrawImageOptions{}
+	screen.DrawImage(
+		gameOverScreenImage,
+		op,
+	)
 
 	text.Draw(screen, "Press ENTER to restart", theBigFont, 1750, 1040, color.White)
+}
+
+func loadGameOverImage() {
+	img, _, err := ebitenutil.NewImageFromFile("assets/Game-over.png")
+	if err != nil {
+		panic(err)
+	}
+	gameOverScreenImage = img
 }

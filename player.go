@@ -261,6 +261,7 @@ func (g *game) playerUpdate() {
 				} else {
 					disposeLevel2Enemies()
 				}
+				loadGameOverImage()
 				g.state = gameOver
 			} else {
 				g.player.isDead = false

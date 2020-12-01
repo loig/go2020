@@ -32,6 +32,7 @@ const (
 )
 
 var titleScreenImage *ebiten.Image
+var gameOverScreenImage *ebiten.Image
 
 // level graphics
 var levelFirstPlan *ebiten.Image
