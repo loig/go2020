@@ -18,10 +18,13 @@
 package main
 
 import (
+	"bytes"
+	"image"
+
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
+	"github.com/loig/go2020/assets"
 )
 
 const (
@@ -130,7 +133,7 @@ func (g *game) transitionDraw(screen *ebiten.Image) {
 		displayCutSceneText("But we will make it.", textPos, screen)
 	}
 
-	enterColor := textDarkColor //color.Gray16{0x555f}
+	enterColor := veryDarkColor //color.Gray16{0x555f}
 	s := "Press ENTER to skip"
 	if g.stateState >= transitionFinished {
 		enterColor = textLightColor //color.White
@@ -140,11 +143,12 @@ func (g *game) transitionDraw(screen *ebiten.Image) {
 }
 
 func transitionScreenLoadImages() {
-	img, _, err := ebitenutil.NewImageFromFile("assets/cutscene.png")
+	img, _, err := image.Decode(bytes.NewReader(assets.Cutscene))
+	//img, _, err := ebitenutil.NewImageFromFile("assets/cutscene.png")
 	if err != nil {
 		panic(err)
 	}
-	transitionScreenImage = img
+	transitionScreenImage = ebiten.NewImageFromImage(img)
 }
 
 func transitionScreenDisposeImages() {

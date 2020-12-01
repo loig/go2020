@@ -61,7 +61,7 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 		op,
 	)
 
-	introColor := textDarkColor //color.Gray16{0x777f}
+	introColor := veryDarkColor //color.Gray16{0x777f}
 	helpColor := introColor
 	infoColor := introColor
 

@@ -18,12 +18,14 @@
 package main
 
 import (
+	"bytes"
+	"image"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
+	"github.com/loig/go2020/assets"
 )
 
 func (g *game) gameOverUpdate() {
@@ -53,9 +55,10 @@ func (g *game) gameOverDraw(screen *ebiten.Image) {
 }
 
 func loadGameOverImage() {
-	img, _, err := ebitenutil.NewImageFromFile("assets/Game-over.png")
+	img, _, err := image.Decode(bytes.NewReader(assets.Gameover))
+	//img, _, err := ebitenutil.NewImageFromFile("assets/Game-over.png")
 	if err != nil {
 		panic(err)
 	}
-	gameOverScreenImage = img
+	gameOverScreenImage = ebiten.NewImageFromImage(img)
 }

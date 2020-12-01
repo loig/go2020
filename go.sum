@@ -17,6 +17,8 @@ github.com/hajimehoshi/bitmapfont/v2 v2.1.1/go.mod h1:2BnYrkTQGThpr/CY6LorYtt/zE
 github.com/hajimehoshi/bitmapfont/v2 v2.1.2/go.mod h1:2BnYrkTQGThpr/CY6LorYtt/zEPNzvE/ND69CRTaHMs=
 github.com/hajimehoshi/ebiten v1.12.3 h1:/KYCLW5VvfMKOMb8TqjKFlDCQAibM+OiA+LUwjS8t0E=
 github.com/hajimehoshi/ebiten v1.12.3/go.mod h1:9JW9BAz1+swszT0SXR8VUvNvDafs9VspevAcY+KPlV8=
+github.com/hajimehoshi/ebiten v1.12.4 h1:ie1lGp9mwPeIopCMMZ6wY5O45mfXmZOuixGHxsTKSNc=
+github.com/hajimehoshi/ebiten v1.12.4/go.mod h1:Cj+v7AyYoT/dZscy2AGCsVy2s2wcYxsSBvEKMQEP9gw=
 github.com/hajimehoshi/ebiten/v2 v2.0.0 h1:G8mhkKFtnDPPZ/ChaGWx4Bm0NusYEcafGCJ8QLxEaYs=
 github.com/hajimehoshi/ebiten/v2 v2.0.0/go.mod h1:hpZZQ/kk8DZqft7QsQ5hZLRQXHSZPdKnaa0tcJ3CZFE=
 github.com/hajimehoshi/ebiten/v2 v2.1.0-alpha.4.0.20201122133751-53d7bcda84ae h1:sNYEzp4nare+rqlswcMT5SdRU0DQFZ+5N+DHtTU9T88=
@@ -30,6 +32,8 @@ github.com/hajimehoshi/oto v0.6.1/go.mod h1:0QXGEkbuJRohbJaxr7ZQSxnju7hEhseiPx2h
 github.com/hajimehoshi/oto v0.6.6/go.mod h1:0QXGEkbuJRohbJaxr7ZQSxnju7hEhseiPx2hrh6raOI=
 github.com/hajimehoshi/oto v0.6.8-0.20201122133406-2b7bad9ba66d h1:sGc0LG6e22q8H+acTfFJ9HHv8w06mYWqw3s1ZqT1BTA=
 github.com/hajimehoshi/oto v0.6.8-0.20201122133406-2b7bad9ba66d/go.mod h1:0QXGEkbuJRohbJaxr7ZQSxnju7hEhseiPx2hrh6raOI=
+github.com/hajimehoshi/oto v0.6.8 h1:yRb3EJQ4lAkBgZYheqmdH6Lr77RV9nSWFsK/jwWdTNY=
+github.com/hajimehoshi/oto v0.6.8/go.mod h1:0QXGEkbuJRohbJaxr7ZQSxnju7hEhseiPx2hrh6raOI=
 github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639 h1:mV02weKRL81bEnm8A0HT1/CAelMQDBuQIfLw8n+d6xI=
 github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
 github.com/jakecoffman/cp v1.0.0/go.mod h1:JjY/Fp6d8E1CHnu74gWNnU0+b9VzEdUVPoJxg2PsTQg=

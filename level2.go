@@ -17,7 +17,13 @@
 
 package main
 
-import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
+import (
+	"bytes"
+	"image"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/loig/go2020/assets"
+)
 
 func (g *game) setUpLevel2() {
 
@@ -42,60 +48,69 @@ func (g *game) setUpLevel2() {
 }
 
 func loadLevel2Enemies() {
-	img, _, err := ebitenutil.NewImageFromFile("assets/Ennemi4.png")
+	img, _, err := image.Decode(bytes.NewReader(assets.Ennemi4))
+	//img, _, err := ebitenutil.NewImageFromFile("assets/Ennemi4.png")
 	if err != nil {
 		panic(err)
 	}
-	movingFiringEnemyImage = img
+	movingFiringEnemyImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.2.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Ennemi42))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.2.png")
 	if err != nil {
 		panic(err)
 	}
-	movingFiringEnemyImage2 = img
+	movingFiringEnemyImage2 = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.3.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Ennemi43))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi4.3.png")
 	if err != nil {
 		panic(err)
 	}
-	movingFiringEnemyImage3 = img
+	movingFiringEnemyImage3 = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi1.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Ennemi1))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi1.png")
 	if err != nil {
 		panic(err)
 	}
-	staticEnemyImage = img
+	staticEnemyImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi2.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Ennemi2))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Ennemi2.png")
 	if err != nil {
 		panic(err)
 	}
-	staticExplodingEnemyImage = img
+	staticExplodingEnemyImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Midboss.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Midboss))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Midboss.png")
 	if err != nil {
 		panic(err)
 	}
-	midBoss1Images[0] = img
+	midBoss1Images[0] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Midboss2.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Midboss2))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Midboss2.png")
 	if err != nil {
 		panic(err)
 	}
-	midBoss1Images[1] = img
-	midBoss1Images[3] = img
+	midBoss1Images[1] = ebiten.NewImageFromImage(img)
+	midBoss1Images[3] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Midboss3.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Midboss3))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Midboss3.png")
 	if err != nil {
 		panic(err)
 	}
-	midBoss1Images[2] = img
+	midBoss1Images[2] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Boss2.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Boss2))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Boss2.png")
 	if err != nil {
 		panic(err)
 	}
-	boss2Image = img
+	boss2Image = ebiten.NewImageFromImage(img)
 }
 
 func disposeLevel2Enemies() {
@@ -112,35 +127,40 @@ func disposeLevel2Enemies() {
 }
 
 func loadLevel2Background() {
-	img, _, err := ebitenutil.NewImageFromFile("assets/Level2-1.png")
+	img, _, err := image.Decode(bytes.NewReader(assets.Level21))
+	//img, _, err := ebitenutil.NewImageFromFile("assets/Level2-1.png")
 	if err != nil {
 		panic(err)
 	}
-	levelFirstPlan = img
+	levelFirstPlan = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Level2-2.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Level22))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Level2-2.png")
 	if err != nil {
 		panic(err)
 	}
-	levelSecondPlan = img
+	levelSecondPlan = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Level2-3.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Level23))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Level2-3.png")
 	if err != nil {
 		panic(err)
 	}
-	levelThirdPlan = img
+	levelThirdPlan = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Level2-4.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Level24))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Level2-4.png")
 	if err != nil {
 		panic(err)
 	}
-	levelFourthPlan = img
+	levelFourthPlan = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Level2-back.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Level2back))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Level2-back.png")
 	if err != nil {
 		panic(err)
 	}
-	levelBackground = img
+	levelBackground = ebiten.NewImageFromImage(img)
 }
 
 var level2SpawnSequence []spawn = []spawn{

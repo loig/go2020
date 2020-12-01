@@ -18,10 +18,13 @@
 package main
 
 import (
+	"bytes"
+	"image"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/loig/go2020/assets"
 )
 
 type boss struct {
@@ -231,15 +234,19 @@ type bossSet struct {
 }
 
 func initBossSet() bossSet {
-	img1, _, err := ebitenutil.NewImageFromFile("assets/Barre-vie.png")
+	img, _, err := image.Decode(bytes.NewReader(assets.Barrevie))
+	//img1, _, err := ebitenutil.NewImageFromFile("assets/Barre-vie.png")
 	if err != nil {
 		panic(err)
 	}
+	img1 := ebiten.NewImageFromImage(img)
 
-	img2, _, err := ebitenutil.NewImageFromFile("assets/Barre-vie-fond.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Barreviefond))
+	//img2, _, err := ebitenutil.NewImageFromFile("assets/Barre-vie-fond.png")
 	if err != nil {
 		panic(err)
 	}
+	img2 := ebiten.NewImageFromImage(img)
 
 	return bossSet{
 		numBosses:   0,

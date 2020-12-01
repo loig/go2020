@@ -115,7 +115,7 @@ func (g *game) introDraw(screen *ebiten.Image) {
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep7 {
-		displayCutSceneText("I took us even more time to strike back.", textPos, screen)
+		displayCutSceneText("It took us even more time to strike back.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
@@ -136,7 +136,7 @@ func (g *game) introDraw(screen *ebiten.Image) {
 		displayCutSceneText("As a first step, we need to leave the ground.", textPos, screen)
 	}
 
-	enterColor := textDarkColor //color.Gray16{0x555f}
+	enterColor := veryDarkColor //color.Gray16{0x555f}
 	s := "Press ENTER to skip"
 	if g.stateState >= introFinished {
 		enterColor = textLightColor

@@ -18,6 +18,7 @@
 package main
 
 import (
+	"bytes"
 	"io/ioutil"
 	"log"
 	"math"
@@ -25,7 +26,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/loig/go2020/assets"
 )
 
 type soundManager struct {
@@ -140,45 +141,49 @@ func (g *game) initAudio() {
 	g.audio.audioContext = audio.NewContext(44100)
 
 	// music
-	soundFile, error := ebitenutil.OpenFile("assets/intro.mp3")
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
-	sound, error := mp3.Decode(g.audio.audioContext, soundFile)
+	/*
+		soundFile, error := ebitenutil.OpenFile("assets/intro.mp3")
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}
+	*/
+	sound, error := mp3.Decode(g.audio.audioContext, bytes.NewReader(assets.Intro)) //soundFile)
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
 	tduration, _ := time.ParseDuration("1m36s")
 	duration := tduration.Seconds()
-	bytes := int64(math.Round(duration * 4 * float64(44100)))
+	theBytes := int64(math.Round(duration * 4 * float64(44100)))
 	tduration, _ = time.ParseDuration("50ms")
 	duration = tduration.Seconds()
 	introBytes := int64(math.Round(duration * 4 * float64(44100)))
-	music1 = audio.NewInfiniteLoopWithIntro(sound, introBytes, bytes)
+	music1 = audio.NewInfiniteLoopWithIntro(sound, introBytes, theBytes)
 
-	soundFile, error = ebitenutil.OpenFile("assets/level.mp3")
+	sound, error = mp3.Decode(g.audio.audioContext, bytes.NewReader(assets.Level))
+	/*soundFile, error = ebitenutil.OpenFile("assets/level.mp3")
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	sound, error = mp3.Decode(g.audio.audioContext, soundFile)*/
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
 	tduration, _ = time.ParseDuration("1m20s")
 	duration = tduration.Seconds()
-	bytes = int64(math.Round(duration * 4 * float64(44100)))
+	theBytes = int64(math.Round(duration * 4 * float64(44100)))
 	tduration, _ = time.ParseDuration("100ms")
 	duration = tduration.Seconds()
 	introBytes = int64(math.Round(duration * 4 * float64(44100)))
-	music2 = audio.NewInfiniteLoopWithIntro(sound, introBytes, bytes)
+	music2 = audio.NewInfiniteLoopWithIntro(sound, introBytes, theBytes)
 	infiniteMusic = music2
 
 	// sounds
-	soundFile, error = ebitenutil.OpenFile("assets/playershot.mp3")
+	sound, error = mp3.Decode(g.audio.audioContext, bytes.NewReader(assets.Playershort))
+	/*soundFile, error = ebitenutil.OpenFile("assets/playershot.mp3")
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	sound, error = mp3.Decode(g.audio.audioContext, soundFile)*/
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
@@ -201,11 +206,12 @@ func (g *game) initAudio() {
 			log.Panic("Audio problem:", error)
 		}*/
 
-	soundFile, error = ebitenutil.OpenFile("assets/playerhurt.mp3")
+	sound, error = mp3.Decode(g.audio.audioContext, bytes.NewReader(assets.PlayerHurt))
+	/*soundFile, error = ebitenutil.OpenFile("assets/playerhurt.mp3")
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	sound, error = mp3.Decode(g.audio.audioContext, soundFile)*/
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
@@ -214,11 +220,12 @@ func (g *game) initAudio() {
 		log.Panic("Audio problem:", error)
 	}
 
-	soundFile, error = ebitenutil.OpenFile("assets/enemyhurt.mp3")
+	sound, error = mp3.Decode(g.audio.audioContext, bytes.NewReader(assets.Enemyhurt))
+	/*soundFile, error = ebitenutil.OpenFile("assets/enemyhurt.mp3")
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	sound, error = mp3.Decode(g.audio.audioContext, soundFile)*/
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
@@ -243,11 +250,12 @@ func (g *game) initAudio() {
 	*/
 	bossHurtBytes = enemyHurtBytes
 
-	soundFile, error = ebitenutil.OpenFile("assets/menu.mp3")
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	sound, error = mp3.Decode(g.audio.audioContext, bytes.NewReader(assets.Menu))
+	/*	soundFile, error = ebitenutil.OpenFile("assets/menu.mp3")
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}
+		sound, error = mp3.Decode(g.audio.audioContext, soundFile)*/
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
@@ -256,11 +264,12 @@ func (g *game) initAudio() {
 		log.Panic("Audio problem:", error)
 	}
 
-	soundFile, error = ebitenutil.OpenFile("assets/getbonus.mp3")
-	if error != nil {
-		log.Panic("Audio problem:", error)
-	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	sound, error = mp3.Decode(g.audio.audioContext, bytes.NewReader(assets.Getbonus))
+	/*	soundFile, error = ebitenutil.OpenFile("assets/getbonus.mp3")
+		if error != nil {
+			log.Panic("Audio problem:", error)
+		}
+		sound, error = mp3.Decode(g.audio.audioContext, soundFile)*/
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
@@ -269,11 +278,12 @@ func (g *game) initAudio() {
 		log.Panic("Audio problem:", error)
 	}
 
-	soundFile, error = ebitenutil.OpenFile("assets/usebonus.mp3")
+	sound, error = mp3.Decode(g.audio.audioContext, bytes.NewReader(assets.Usebonus))
+	/*soundFile, error = ebitenutil.OpenFile("assets/usebonus.mp3")
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}
-	sound, error = mp3.Decode(g.audio.audioContext, soundFile)
+	sound, error = mp3.Decode(g.audio.audioContext, soundFile)*/
 	if error != nil {
 		log.Panic("Audio problem:", error)
 	}

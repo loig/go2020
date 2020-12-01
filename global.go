@@ -74,6 +74,7 @@ var theBigFont font.Face
 var textLightColor color.Color = color.RGBA{205, 204, 191, 255}
 var textDarkColor color.Color = color.RGBA{196, 192, 172, 255}
 var scoreColor color.Color = color.RGBA{65, 71, 115, 255}
+var veryDarkColor color.Color = color.RGBA{90, 88, 80, 255}
 
 // player graphics
 var optionImage *ebiten.Image

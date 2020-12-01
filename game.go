@@ -18,8 +18,12 @@
 package main
 
 import (
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"bytes"
+	"image"
+
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
+	"github.com/loig/go2020/assets"
 	"github.com/loig/go2020/fonts"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
@@ -94,178 +98,207 @@ func disposeFirstImages() {
 }
 
 func loadFirstImages() {
-	img, _, err := ebitenutil.NewImageFromFile("assets/Titre.png")
+	img, _, err := image.Decode(bytes.NewReader(assets.Titre))
+	//img, _, err := ebitenutil.NewImageFromFile("assets/Titre.png")
 	if err != nil {
 		panic(err)
 	}
-	titleScreenImage = img
+	titleScreenImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/help.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Help))
+	//img, _, err := ebitenutil.NewImageFromFile("assets/help.png")
 	if err != nil {
 		panic(err)
 	}
-	helpScreenImage = img
+	helpScreenImage = ebiten.NewImageFromImage(img)
 }
 
 func loadDurableImages() {
 
-	img, _, err := ebitenutil.NewImageFromFile("assets/Vaisseau.png")
+	img, _, err := image.Decode(bytes.NewReader(assets.Vaisseau))
+	//img, _, err := ebitenutil.NewImageFromFile("assets/Vaisseau.png")
 	if err != nil {
 		panic(err)
 	}
-	playerImage = img
+	playerImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Tir1.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Tir1))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Tir1.png")
 	if err != nil {
 		panic(err)
 	}
-	playerBulletImage = img
+	playerBulletImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Gros-tir.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Grostir))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Gros-tir.png")
 	if err != nil {
 		panic(err)
 	}
-	playerBigBulletImage = img
+	playerBigBulletImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Option.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Option))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Option.png")
 	if err != nil {
 		panic(err)
 	}
-	optionImage = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Laser1.png")
-	if err != nil {
-		panic(err)
-	}
-	laserImage1 = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Laser2.png")
-	if err != nil {
-		panic(err)
-	}
-	laserImage2 = img
-	img, _, err = ebitenutil.NewImageFromFile("assets/Laser3.png")
-	if err != nil {
-		panic(err)
-	}
-	laserImage3 = img
-	laserImage = laserImage1
+	optionImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Tir2.png")
-	if err != nil {
-		panic(err)
-	}
-	enemyBasicBullet = img
+	/*
+		img, _, err = ebitenutil.NewImageFromFile("assets/Laser1.png")
+		if err != nil {
+			panic(err)
+		}
+		laserImage1 = img
+		img, _, err = ebitenutil.NewImageFromFile("assets/Laser2.png")
+		if err != nil {
+			panic(err)
+		}
+		laserImage2 = img
+		img, _, err = ebitenutil.NewImageFromFile("assets/Laser3.png")
+		if err != nil {
+			panic(err)
+		}
+		laserImage3 = img
+		laserImage = laserImage1
+	*/
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-aucun.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Tir2))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Tir2.png")
 	if err != nil {
 		panic(err)
 	}
-	noBonusImage = img
+	enemyBasicBullet = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-1.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Bonusaucun))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-aucun.png")
 	if err != nil {
 		panic(err)
 	}
-	firstBonusImage = img
+	noBonusImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-2.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Bonus1))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-1.png")
 	if err != nil {
 		panic(err)
 	}
-	secondBonusImage = img
+	firstBonusImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-3.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Bonus2))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-2.png")
 	if err != nil {
 		panic(err)
 	}
-	thirdBonusImage = img
+	secondBonusImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-4.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Bonus3))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-3.png")
 	if err != nil {
 		panic(err)
 	}
-	fourthBonusImage = img
+	thirdBonusImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Vie.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Bonus4))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Bonus-4.png")
 	if err != nil {
 		panic(err)
 	}
-	lifeImage = img
+	fourthBonusImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Bonus.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Vie))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Vie.png")
 	if err != nil {
 		panic(err)
 	}
-	bonusImage = img
+	lifeImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion1.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Bonus))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Bonus.png")
 	if err != nil {
 		panic(err)
 	}
-	explosionImages[0] = img
+	bonusImage = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion2.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Explosion1))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Explosion1.png")
 	if err != nil {
 		panic(err)
 	}
-	explosionImages[1] = img
+	explosionImages[0] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion3.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Explosion2))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Explosion2.png")
 	if err != nil {
 		panic(err)
 	}
-	explosionImages[2] = img
+	explosionImages[1] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion4.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Explosion3))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Explosion3.png")
 	if err != nil {
 		panic(err)
 	}
-	explosionImages[3] = img
+	explosionImages[2] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion5.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Explosion4))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Explosion4.png")
 	if err != nil {
 		panic(err)
 	}
-	explosionImages[4] = img
+	explosionImages[3] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion6.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Explosion5))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Explosion5.png")
 	if err != nil {
 		panic(err)
 	}
-	explosionImages[5] = img
+	explosionImages[4] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion1.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.Explosion6))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/Explosion6.png")
 	if err != nil {
 		panic(err)
 	}
-	bigExplosionImages[0] = img
+	explosionImages[5] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion2.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.GrosseExplosion1))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion1.png")
 	if err != nil {
 		panic(err)
 	}
-	bigExplosionImages[1] = img
+	bigExplosionImages[0] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion3.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.GrosseExplosion2))
+	//	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion2.png")
 	if err != nil {
 		panic(err)
 	}
-	bigExplosionImages[2] = img
+	bigExplosionImages[1] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion4.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.GrosseExplosion3))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion3.png")
 	if err != nil {
 		panic(err)
 	}
-	bigExplosionImages[3] = img
+	bigExplosionImages[2] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion5.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.GrosseExplosion4))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion4.png")
 	if err != nil {
 		panic(err)
 	}
-	bigExplosionImages[4] = img
+	bigExplosionImages[3] = ebiten.NewImageFromImage(img)
 
-	img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion6.png")
+	img, _, err = image.Decode(bytes.NewReader(assets.GrosseExplosion5))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion5.png")
 	if err != nil {
 		panic(err)
 	}
-	bigExplosionImages[5] = img
+	bigExplosionImages[4] = ebiten.NewImageFromImage(img)
+
+	img, _, err = image.Decode(bytes.NewReader(assets.GrosseExplosion6))
+	//img, _, err = ebitenutil.NewImageFromFile("assets/GrosseExplosion6.png")
+	if err != nil {
+		panic(err)
+	}
+	bigExplosionImages[5] = ebiten.NewImageFromImage(img)
 }
