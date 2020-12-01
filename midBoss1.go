@@ -24,8 +24,9 @@ import (
 )
 
 const (
-	midBoss1Points = 5000
-	midBoss1PV     = 200
+	midBoss1Points          = 5000
+	midBoss1PV              = 200
+	midBoss1AnimationFrames = 12
 )
 
 func makeMidBoss1(y float64) boss {
@@ -69,6 +70,14 @@ const (
 )
 
 func (b *boss) midBoss1Update(bs *bulletSet) bool {
+	b.animationFrame++
+	if b.animationFrame >= midBoss1AnimationFrames {
+		b.animationFrame = 0
+		b.animationStep++
+		if b.animationStep >= 4 {
+			b.animationStep = 0
+		}
+	}
 	switch b.phase {
 	case 0:
 		if b.x > 6*float64(screenWidth)/7 {
@@ -113,7 +122,7 @@ func (b *boss) midBoss1Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(b.x-b.xSize/4, b.y-b.ySize/2)
 	screen.DrawImage(
-		midBoss1Image,
+		midBoss1Images[b.animationStep],
 		op,
 	)
 }

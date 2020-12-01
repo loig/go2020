@@ -113,6 +113,7 @@ func (g *game) levelUpdate() {
 			g.stateState = 0
 			g.stateFrame = 0
 			infiniteMusic = music1
+			transitionScreenLoadImages()
 			if g.state == gameInLevel1 {
 				disposeLevel1Enemies()
 				g.state = gameTransition

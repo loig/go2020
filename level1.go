@@ -82,7 +82,20 @@ func loadLevel1Enemies() {
 	if err != nil {
 		panic(err)
 	}
-	midBoss1Image = img
+	midBoss1Images[0] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Midboss2.png")
+	if err != nil {
+		panic(err)
+	}
+	midBoss1Images[1] = img
+	midBoss1Images[3] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Midboss3.png")
+	if err != nil {
+		panic(err)
+	}
+	midBoss1Images[2] = img
 }
 
 func disposeLevel1Enemies() {
@@ -92,7 +105,10 @@ func disposeLevel1Enemies() {
 	staticFiringDownEnemyImage.Dispose()
 	staticExplodingEnemyImage.Dispose()
 	boss1Image.Dispose()
-	midBoss1Image.Dispose()
+	midBoss1Images[0].Dispose()
+	midBoss1Images[1].Dispose()
+	midBoss1Images[2].Dispose()
+	midBoss1Images[3].Dispose()
 }
 
 func loadLevel1Background() {

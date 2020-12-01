@@ -44,6 +44,8 @@ type boss struct {
 	invulnerabilityNumFrames int
 	isInvulnerable           bool
 	framesSinceLastHurtSound int
+	animationFrame           int
+	animationStep            int
 }
 
 type bossHitBox struct {

@@ -18,8 +18,6 @@
 package main
 
 import (
-	"image/color"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
@@ -39,6 +37,7 @@ func (g *game) welcomeUpdate() {
 			g.state = gameIntro
 			g.stateState = 0
 			g.stopMusic()
+			transitionScreenLoadImages()
 			infiniteMusic = music1
 		case welcomeHelp:
 			g.state = gameHelp
@@ -62,17 +61,17 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 		op,
 	)
 
-	introColor := color.Gray16{0x777f}
+	introColor := textDarkColor //color.Gray16{0x777f}
 	helpColor := introColor
 	infoColor := introColor
 
 	switch g.stateState {
 	case welcomeStart:
-		introColor = color.White
+		introColor = textLightColor //color.White
 	case welcomeHelp:
-		helpColor = color.White
+		helpColor = textLightColor //color.White
 	case welcomeInfo:
-		infoColor = color.White
+		infoColor = textLightColor //color.White
 	}
 
 	s := "Start Game"

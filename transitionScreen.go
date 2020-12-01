@@ -18,9 +18,8 @@
 package main
 
 import (
-	"image/color"
-
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
@@ -46,6 +45,7 @@ func (g *game) transitionUpdate() {
 		g.state = gameInLevel2
 		g.fadeOutMusic(true)
 		infiniteMusic = music2
+		transitionScreenDisposeImages()
 		g.setUpLevel2()
 		return
 	}
@@ -67,71 +67,86 @@ func (g *game) transitionUpdate() {
 
 func (g *game) transitionDraw(screen *ebiten.Image) {
 
+	op := &ebiten.DrawImageOptions{}
+	screen.DrawImage(transitionScreenImage, op)
+
 	textPos := cutSceneInitTextPos
 
 	if g.stateState >= transitionStep1 {
-		text.Draw(screen, "Leaving our earth was not easy.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Leaving our earth was not easy.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep2 {
-		text.Draw(screen, "It took us many tries.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("It took us many tries.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep3 {
-		text.Draw(screen, "Many years.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Many years.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep4 {
-		text.Draw(screen, "Many generations in fact.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Many generations in fact.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep5 {
-		text.Draw(screen, "But we made it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("But we made it.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep6 {
-		text.Draw(screen, "Reaching the moon was even more difficult.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Reaching the moon was even more difficult.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep7 {
-		text.Draw(screen, "But we made it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("But we made it.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep8 {
-		text.Draw(screen, "The overmind is now in our reach.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("The overmind is now in our reach.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep9 {
-		text.Draw(screen, "Killing it will require greater sacrifices.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("To deliver the final blow will require sacrifice.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= transitionStep10 {
-		text.Draw(screen, "But we will make it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("But we will make it.", textPos, screen)
 	}
 
-	enterColor := color.Gray16{0x555f}
+	enterColor := textDarkColor //color.Gray16{0x555f}
 	s := "Press ENTER to skip"
 	if g.stateState >= transitionFinished {
-		enterColor = color.White
+		enterColor = textLightColor //color.White
 		s = "Press ENTER to continue"
 	}
 	text.Draw(screen, s, theBigFont, 1750, 1040, enterColor)
+}
+
+func transitionScreenLoadImages() {
+	img, _, err := ebitenutil.NewImageFromFile("assets/cutscene.png")
+	if err != nil {
+		panic(err)
+	}
+	transitionScreenImage = img
+}
+
+func transitionScreenDisposeImages() {
+	transitionScreenImage.Dispose()
 }

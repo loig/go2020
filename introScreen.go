@@ -18,8 +18,6 @@
 package main
 
 import (
-	"image/color"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
@@ -27,9 +25,8 @@ import (
 
 const (
 	framesPerText       = 178
-	cutSceneInitTextPos = 200
+	cutSceneInitTextPos = 250
 	cutSceneTextSep     = 50
-	cutSceneXTextPos    = 500
 )
 
 const (
@@ -52,6 +49,7 @@ func (g *game) introUpdate() {
 		g.stateFrame = 0
 		g.state = gameInLevel1
 		disposeFirstImages()
+		transitionScreenDisposeImages()
 		g.fadeOutMusic(true)
 		infiniteMusic = music2
 		g.setUpLevel1()
@@ -75,71 +73,84 @@ func (g *game) introUpdate() {
 
 func (g *game) introDraw(screen *ebiten.Image) {
 
+	op := &ebiten.DrawImageOptions{}
+	screen.DrawImage(transitionScreenImage, op)
+
 	textPos := cutSceneInitTextPos
 
 	if g.stateState >= introStep1 {
-		text.Draw(screen, "Generations ago, they arrived.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Generations ago, they arrived.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep2 {
-		text.Draw(screen, "Nobody knew where they came from.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Nobody knew where they came from.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep3 {
-		text.Draw(screen, "Nobody knew why they came here.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Nobody knew why they came here.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep4 {
-		text.Draw(screen, "Nobody knew nothing, but many died.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Nobody knew nothing, but many died.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep5 {
-		text.Draw(screen, "For long we believed they would leave.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("For long we believed they would leave.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep6 {
-		text.Draw(screen, "After centuries we had to change our mind.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("After centuries we had to change our mind.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep7 {
-		text.Draw(screen, "I took us even more time to strike back.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("I took us even more time to strike back.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep8 {
-		text.Draw(screen, "Their overmind is on the moon, we know for sure.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Their overmind is on the moon.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep9 {
-		text.Draw(screen, "Destroying it will require sacrifices.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Killing it will require sacrifices.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= introStep10 {
-		text.Draw(screen, "As a first step, we need to leave the ground.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("As a first step, we need to leave the ground.", textPos, screen)
 	}
 
-	enterColor := color.Gray16{0x555f}
+	enterColor := textDarkColor //color.Gray16{0x555f}
 	s := "Press ENTER to skip"
 	if g.stateState >= introFinished {
-		enterColor = color.White
+		enterColor = textLightColor
 		s = "Press ENTER to continue"
 	}
 	text.Draw(screen, s, theBigFont, 1750, 1040, enterColor)
+}
+
+func displayCutSceneText(s string, ypos int, screen *ebiten.Image) {
+	//_, ad := font.BoundString(theFont, s)
+	//width := bounds.Max.X.Floor() - bounds.Min.X.Floor()
+	//width := ad.Floor()
+	//log.Print(width, ad)
+	//xpos := (screenWidth - width) / 2
+	xpos := 750
+	text.Draw(screen, s, theBigFont, xpos, ypos, textLightColor)
 }

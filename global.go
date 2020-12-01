@@ -34,6 +34,7 @@ const (
 var titleScreenImage *ebiten.Image
 var gameOverScreenImage *ebiten.Image
 var helpScreenImage *ebiten.Image
+var transitionScreenImage *ebiten.Image
 
 // level graphics
 var levelFirstPlan *ebiten.Image
@@ -55,7 +56,7 @@ var movingFiringEnemyImage3 *ebiten.Image
 
 // boss graphics
 var boss1Image *ebiten.Image
-var midBoss1Image *ebiten.Image
+var midBoss1Images [4]*ebiten.Image
 var boss2Image *ebiten.Image
 
 // ui graphics

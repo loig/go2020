@@ -19,11 +19,9 @@ package main
 
 import (
 	"fmt"
-	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
 const (
@@ -60,37 +58,37 @@ func (g *game) finishedDraw(screen *ebiten.Image) {
 	textPos := cutSceneInitTextPos
 
 	if g.stateState >= finishedStep1 {
-		text.Draw(screen, "We did it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("We did it.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= finishedStep2 {
-		text.Draw(screen, "We finally did it.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("We finally did it.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= finishedStep3 {
-		text.Draw(screen, "The overmind is down.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("The overmind is down.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= finishedStep4 {
-		text.Draw(screen, "At the very moment it died, they all died.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("At the very moment it died, they all died.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= finishedStep5 {
-		text.Draw(screen, "Now we can rebuild.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Now we can rebuild.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
 
 	if g.stateState >= finishedStep6 {
-		text.Draw(screen, "Start a new civilisation.", theBigFont, cutSceneXTextPos, textPos, color.White)
+		displayCutSceneText("Start a new civilisation from our ashes.", textPos, screen)
 	}
 
 	textPos += cutSceneTextSep
@@ -103,6 +101,6 @@ func (g *game) finishedDraw(screen *ebiten.Image) {
 
 	if g.stateState >= finishedFinished {
 		s := fmt.Sprint("Final score: ", g.player.points)
-		text.Draw(screen, s, theBigFont, cutSceneXTextPos+400, textPos, color.White)
+		displayCutSceneText(s, textPos, screen)
 	}
 }
