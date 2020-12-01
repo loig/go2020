@@ -32,5 +32,7 @@ func (g *game) helpUpdate() {
 }
 
 func (g *game) helpDraw(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	screen.DrawImage(helpScreenImage, op)
 	text.Draw(screen, "Press ENTER to quit", theBigFont, 1800, 1040, color.White)
 }

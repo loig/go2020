@@ -90,6 +90,7 @@ func initGame() *game {
 
 func disposeFirstImages() {
 	titleScreenImage.Dispose()
+	helpScreenImage.Dispose()
 }
 
 func loadFirstImages() {
@@ -98,6 +99,12 @@ func loadFirstImages() {
 		panic(err)
 	}
 	titleScreenImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/help.png")
+	if err != nil {
+		panic(err)
+	}
+	helpScreenImage = img
 }
 
 func loadDurableImages() {
