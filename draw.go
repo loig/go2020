@@ -44,6 +44,7 @@ func (g *game) Draw(screen *ebiten.Image) {
 			g.bossSet.draw(screen)
 			g.powerUpSet.draw(screen)
 			g.player.draw(screen)
+			g.explosionSetDraw(screen)
 			g.bossSet.drawUI(screen)
 			g.player.drawUI(screen)
 		}

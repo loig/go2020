@@ -35,6 +35,7 @@ type game struct {
 	bossSet    bossSet
 	powerUpSet powerUpSet
 	level      level
+	explosions explosionSet
 	audio      soundManager
 }
 
@@ -56,7 +57,7 @@ func initGame() *game {
 	loadDurableImages()
 
 	// font
-	tt, err := opentype.Parse(fonts.Roboto)
+	tt, err := opentype.Parse(fonts.LiberationSansBold)
 	if err != nil {
 		panic(err)
 	}
@@ -188,4 +189,40 @@ func loadDurableImages() {
 		panic(err)
 	}
 	bonusImage = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion1.png")
+	if err != nil {
+		panic(err)
+	}
+	explosionImages[0] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion2.png")
+	if err != nil {
+		panic(err)
+	}
+	explosionImages[1] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion3.png")
+	if err != nil {
+		panic(err)
+	}
+	explosionImages[2] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion4.png")
+	if err != nil {
+		panic(err)
+	}
+	explosionImages[3] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion5.png")
+	if err != nil {
+		panic(err)
+	}
+	explosionImages[4] = img
+
+	img, _, err = ebitenutil.NewImageFromFile("assets/Explosion6.png")
+	if err != nil {
+		panic(err)
+	}
+	explosionImages[5] = img
 }

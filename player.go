@@ -270,6 +270,7 @@ func (g *game) playerUpdate() {
 		if g.player.collision {
 			g.player.lives--
 			g.playSound(playerHurtSound)
+			g.addExplosion(g.player.x, g.player.y)
 			g.player.releasePowerUps(&(g.powerUpSet))
 			g.player.bullets = initBulletSet()
 			g.player.reset()

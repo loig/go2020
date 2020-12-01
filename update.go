@@ -39,6 +39,7 @@ func (g *game) Update() error {
 		g.bossSetUpdate()
 		g.powerUpSet.update()
 		g.playerUpdate()
+		g.explosionSetUpdate()
 		g.levelUpdate()
 		g.checkCollisions()
 	case gameTransition:

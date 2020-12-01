@@ -83,6 +83,9 @@ var playerBulletImage *ebiten.Image
 var playerBigBulletImage *ebiten.Image
 var bonusImage *ebiten.Image
 
+// explosion graphics
+var explosionImages [explosionNumSteps]*ebiten.Image
+
 // sounds
 var infiniteMusic *audio.InfiniteLoop
 var music1 *audio.InfiniteLoop
