@@ -23,26 +23,54 @@ import (
 )
 
 func (g game) isLeftPressed() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyLeft) || ebiten.IsGamepadButtonPressed(g.joypad.id, g.joypad.left)
+	return ebiten.IsKeyPressed(ebiten.KeyLeft) ||
+		ebiten.IsGamepadButtonPressed(g.joypad.id, g.joypad.left) ||
+		(g.joypad.useAxis && ebiten.GamepadAxis(g.joypad.id, g.joypad.leftrightAxis) <= -0.5)
 }
 
 func (g game) isUpPressed() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyUp) || ebiten.IsGamepadButtonPressed(g.joypad.id, g.joypad.up)
+	return ebiten.IsKeyPressed(ebiten.KeyUp) ||
+		ebiten.IsGamepadButtonPressed(g.joypad.id, g.joypad.up) ||
+		(g.joypad.useAxis && ebiten.GamepadAxis(g.joypad.id, g.joypad.updownaxis) <= -0.5)
 }
 
-func (g game) isUpJustPressed() bool {
+func (g *game) isUpJustPressed() bool {
+	if g.joypad.useAxis {
+		if !g.joypad.axisUpJustUsed {
+			if ebiten.GamepadAxis(g.joypad.id, g.joypad.updownaxis) <= -0.5 {
+				g.joypad.axisUpJustUsed = true
+				return true
+			}
+		} else if ebiten.GamepadAxis(g.joypad.id, g.joypad.updownaxis) > -0.5 {
+			g.joypad.axisUpJustUsed = false
+		}
+	}
 	return inpututil.IsKeyJustPressed(ebiten.KeyUp) || inpututil.IsGamepadButtonJustPressed(g.joypad.id, g.joypad.up)
 }
 
 func (g game) isRightPressed() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyRight) || ebiten.IsGamepadButtonPressed(g.joypad.id, g.joypad.right)
+	return ebiten.IsKeyPressed(ebiten.KeyRight) ||
+		ebiten.IsGamepadButtonPressed(g.joypad.id, g.joypad.right) ||
+		(g.joypad.useAxis && ebiten.GamepadAxis(g.joypad.id, g.joypad.leftrightAxis) >= 0.5)
 }
 
 func (g game) isDownPressed() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyDown) || ebiten.IsGamepadButtonPressed(g.joypad.id, g.joypad.down)
+	return ebiten.IsKeyPressed(ebiten.KeyDown) ||
+		ebiten.IsGamepadButtonPressed(g.joypad.id, g.joypad.down) ||
+		(g.joypad.useAxis && ebiten.GamepadAxis(g.joypad.id, g.joypad.updownaxis) >= 0.5)
 }
 
-func (g game) isDownJustPressed() bool {
+func (g *game) isDownJustPressed() bool {
+	if g.joypad.useAxis {
+		if !g.joypad.axisDownJustUsed {
+			if ebiten.GamepadAxis(g.joypad.id, g.joypad.updownaxis) >= 0.5 {
+				g.joypad.axisDownJustUsed = true
+				return true
+			}
+		} else if ebiten.GamepadAxis(g.joypad.id, g.joypad.updownaxis) < 0.5 {
+			g.joypad.axisDownJustUsed = false
+		}
+	}
 	return inpututil.IsKeyJustPressed(ebiten.KeyDown) || inpututil.IsGamepadButtonJustPressed(g.joypad.id, g.joypad.down)
 }
 

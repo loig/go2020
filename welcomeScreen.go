@@ -47,6 +47,7 @@ func (g *game) welcomeUpdate() error {
 			g.state = gameHelp
 		case welcomeJoypadSetup:
 			g.stateState = 0
+			g.stateFrame = 0
 			g.state = gameJoypadSetup
 		case welcomeFullScreen:
 			ebiten.SetFullscreen(!ebiten.IsFullscreen())

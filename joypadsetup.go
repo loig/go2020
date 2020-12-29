@@ -19,6 +19,7 @@ package main
 
 import (
 	"log"
+	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -40,12 +41,35 @@ const (
 type joypad struct {
 	id                                           ebiten.GamepadID
 	left, up, right, down, space, control, enter ebiten.GamepadButton
+	leftrightAxis, updownaxis                    int
+	useAxis                                      bool
+	lastAxisValues                               []float64
+	axisUpJustUsed, axisDownJustUsed             bool
+}
+
+func (g *game) recordAxis() {
+	for axis := 0; axis < ebiten.GamepadAxisNum(g.joypad.id); axis++ {
+		if axis >= len(g.joypad.lastAxisValues) {
+			g.joypad.lastAxisValues = append(g.joypad.lastAxisValues, ebiten.GamepadAxis(g.joypad.id, axis))
+		} else {
+			g.joypad.lastAxisValues[axis] = ebiten.GamepadAxis(g.joypad.id, axis)
+		}
+		if isDebug() {
+			log.Print("Axis ", axis, ": ", ebiten.GamepadAxis(g.joypad.id, axis))
+		}
+	}
 }
 
 func (g *game) joypadSetupUpdate() {
 
+	if g.stateFrame == 0 {
+		g.recordAxis()
+		g.stateFrame++
+	}
+
 	if g.isEnterJustPressed() {
 		g.stateState = welcomeJoypadSetup
+		g.stateFrame = 0
 		g.state = gameWelcome
 		return
 	}
@@ -55,12 +79,22 @@ func (g *game) joypadSetupUpdate() {
 		if g.isJoypadPlugged() {
 			g.stateState++
 		}
-	case joypadLeft, joypadUp, joypadRight, joypadDown, joypadSpace, joypadControl, joypadEnter:
+	case joypadLeft, joypadUp, joypadSpace, joypadControl, joypadEnter:
+		if g.setUpJoypadButton() {
+			g.stateState++
+		}
+	case joypadRight, joypadDown:
+		if g.joypad.useAxis {
+			g.stateState++
+			return
+		}
 		if g.setUpJoypadButton() {
 			g.stateState++
 		}
 	default:
 	}
+
+	g.recordAxis()
 
 }
 
@@ -143,6 +177,38 @@ func (g *game) setUpJoypadButton() bool {
 				}
 			}
 			return true
+		}
+	}
+	// check if some axis is used
+	maxAxis := 0
+	maxAxisValue := 0.0
+	for axis := 0; axis < ebiten.GamepadAxisNum(g.joypad.id); axis++ {
+		if len(g.joypad.lastAxisValues) > axis &&
+			math.Abs(ebiten.GamepadAxis(g.joypad.id, axis)-g.joypad.lastAxisValues[axis]) > 0.1 {
+			axisValue := math.Abs(ebiten.GamepadAxis(g.joypad.id, axis))
+			if axisValue > maxAxisValue {
+				maxAxisValue = axisValue
+				maxAxis = axis
+			}
+		}
+	}
+	if maxAxisValue >= 0.5 {
+		switch g.stateState {
+		case joypadLeft:
+			g.joypad.useAxis = true
+			g.joypad.leftrightAxis = maxAxis
+			if isDebug() {
+				log.Print("Joypad left/right: axis ", maxAxis)
+			}
+			return true
+		case joypadUp:
+			if maxAxis != g.joypad.leftrightAxis {
+				g.joypad.updownaxis = maxAxis
+				if isDebug() {
+					log.Print("Joypad up/down: axis ", maxAxis)
+				}
+				return true
+			}
 		}
 	}
 	return false
