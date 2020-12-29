@@ -24,7 +24,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type player struct {
@@ -288,7 +287,7 @@ func (g *game) playerUpdate() {
 	g.player.cHull = nil
 	g.player.laserOn = false
 	if !g.player.isDead && !g.level.endLevel {
-		g.player.move()
+		g.move()
 		g.player.managePowerUp(g)
 		g.player.fire(g)
 		g.player.moveOptions()
@@ -298,77 +297,77 @@ func (g *game) playerUpdate() {
 	}
 }
 
-func (p *player) move() {
+func (g *game) move() {
 	var hasMovedX bool
-	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		p.vx += pAx
+	if g.isRightPressed() {
+		g.player.vx += pAx
 		hasMovedX = true
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
+	if g.isLeftPressed() {
 		if hasMovedX {
-			p.vx = 0
+			g.player.vx = 0
 			hasMovedX = false
 		} else {
-			p.vx -= pAx
+			g.player.vx -= pAx
 			hasMovedX = true
 		}
 	}
 	if !hasMovedX {
-		if p.vx > pAx {
-			p.vx -= pAx
-		} else if p.vx < -pAx {
-			p.vx += pAx
+		if g.player.vx > pAx {
+			g.player.vx -= pAx
+		} else if g.player.vx < -pAx {
+			g.player.vx += pAx
 		} else {
-			p.vx = 0
+			g.player.vx = 0
 		}
 	}
 	var hasMovedY bool
-	if ebiten.IsKeyPressed(ebiten.KeyDown) {
-		p.vy += pAy
+	if g.isDownPressed() {
+		g.player.vy += pAy
 		hasMovedY = true
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyUp) {
+	if g.isUpPressed() {
 		if hasMovedY {
-			p.vy = 0
+			g.player.vy = 0
 			hasMovedY = false
 		} else {
-			p.vy -= pAy
+			g.player.vy -= pAy
 			hasMovedY = true
 		}
 	}
 	if !hasMovedY {
-		if p.vy > pAy {
-			p.vy -= pAy
-		} else if p.vy < -pAy {
-			p.vy += pAy
+		if g.player.vy > pAy {
+			g.player.vy -= pAy
+		} else if g.player.vy < -pAy {
+			g.player.vy += pAy
 		} else {
-			p.vy = 0
+			g.player.vy = 0
 		}
 	}
-	if p.vx > p.vCap {
-		p.vx = p.vCap
-	} else if p.vx < -p.vCap {
-		p.vx = -p.vCap
+	if g.player.vx > g.player.vCap {
+		g.player.vx = g.player.vCap
+	} else if g.player.vx < -g.player.vCap {
+		g.player.vx = -g.player.vCap
 	}
-	if p.vy > p.vCap {
-		p.vy = p.vCap
-	} else if p.vy < -p.vCap {
-		p.vy = -p.vCap
+	if g.player.vy > g.player.vCap {
+		g.player.vy = g.player.vCap
+	} else if g.player.vy < -g.player.vCap {
+		g.player.vy = -g.player.vCap
 	}
-	p.x += p.vx
-	if p.x < 0+p.xSize/2 {
-		p.x = 0 + p.xSize/2
-	} else if p.x > screenWidth-p.xSize/2 {
-		p.x = screenWidth - p.xSize/2
+	g.player.x += g.player.vx
+	if g.player.x < 0+g.player.xSize/2 {
+		g.player.x = 0 + g.player.xSize/2
+	} else if g.player.x > screenWidth-g.player.xSize/2 {
+		g.player.x = screenWidth - g.player.xSize/2
 	}
-	p.y += p.vy
-	if p.y < 0+p.ySize/2 {
-		p.y = 0 + p.ySize/2
-	} else if p.y > screenHeight-p.ySize/2 {
-		p.y = screenHeight - p.ySize/2
+	g.player.y += g.player.vy
+	if g.player.y < 0+g.player.ySize/2 {
+		g.player.y = 0 + g.player.ySize/2
+	} else if g.player.y > screenHeight-g.player.ySize/2 {
+		g.player.y = screenHeight - g.player.ySize/2
 	}
 	if hasMovedX || hasMovedY {
-		p.recordMove()
+		g.player.recordMove()
 	}
 }
 
@@ -387,7 +386,7 @@ func (p *player) moveOptions() {
 }
 
 func (p *player) fire(g *game) {
-	if p.currentFire == 2 && ebiten.IsKeyPressed(ebiten.KeySpace) {
+	if p.currentFire == 2 && g.isSpacePressed() {
 		p.laserOn = true
 		xLen := screenWidth - p.x
 		x := xLen/2 + p.x
@@ -404,7 +403,7 @@ func (p *player) fire(g *game) {
 		bulletInterval = p.shotDelay
 	}
 	if p.lastBullet >= bulletInterval &&
-		ebiten.IsKeyPressed(ebiten.KeySpace) {
+		g.isSpacePressed() {
 		g.playSound(playerShotSound)
 		p.lastBullet = 0
 		if p.currentFire == 0 {
@@ -508,7 +507,7 @@ func (p *player) applyPowerUp() {
 }
 
 func (p *player) managePowerUp(g *game) {
-	if inpututil.IsKeyJustPressed(ebiten.KeyControl) {
+	if g.isControlJustPressed() {
 		if !p.allPowerUp && p.isAppliablePowerUp(p.currentPowerUp) {
 			p.applyPowerUp()
 			g.playSound(useBonusSound)

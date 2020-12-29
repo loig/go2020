@@ -21,13 +21,13 @@ import (
 	"errors"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
 const (
 	welcomeStart int = iota
 	welcomeHelp
+	welcomeJoypadSetup
 	welcomeFullScreen
 	welcomeInfo
 	welcomeQuit
@@ -35,7 +35,7 @@ const (
 )
 
 func (g *game) welcomeUpdate() error {
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if g.isEnterJustPressed() {
 		switch g.stateState {
 		case welcomeStart:
 			g.state = gameIntro
@@ -45,6 +45,9 @@ func (g *game) welcomeUpdate() error {
 			infiniteMusic = music1
 		case welcomeHelp:
 			g.state = gameHelp
+		case welcomeJoypadSetup:
+			g.stateState = 0
+			g.state = gameJoypadSetup
 		case welcomeFullScreen:
 			ebiten.SetFullscreen(!ebiten.IsFullscreen())
 		case welcomeInfo:
@@ -52,10 +55,10 @@ func (g *game) welcomeUpdate() error {
 		case welcomeQuit:
 			return errors.New("Quit game")
 		}
-	} else if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
+	} else if g.isDownJustPressed() {
 		g.stateState = (g.stateState + 1) % welcomeNumStates
 		g.playSound(menuSound)
-	} else if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
+	} else if g.isUpJustPressed() {
 		g.stateState = (g.stateState + welcomeNumStates - 1) % welcomeNumStates
 		g.playSound(menuSound)
 	}
@@ -72,6 +75,7 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 
 	introColor := veryDarkColor //color.Gray16{0x777f}
 	helpColor := introColor
+	joypadColor := introColor
 	fullScreenColor := introColor
 	infoColor := introColor
 	quitColor := introColor
@@ -81,6 +85,8 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 		introColor = textLightColor //color.White
 	case welcomeHelp:
 		helpColor = textLightColor //color.White
+	case welcomeJoypadSetup:
+		joypadColor = textLightColor
 	case welcomeFullScreen:
 		fullScreenColor = textLightColor
 	case welcomeInfo:
@@ -92,12 +98,17 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 	s := "Start Game"
 	bounds := text.BoundString(theFont, s)
 	width := bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 650, introColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 600, introColor)
 
 	s = "How to Play"
 	bounds = text.BoundString(theFont, s)
 	width = bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 700, helpColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 650, helpColor)
+
+	s = "Setup controller"
+	bounds = text.BoundString(theFont, s)
+	width = bounds.Max.X - bounds.Min.X
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 700, joypadColor)
 
 	s = "Toggle fullscreen"
 	bounds = text.BoundString(theFont, s)

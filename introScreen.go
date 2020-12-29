@@ -19,7 +19,6 @@ package main
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
@@ -45,7 +44,7 @@ const (
 
 func (g *game) introUpdate() {
 
-	if g.stateState >= introFinished && inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if g.stateState >= introFinished && g.isEnterJustPressed() {
 		g.stateFrame = 0
 		g.state = gameInLevel1
 		disposeFirstImages()
@@ -56,7 +55,7 @@ func (g *game) introUpdate() {
 		return
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if g.isEnterJustPressed() {
 		g.stateState = introFinished
 		return
 	}

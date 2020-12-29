@@ -41,11 +41,13 @@ type game struct {
 	level      level
 	explosions explosionSet
 	audio      soundManager
+	joypad     joypad
 }
 
 const (
 	gameWelcome int = iota
 	gameHelp
+	gameJoypadSetup
 	gameInfo
 	gameIntro
 	gameInLevel1

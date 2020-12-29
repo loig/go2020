@@ -17,11 +17,6 @@
 
 package main
 
-import (
-	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
-)
-
 func (g *game) Update() error {
 
 	g.updateMusic()
@@ -34,12 +29,14 @@ func (g *game) Update() error {
 		}
 	case gameHelp:
 		g.helpUpdate()
+	case gameJoypadSetup:
+		g.joypadSetupUpdate()
 	case gameInfo:
 		g.infoUpdate()
 	case gameIntro:
 		g.introUpdate()
 	case gameInLevel1, gameInLevel2:
-		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		if g.isEnterJustPressed() {
 			if g.state == gameInLevel1 {
 				g.state = gameInLevel1Paused
 			} else {
@@ -60,7 +57,7 @@ func (g *game) Update() error {
 		g.levelUpdate()
 		g.checkCollisions()
 	case gameInLevel1Paused, gameInLevel2Paused:
-		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		if g.isEnterJustPressed() {
 			if g.state == gameInLevel1Paused {
 				g.state = gameInLevel1
 			} else {

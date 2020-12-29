@@ -21,7 +21,6 @@ import (
 	"fmt"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 const (
@@ -38,7 +37,7 @@ const (
 
 func (g *game) finishedUpdate() {
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if g.isEnterJustPressed() {
 		g.stateState = finishedFinished
 		return
 	}

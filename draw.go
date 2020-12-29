@@ -33,6 +33,8 @@ func (g *game) Draw(screen *ebiten.Image) {
 		g.welcomeDraw(screen)
 	case gameHelp:
 		g.helpDraw(screen)
+	case gameJoypadSetup:
+		g.joypadSetupDraw(screen)
 	case gameInfo:
 		g.infoDraw(screen)
 	case gameIntro:

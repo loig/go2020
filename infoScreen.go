@@ -21,12 +21,11 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
 func (g *game) infoUpdate() {
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if g.isEnterJustPressed() {
 		g.state = gameWelcome
 	}
 }

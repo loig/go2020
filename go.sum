@@ -19,6 +19,8 @@ github.com/hajimehoshi/ebiten v1.12.3 h1:/KYCLW5VvfMKOMb8TqjKFlDCQAibM+OiA+LUwjS
 github.com/hajimehoshi/ebiten v1.12.3/go.mod h1:9JW9BAz1+swszT0SXR8VUvNvDafs9VspevAcY+KPlV8=
 github.com/hajimehoshi/ebiten v1.12.4 h1:ie1lGp9mwPeIopCMMZ6wY5O45mfXmZOuixGHxsTKSNc=
 github.com/hajimehoshi/ebiten v1.12.4/go.mod h1:Cj+v7AyYoT/dZscy2AGCsVy2s2wcYxsSBvEKMQEP9gw=
+github.com/hajimehoshi/ebiten v1.12.5 h1:Sh4MJpdGhV34vos6wInvHExCbmB6ZcYow6IR4zfzRgk=
+github.com/hajimehoshi/ebiten v1.12.5/go.mod h1:Cj+v7AyYoT/dZscy2AGCsVy2s2wcYxsSBvEKMQEP9gw=
 github.com/hajimehoshi/ebiten/v2 v2.0.0 h1:G8mhkKFtnDPPZ/ChaGWx4Bm0NusYEcafGCJ8QLxEaYs=
 github.com/hajimehoshi/ebiten/v2 v2.0.0/go.mod h1:hpZZQ/kk8DZqft7QsQ5hZLRQXHSZPdKnaa0tcJ3CZFE=
 github.com/hajimehoshi/ebiten/v2 v2.1.0-alpha.4.0.20201122133751-53d7bcda84ae h1:sNYEzp4nare+rqlswcMT5SdRU0DQFZ+5N+DHtTU9T88=

@@ -22,7 +22,6 @@ import (
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/loig/go2020/assets"
 )
@@ -43,7 +42,7 @@ const (
 
 func (g *game) transitionUpdate() {
 
-	if g.stateState >= transitionFinished && inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if g.stateState >= transitionFinished && g.isEnterJustPressed() {
 		g.stateFrame = 0
 		g.state = gameInLevel2
 		g.fadeOutMusic(true)
@@ -53,7 +52,7 @@ func (g *game) transitionUpdate() {
 		return
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if g.isEnterJustPressed() {
 		g.stateState = transitionFinished
 		return
 	}
