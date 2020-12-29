@@ -23,6 +23,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
 func (g *game) Draw(screen *ebiten.Image) {
@@ -36,7 +37,7 @@ func (g *game) Draw(screen *ebiten.Image) {
 		g.infoDraw(screen)
 	case gameIntro:
 		g.introDraw(screen)
-	case gameInLevel1, gameInLevel2:
+	case gameInLevel1, gameInLevel2, gameInLevel1Paused, gameInLevel2Paused:
 		//if g.stateFrame >= framesBeforeLevel {
 		g.level.draw(screen)
 		g.bulletSet.draw(screen, color.RGBA{255, 0, 0, 255})
@@ -53,6 +54,15 @@ func (g *game) Draw(screen *ebiten.Image) {
 			op := &ebiten.DrawImageOptions{}
 			op.ColorM.Translate(-1, -1, -1, -alpha)
 			screen.DrawImage(levelBackground, op)
+		}
+		if g.state == gameInLevel1Paused || g.state == gameInLevel2Paused {
+			op := &ebiten.DrawImageOptions{}
+			op.ColorM.Translate(-1, -1, -1, -0.5)
+			screen.DrawImage(levelBackground, op)
+			s := "Paused"
+			bounds := text.BoundString(theFont, s)
+			width := bounds.Max.X - bounds.Min.X
+			text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 500, textLightColor)
 		}
 	case gameTransition:
 		g.transitionDraw(screen)

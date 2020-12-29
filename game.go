@@ -49,8 +49,10 @@ const (
 	gameInfo
 	gameIntro
 	gameInLevel1
+	gameInLevel1Paused
 	gameTransition
 	gameInLevel2
+	gameInLevel2Paused
 	gameFinished
 	gameOver
 )
