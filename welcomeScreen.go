@@ -26,6 +26,7 @@ import (
 const (
 	welcomeStart int = iota
 	welcomeHelp
+	welcomeFullScreen
 	welcomeInfo
 	welcomeNumStates
 )
@@ -41,6 +42,8 @@ func (g *game) welcomeUpdate() {
 			infiniteMusic = music1
 		case welcomeHelp:
 			g.state = gameHelp
+		case welcomeFullScreen:
+			ebiten.SetFullscreen(!ebiten.IsFullscreen())
 		case welcomeInfo:
 			g.state = gameInfo
 		}
@@ -63,6 +66,7 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 
 	introColor := veryDarkColor //color.Gray16{0x777f}
 	helpColor := introColor
+	fullScreenColor := introColor
 	infoColor := introColor
 
 	switch g.stateState {
@@ -70,6 +74,8 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 		introColor = textLightColor //color.White
 	case welcomeHelp:
 		helpColor = textLightColor //color.White
+	case welcomeFullScreen:
+		fullScreenColor = textLightColor
 	case welcomeInfo:
 		infoColor = textLightColor //color.White
 	}
@@ -84,9 +90,14 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 	width = bounds.Max.X - bounds.Min.X
 	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 700, helpColor)
 
+	s = "Toggle fullscreen"
+	bounds = text.BoundString(theFont, s)
+	width = bounds.Max.X - bounds.Min.X
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 750, fullScreenColor)
+
 	s = "About"
 	bounds = text.BoundString(theFont, s)
 	width = bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 750, infoColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 800, infoColor)
 
 }
