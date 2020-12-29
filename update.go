@@ -17,7 +17,18 @@
 
 package main
 
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
+)
+
 func (g *game) Update() error {
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if ebiten.IsFullscreen() {
+			ebiten.SetFullscreen(false)
+		}
+	}
 
 	g.updateMusic()
 

@@ -65,6 +65,10 @@ func (g *game) Draw(screen *ebiten.Image) {
 			bounds := text.BoundString(theFont, s)
 			width := bounds.Max.X - bounds.Min.X
 			text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 500, textLightColor)
+			s = "(Press enter to continue)"
+			bounds = text.BoundString(theFont, s)
+			width = bounds.Max.X - bounds.Min.X
+			text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4+20, 550, textLightColor)
 		}
 	case gameTransition:
 		g.transitionDraw(screen)
