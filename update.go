@@ -67,7 +67,10 @@ func (g *game) Update() error {
 	case gameTransition:
 		g.transitionUpdate()
 	case gameFinished:
-		g.finishedUpdate()
+		err := g.finishedUpdate()
+		if err != nil {
+			return err
+		}
 	case gameOver:
 		g.gameOverUpdate()
 	}

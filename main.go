@@ -30,6 +30,7 @@ func main() {
 
 	ebiten.SetWindowSize(screenWidth/2, screenHeight/2)
 	ebiten.SetWindowTitle("Game Off 2020")
+	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 	if err := ebiten.RunGame(initGame()); err != nil {
 		if isDebug() {
 			log.Fatal(err)

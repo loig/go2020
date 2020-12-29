@@ -18,9 +18,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
 const (
@@ -35,11 +37,14 @@ const (
 	finishedFinished
 )
 
-func (g *game) finishedUpdate() {
+func (g *game) finishedUpdate() error {
 
 	if g.isEnterJustPressed() {
+		if g.stateState == finishedFinished {
+			return errors.New("Game finished")
+		}
 		g.stateState = finishedFinished
-		return
+		return nil
 	}
 
 	if g.stateState < finishedFinished {
@@ -49,6 +54,8 @@ func (g *game) finishedUpdate() {
 			g.stateState++
 		}
 	}
+
+	return nil
 
 }
 
@@ -101,5 +108,6 @@ func (g *game) finishedDraw(screen *ebiten.Image) {
 	if g.stateState >= finishedFinished {
 		s := fmt.Sprint("Final score: ", g.player.points)
 		displayCutSceneText(s, textPos, screen)
+		text.Draw(screen, "Press ENTER to quit", theBigFont, 1750, 1040, textLightColor)
 	}
 }

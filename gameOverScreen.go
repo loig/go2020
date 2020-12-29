@@ -20,7 +20,6 @@ package main
 import (
 	"bytes"
 	"image"
-	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
@@ -50,7 +49,7 @@ func (g *game) gameOverDraw(screen *ebiten.Image) {
 		op,
 	)
 
-	text.Draw(screen, "Press ENTER to restart", theBigFont, 1750, 1040, color.White)
+	text.Draw(screen, "Press ENTER to restart", theBigFont, 1750, 1040, textLightColor)
 }
 
 func loadGameOverImage() {

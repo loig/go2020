@@ -29,8 +29,8 @@ const (
 	welcomeHelp
 	welcomeJoypadSetup
 	welcomeFullScreen
-	welcomeInfo
 	welcomeQuit
+	welcomeInfo
 	welcomeNumStates
 )
 
@@ -99,30 +99,33 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 	s := "Start Game"
 	bounds := text.BoundString(theFont, s)
 	width := bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 600, introColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 550, introColor)
 
 	s = "How to Play"
 	bounds = text.BoundString(theFont, s)
 	width = bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 650, helpColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 600, helpColor)
 
 	s = "Setup controller"
 	bounds = text.BoundString(theFont, s)
 	width = bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 700, joypadColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 650, joypadColor)
 
 	s = "Toggle fullscreen"
 	bounds = text.BoundString(theFont, s)
 	width = bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 750, fullScreenColor)
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 700, fullScreenColor)
+
+	s = "Quit Game"
+	bounds = text.BoundString(theFont, s)
+	width = bounds.Max.X - bounds.Min.X
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 750, quitColor)
 
 	s = "About"
 	bounds = text.BoundString(theFont, s)
 	width = bounds.Max.X - bounds.Min.X
 	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 800, infoColor)
 
-	s = "Quit Game"
-	bounds = text.BoundString(theFont, s)
-	width = bounds.Max.X - bounds.Min.X
-	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 850, quitColor)
+	s = "Use arrow keys and enter to select a menu item"
+	text.Draw(screen, s, theBigFont, 1420, 1070, textLightColor)
 }

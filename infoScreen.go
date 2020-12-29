@@ -18,8 +18,6 @@
 package main
 
 import (
-	"image/color"
-
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
@@ -37,7 +35,7 @@ func (g *game) infoDraw(screen *ebiten.Image) {
 	text.Draw(
 		screen,
 		s,
-		theBigFont, screenWidth/2-3*width/4, 300, color.White,
+		theBigFont, screenWidth/2-3*width/4, 300, textLightColor,
 	)
-	text.Draw(screen, "Press ENTER to quit", theBigFont, 1800, 1040, color.White)
+	text.Draw(screen, "Press ENTER to quit", theBigFont, 1800, 1040, textLightColor)
 }
