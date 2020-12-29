@@ -23,7 +23,10 @@ func (g *game) Update() error {
 
 	switch g.state {
 	case gameWelcome:
-		g.welcomeUpdate()
+		err := g.welcomeUpdate()
+		if err != nil {
+			return err
+		}
 	case gameHelp:
 		g.helpUpdate()
 	case gameInfo:

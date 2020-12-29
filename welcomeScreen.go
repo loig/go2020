@@ -18,6 +18,8 @@
 package main
 
 import (
+	"errors"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
@@ -28,10 +30,11 @@ const (
 	welcomeHelp
 	welcomeFullScreen
 	welcomeInfo
+	welcomeQuit
 	welcomeNumStates
 )
 
-func (g *game) welcomeUpdate() {
+func (g *game) welcomeUpdate() error {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		switch g.stateState {
 		case welcomeStart:
@@ -46,6 +49,8 @@ func (g *game) welcomeUpdate() {
 			ebiten.SetFullscreen(!ebiten.IsFullscreen())
 		case welcomeInfo:
 			g.state = gameInfo
+		case welcomeQuit:
+			return errors.New("Quit game")
 		}
 	} else if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
 		g.stateState = (g.stateState + 1) % welcomeNumStates
@@ -54,6 +59,7 @@ func (g *game) welcomeUpdate() {
 		g.stateState = (g.stateState + welcomeNumStates - 1) % welcomeNumStates
 		g.playSound(menuSound)
 	}
+	return nil
 }
 
 func (g game) welcomeDraw(screen *ebiten.Image) {
@@ -68,6 +74,7 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 	helpColor := introColor
 	fullScreenColor := introColor
 	infoColor := introColor
+	quitColor := introColor
 
 	switch g.stateState {
 	case welcomeStart:
@@ -78,6 +85,8 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 		fullScreenColor = textLightColor
 	case welcomeInfo:
 		infoColor = textLightColor //color.White
+	case welcomeQuit:
+		quitColor = textLightColor
 	}
 
 	s := "Start Game"
@@ -100,4 +109,8 @@ func (g game) welcomeDraw(screen *ebiten.Image) {
 	width = bounds.Max.X - bounds.Min.X
 	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 800, infoColor)
 
+	s = "Quit Game"
+	bounds = text.BoundString(theFont, s)
+	width = bounds.Max.X - bounds.Min.X
+	text.Draw(screen, s, theBigFont, (screenWidth-width)/2-width/4, 850, quitColor)
 }
